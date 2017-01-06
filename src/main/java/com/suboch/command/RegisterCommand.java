@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
-public class SignUpCommand implements IServletCommand {
+public class RegisterCommand implements IServletCommand {
     private static final String FIRST_NAME_PARAM = "firstName";
     private static final String LAST_NAME_PARAM = "lastName";
     private static final String EMAIL_PARAM = "email";

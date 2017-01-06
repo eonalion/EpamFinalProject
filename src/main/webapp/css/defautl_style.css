@@ -1,0 +1,32 @@
+@font-face {
+    font-family: 'Nixie One';
+    src: url('../fonts/Nixie_One/NixieOne-Regular.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Anaheim';
+    src: url('../fonts/Anaheim/Anaheim-Regular.ttf') format('truetype');
+}
+
+body {
+    margin-top: 200px;
+    background-color: #010007;
+}
+
+h1, h2, h3, h4, h5, p, span, li {
+    color: rgba(214, 214, 214, 0.73);
+}
+
+.nav-menu-item {
+    text-align: center;
+    text-decoration: none;
+    font: 1.5em "Nixie One", bold, Tahoma, serif;
+    color: white;
+}
+
+/*
+.logo {
+    height: 60px;
+    margin-top: -60px;
+}*/
+

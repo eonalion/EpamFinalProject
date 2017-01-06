@@ -26,7 +26,7 @@ public class AccountValidator {
     public boolean validateRegistration(String firstName, String lastName, String login, String email, String password, String passwordConfirm) {
         return checkPasswordsMatch(password, passwordConfirm) &&
                 checkPasswordValidity(password) &&
-                (checkLoginValidity(login) || checkEmailValidity(email));
+                (checkLoginValidity(login) && checkEmailValidity(email));
         //FIXME: login || email
     }
 

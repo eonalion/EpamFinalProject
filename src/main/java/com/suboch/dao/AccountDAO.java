@@ -1,6 +1,8 @@
 package com.suboch.dao;
 
 import com.suboch.database.ConnectionProxy;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 
@@ -9,11 +11,13 @@ import java.sql.*;
  */
 public class AccountDAO {
     private ConnectionProxy connection;
-    private static final String REGISTER_SCRIPT = "INSERT INTO `test`.`clients` (`first_name`, `last_name`, `email_address`, `login`, `password`, `is_admin`) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?)";
-    private static final String CHECK_ACCOUNT = "SELECT `login` FROM `clients` WHERE (`login` = ? OR `email` = ?) AND `password` = ?";
+    private static final Logger LOG = LogManager.getLogger();
+    private static final String REGISTER_SCRIPT = "INSERT INTO `audiotracks`.`clients` (`first_name`, `last_name`, `email_address`, `login`, `password`, `is_admin`) " +
+            "VALUES (?, ?, ?, ?, SHA2(?, 256), FALSE)";
+    private static final String CHECK_ACCOUNT = "SELECT `login` FROM `clients` WHERE (`login` = ? OR `email_address` = ?) AND `password` = SHA2(?, 256)";
     private static final String CHECK_LOGIN = "SELECT `login` FROM `clients` WHERE `login` = ?";
-    private static final String CHECK_EMAIL = "SELECT `login` FROM `clients` WHERE `email` = ?";
+    private static final String CHECK_ADMIN_RIGHTS = "SELECT `login` FROM `clients` WHERE `login` = ? && `is_admin` = TRUE";
+    private static final String CHECK_EMAIL = "SELECT `login` FROM `clients` WHERE `email_address` = ?";
 
 
     public AccountDAO(ConnectionProxy connection){
@@ -29,9 +33,9 @@ public class AccountDAO {
             preparedStatement.setString(5, password);
             preparedStatement.execute();
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
-        return true;
+        return false;
     }
 
     public boolean authorizeAccount(String authorizationName, String password) {
@@ -42,7 +46,7 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
 
         return false;
@@ -54,7 +58,7 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             return !resultSet.next();
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
         return false;
     }
@@ -65,9 +69,19 @@ public class AccountDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             return !resultSet.next();
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
         return false;
     }
 
+    public boolean checkAdminRights(String authorizationName) {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(CHECK_ADMIN_RIGHTS)) {
+            preparedStatement.setString(1, authorizationName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return !resultSet.next();
+        } catch (SQLException e) {
+            LOG.error(e);
+        }
+        return false;
+    }
 }

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import com.suboch.command.IServletCommand;
+import com.suboch.database.ConnectionPool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -40,15 +41,13 @@ public class Controller extends HttpServlet {
     @Override
     public void destroy() {
         super.destroy();
+        ConnectionPool.getInstance().closePool();
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         CommandManager client = new CommandManager();
         IServletCommand command = client.defineCommand(request, response);
         command.execute(request, response);
-
-
-        request.getRequestDispatcher("/jsp/main.jsp").forward(request, response);
     }
 
 }

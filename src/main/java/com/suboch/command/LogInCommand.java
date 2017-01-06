@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  *
  */
-public class SignInCommand implements IServletCommand {
+public class LogInCommand implements IServletCommand {
     private static final String AUTHORIZATION_NAME_PARAM = "authorizationName";
     private static final String PASSWORD_PARAM = "password";
 
@@ -18,5 +18,6 @@ public class SignInCommand implements IServletCommand {
         String password = request.getParameter(PASSWORD_PARAM);
         AccountLogic logic = new AccountLogic();
         logic.authorizeAccount(authorizationName, password);
+        //TODO: check registration result and admin rights
     }
 }

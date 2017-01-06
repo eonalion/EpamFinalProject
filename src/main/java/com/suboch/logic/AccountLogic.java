@@ -4,6 +4,8 @@ import com.suboch.dao.AccountDAO;
 import com.suboch.database.ConnectionPool;
 import com.suboch.database.ConnectionProxy;
 import com.suboch.validator.AccountValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 
@@ -13,6 +15,7 @@ import java.sql.SQLException;
 
 public class AccountLogic {
     private AccountValidator validator;
+    private static final Logger LOG = LogManager.getLogger();
 
     public AccountLogic() {
         validator = new AccountValidator();
@@ -27,7 +30,7 @@ public class AccountLogic {
                 //TODO:
             }
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
         return false;
     }
@@ -41,9 +44,18 @@ public class AccountLogic {
                 //TODO:
             }
         } catch (SQLException e) {
-            //TODO:
+            LOG.error(e);
         }
         return false;
     }
 
+    public boolean isAdmin(String authorizationName) {
+        try(ConnectionProxy connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            return accountDAO.checkAdminRights(authorizationName);
+        } catch (SQLException e){
+            LOG.error(e);
+        }
+        return false;
+    }
 }

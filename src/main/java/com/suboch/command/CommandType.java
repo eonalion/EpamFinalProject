@@ -6,12 +6,12 @@ package com.suboch.command;
 public enum CommandType {
     LOGIN {
         {
-            this.command = new SignInCommand();
+            this.command = new LogInCommand();
         }
     },
     REGISTER {
         {
-            this.command = new SignUpCommand();
+            this.command = new RegisterCommand();
         }
     };
 
