@@ -1,4 +1,4 @@
-package com.suboch.validator;
+package by.suboch.validator;
 
 /**
  *

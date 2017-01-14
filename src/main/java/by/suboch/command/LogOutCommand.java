@@ -1,13 +1,13 @@
-package com.suboch.command;
+package by.suboch.command;
 
-import com.suboch.exception.LogicException;
-import com.suboch.logic.AccountLogic;
-import com.suboch.manager.ConfigurationManager;
+import by.suboch.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
 
 /**
  *
@@ -21,6 +21,7 @@ public class LogOutCommand implements IServletCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         //TODO: remove attributes from session
 
+        request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.GUEST.toString());
         return ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE);
     }
 }

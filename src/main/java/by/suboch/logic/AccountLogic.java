@@ -1,11 +1,11 @@
-package com.suboch.logic;
+package by.suboch.logic;
 
-import com.suboch.dao.AccountDAO;
-import com.suboch.database.ConnectionPool;
-import com.suboch.database.ProxyConnection;
-import com.suboch.exception.DAOException;
-import com.suboch.exception.LogicException;
-import com.suboch.validator.AccountValidator;
+import by.suboch.dao.AccountDAO;
+import by.suboch.database.ConnectionPool;
+import by.suboch.database.ProxyConnection;
+import by.suboch.exception.DAOException;
+import by.suboch.exception.LogicException;
+import by.suboch.validator.AccountValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

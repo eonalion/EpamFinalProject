@@ -1,4 +1,4 @@
-package com.suboch.filter;
+package by.suboch.filter;
 
 import java.io.IOException;
 import javax.servlet.Filter;

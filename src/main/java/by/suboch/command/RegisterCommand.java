@@ -1,21 +1,17 @@
-package com.suboch.command;
+package by.suboch.command;
 
-import com.suboch.exception.LogicException;
-import com.suboch.logic.AccountLogic;
+import by.suboch.exception.LogicException;
+import by.suboch.logic.AccountLogic;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import static by.suboch.command.CommandConstants.*;
 
 /**
  *
  */
 public class RegisterCommand implements IServletCommand {
-    private static final String FIRST_NAME_PARAM = "firstName";
-    private static final String LAST_NAME_PARAM = "lastName";
-    private static final String EMAIL_PARAM = "email";
-    private static final String LOGIN_PARAM = "login";
-    private static final String PASSWORD_PARAM = "password";
-    private static final String PASSWORD_CONFIRM_PARAM = "passwordConfirm";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

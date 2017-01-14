@@ -27,21 +27,21 @@
             </div>
             <div class="col-md-3  col-sm-3  col-sx-3 footer-wrap">
                 <header><fmt:message key="label.language"/></header>
-                <form action="/s" method="get">
+               <%-- <form action="/s" method="get">
                     <select name="locale">
                         <option value="en_US"><fmt:message key="label.language.en"/></option>
                         <option value="ru_RU"><fmt:message key="label.language.ru"/></option>
                     </select>
                     <button type="submit" name="command" value="changelanguage"><fmt:message
                             key="label.language"/></button>
-                </form>
+                </form>--%>
 
-                <%--<ul>
-                    <li><a href="javascript: document.getElementById('footer_change_lang').submit()"><fmt:message
+                <ul>
+                    <li><a href="/s?command=changelanguage&locale=en_US"><fmt:message
                             key="label.language.en"/></a></li>
-                    <li><a href="javascript: document.getElementById('footer_change_lang').submit()"><fmt:message
+                    <li><a href="/s?command=changelanguage&locale=ru_RU"><fmt:message
                             key="label.language.ru"/></a></li>
-                </ul>--%>
+                </ul>
 
             </div>
             <div class="col-md-3  col-sm-3 col-sx-3 footer-wrap">

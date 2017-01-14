@@ -1,4 +1,4 @@
-package com.suboch.manager;
+package by.suboch.manager;
 
 /**
  *
@@ -7,9 +7,8 @@ package com.suboch.manager;
 import java.util.ResourceBundle;
 
 public class ConfigurationManager {
-    private static String FILE_PATH = "properties.configuration";
-
-    private static ResourceBundle resourceBundle = ResourceBundle.getBundle(FILE_PATH);
+    private static final String CONFIGURATION_FILE_PATH = "properties.configuration";
+    private static ResourceBundle resourceBundle = ResourceBundle.getBundle(CONFIGURATION_FILE_PATH);
 
     private ConfigurationManager() {
     }

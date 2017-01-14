@@ -1,4 +1,4 @@
-package com.suboch.manager;
+package by.suboch.manager;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

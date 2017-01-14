@@ -14,11 +14,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
     <%-- CSS libraries --%>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%-- Custom CSS --%>
-    <link rel="stylesheet" type="text/css" href="/css/main.css">
+    <link rel="stylesheet" type="text/css" href="../../css/main.css">
     <%-- JS libraries --%>
     <script src="../../js/classie.js"></script>
     <%-- Custom JS --%>

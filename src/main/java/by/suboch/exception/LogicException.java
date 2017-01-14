@@ -1,4 +1,4 @@
-package com.suboch.exception;
+package by.suboch.exception;
 
 /**
  *

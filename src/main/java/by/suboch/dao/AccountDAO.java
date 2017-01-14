@@ -1,7 +1,7 @@
-package com.suboch.dao;
+package by.suboch.dao;
 
-import com.suboch.database.ProxyConnection;
-import com.suboch.exception.DAOException;
+import by.suboch.database.ProxyConnection;
+import by.suboch.exception.DAOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

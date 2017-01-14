@@ -1,4 +1,4 @@
-package com.suboch.database;
+package by.suboch.database;
 
 import java.sql.*;
 import java.util.Map;
