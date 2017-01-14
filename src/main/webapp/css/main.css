@@ -1,0 +1,52 @@
+@import "default.css";
+
+.section-lead {
+    font-size: 1.2em;
+    margin-bottom: 20px;
+}
+
+.jumbotron {
+    background: transparent;
+}
+
+.item {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.thumbnail {
+    background: transparent;
+    width: 300px;
+    height: 450px;
+    border: 1px solid rgba(255, 255, 255, .25);
+}
+
+.thumbnail:hover {
+    background-color: rgba(68, 88, 131, 0.2);
+}
+
+.caption a {
+    color: white;
+}
+
+.caption h4,h5 {
+    margin: 0;
+}
+
+.caption .price {
+    padding: 7px;
+    color: white;
+    font: 1.2em "Nixie One", Tahoma, serif;
+}
+
+.section-paragraph {
+    font-size: 0.9em;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .thumbnail{
+        position: inherit;
+        margin: auto;
+    }
+}

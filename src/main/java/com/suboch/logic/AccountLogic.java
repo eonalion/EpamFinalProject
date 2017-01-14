@@ -2,7 +2,9 @@ package com.suboch.logic;
 
 import com.suboch.dao.AccountDAO;
 import com.suboch.database.ConnectionPool;
-import com.suboch.database.ConnectionProxy;
+import com.suboch.database.ProxyConnection;
+import com.suboch.exception.DAOException;
+import com.suboch.exception.LogicException;
 import com.suboch.validator.AccountValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -21,41 +23,39 @@ public class AccountLogic {
         validator = new AccountValidator();
     }
 
-    public boolean registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) {
-        try(ConnectionProxy connection = ConnectionPool.getInstance().getConnection()) {
+    public boolean registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) throws LogicException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             if (validator.validateRegistration(firstName, lastName, login, email, password, passwordConfirm) && accountDAO.checkLoginUniqueness(login) && accountDAO.checkEmailUniqueness(email)) {
                 accountDAO.registerAccount(firstName, lastName, login, email, password);
+                return true;
             } else {
-                //TODO:
+                return false;
             }
-        } catch (SQLException e) {
-            LOG.error(e);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while account registration.", e);
         }
-        return false;
     }
 
-    public boolean authorizeAccount(String authorizationName, String password) {
-        try(ConnectionProxy connection = ConnectionPool.getInstance().getConnection()) {
+    public boolean authorizeAccount(String authorizationName, String password) throws LogicException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             if (validator.validateAuthorization(authorizationName, password)) {
-                accountDAO.authorizeAccount(authorizationName, password);
+                return accountDAO.authorizeAccount(authorizationName, password);
             } else {
-                //TODO:
+                return false;
             }
-        } catch (SQLException e) {
-            LOG.error(e);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while account authorization.", e);
         }
-        return false;
     }
 
-    public boolean isAdmin(String authorizationName) {
-        try(ConnectionProxy connection = ConnectionPool.getInstance().getConnection()) {
+    public boolean isAdmin(String authorizationName) throws LogicException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             return accountDAO.checkAdminRights(authorizationName);
-        } catch (SQLException e){
-            LOG.error(e);
+        } catch (SQLException | DAOException e){
+            throw new LogicException("Error while admin rights check in logic.", e);
         }
-        return false;
     }
 }

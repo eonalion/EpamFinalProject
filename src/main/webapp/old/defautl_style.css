@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Nixie One';
-    src: url('../fonts/Nixie_One/NixieOne-Regular.ttf') format('truetype');
+    src: url('../../fonts/Nixie_One/NixieOne-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Anaheim';
-    src: url('../fonts/Anaheim/Anaheim-Regular.ttf') format('truetype');
+    src: url('../../fonts/Anaheim/Anaheim-Regular.ttf') format('truetype');
 }
 
 body {

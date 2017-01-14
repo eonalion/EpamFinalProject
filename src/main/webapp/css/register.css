@@ -1,26 +1,16 @@
-@import "../css/defautl_style.css";
+@import "default.css";
+
+/* navigation */
 
 nav ul {
-    padding-left: 0;
-    list-style: none;
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    margin: 0;
 }
 
 nav li {
     display: inline-block;
-    font: 30px "Nixie One", Tahoma, serif;
     padding: 10px 10px;
     cursor: pointer;
     height: 40px;
-}
-
-.nav-menu-item-inactive {
-    color: #6e6e6e;
-}
-
-.nav-menu-item-active {
-    color: white;
 }
 
 nav li:hover {
@@ -35,10 +25,19 @@ section.inactive {
     display: none;
 }
 
+/*  */
+
 .section-description {
     font: 30px "Nixie One", Tahoma, serif;
     height: 40px;
 }
+
+form {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+/* footer */
 
 footer {
     position: absolute;
@@ -46,6 +45,12 @@ footer {
     bottom: 0;
     left: 0;
 }
+
+.nav-footer{
+ display: none;
+}
+
+/* media queries */
 
 @media (max-width: 768px) {
     .md-section {

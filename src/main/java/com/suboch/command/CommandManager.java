@@ -7,11 +7,11 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public class CommandManager {
-    private static final String COMMAND_PARAM = "command";
+    private static final String COMMAND_PARAMETER = "command";
 
     public IServletCommand defineCommand(HttpServletRequest request, HttpServletResponse response) {
         IServletCommand currentCommand = new EmptyCommand();
-        String currentAction = request.getParameter(COMMAND_PARAM);
+        String currentAction = request.getParameter(COMMAND_PARAMETER);
         if(currentAction==null||currentAction.isEmpty()) {
             return currentCommand;
         }

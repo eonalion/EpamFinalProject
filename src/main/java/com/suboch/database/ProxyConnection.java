@@ -8,10 +8,10 @@ import java.util.concurrent.Executor;
 /**
  *
  */
-public class ConnectionProxy implements Connection {
+public class ProxyConnection implements Connection {
     private Connection connection;
 
-    public ConnectionProxy(Connection connection) {
+    ProxyConnection(Connection connection) {
         this.connection = connection;
     }
 
@@ -20,7 +20,7 @@ public class ConnectionProxy implements Connection {
         ConnectionPool.getInstance().freeConnection(this);
     }
 
-    public void finalClose() throws SQLException {
+    void finalClose() throws SQLException {
         connection.close();
     }
 

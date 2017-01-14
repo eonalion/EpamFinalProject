@@ -1,5 +1,6 @@
 package com.suboch.command;
 
+import com.suboch.exception.LogicException;
 import com.suboch.logic.AccountLogic;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,7 @@ public class RegisterCommand implements IServletCommand {
     private static final String PASSWORD_CONFIRM_PARAM = "passwordConfirm";
 
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         String firstName = request.getParameter(FIRST_NAME_PARAM);
         String lastName = request.getParameter(LAST_NAME_PARAM);
         String email = request.getParameter(EMAIL_PARAM);
@@ -26,7 +27,16 @@ public class RegisterCommand implements IServletCommand {
         String passwordConfirm = request.getParameter(PASSWORD_CONFIRM_PARAM);
 
         AccountLogic logic = new AccountLogic();
-        logic.registerAccount(firstName, lastName, login, email, password, passwordConfirm);
+
+        try {
+            if(logic.registerAccount(firstName, lastName, login, email, password, passwordConfirm)) {
+
+            }
+        } catch (LogicException e) {
+            //TODO: Exception
+        }
         //TODO: check registration result
+
+        return "";
     }
 }

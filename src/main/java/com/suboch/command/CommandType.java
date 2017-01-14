@@ -13,9 +13,19 @@ public enum CommandType {
         {
             this.command = new RegisterCommand();
         }
+    },
+    CHANGELANGUAGE {
+        {
+            this.command = new ChangeLanguageCommand();
+        }
+    },
+    LOGOUT {
+        {
+            this.command = new LogOutCommand();
+        }
     };
 
-    IServletCommand command;
+    private IServletCommand command;
 
     public IServletCommand getCurrentCommand() {
         return command;

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class EmptyCommand implements IServletCommand {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) {
-
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        return "";
     }
 }

@@ -30,8 +30,8 @@ public class ConnectionPool {
     private static AtomicBoolean poolInstanceCreated = new AtomicBoolean(false);
     private static AtomicBoolean poolClosed = new AtomicBoolean(false);
 
-    private BlockingQueue<ConnectionProxy> freeConnections;
-    private BlockingQueue<ConnectionProxy> takenConnections;
+    private BlockingQueue<ProxyConnection> freeConnections;
+    private BlockingQueue<ProxyConnection> takenConnections;
 
     private static ConnectionPool poolInstance;
 
@@ -42,17 +42,17 @@ public class ConnectionPool {
         try {
             Class.forName(DRIVER).newInstance();
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
-            LOG.error(e);
-            //TODO:
+            LOG.fatal("Error while initializing database driver.", e);
+            throw new RuntimeException(e);
         }
 
         try {
             for (int i = 0; i < poolSize; i++) {
                 Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
-                freeConnections.put(new ConnectionProxy(connection));
+                freeConnections.put(new ProxyConnection(connection));
             }
         } catch (SQLException | InterruptedException e) {
-            //TODO:
+            LOG.error("Error while getting new connection.", e);
         }
     }
 
@@ -71,12 +71,11 @@ public class ConnectionPool {
         return poolInstance;
     }
 
-    public ConnectionProxy getConnection() {
+    public ProxyConnection getConnection() {
         connectionActionLock.lock();
-        ConnectionProxy connection = null;
+        ProxyConnection connection = null;
 
         if(poolClosed.get()) {
-            // FIXME: return null?
             return connection;
         }
 
@@ -84,7 +83,7 @@ public class ConnectionPool {
             connection = freeConnections.take();
             takenConnections.put(connection);
         } catch (InterruptedException e) {
-            //TODO:
+            LOG.error("Error while getting connection from pool.", e);
         } finally {
             connectionActionLock.unlock();
         }
@@ -92,12 +91,12 @@ public class ConnectionPool {
         return connection;
     }
 
-    public void freeConnection(ConnectionProxy connection) {
+    public void freeConnection(ProxyConnection connection) {
         takenConnections.remove(connection);
         try {
             freeConnections.put(connection);
         } catch (InterruptedException e) {
-            //TODO:
+            LOG.error("Error while returning connection to pool.", e);
         }
     }
 
@@ -112,7 +111,7 @@ public class ConnectionPool {
             }
             poolClosed.set(true);
         } catch (SQLException | InterruptedException e) {
-            //TODO:
+            LOG.error("Error while closing pool.", e);
         } finally {
             connectionActionLock.unlock();
         }

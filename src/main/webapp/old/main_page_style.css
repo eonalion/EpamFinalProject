@@ -15,7 +15,7 @@ nav {
     -moz-background-size: cover;
     background-size: cover;
     -o-background-size: cover;
-    background: url("../images/banner.png") no-repeat center center scroll;
+    background: url("../../images/banner.png") no-repeat center center scroll;
     padding-top: 100px;
 }
 
@@ -59,7 +59,7 @@ nav {
     overflow: hidden;
     font: 1em "Nixie One", Tahoma, serif;
     color: white;
-    background: url('../images/search.png') 5px 10px no-repeat;
+    background: url('../../images/search.png') 5px 10px no-repeat;
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
 }
