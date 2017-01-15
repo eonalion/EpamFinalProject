@@ -26,7 +26,9 @@ public class AccountLogic {
     public boolean registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) throws LogicException {
         try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (validator.validateRegistration(firstName, lastName, login, email, password, passwordConfirm) && accountDAO.checkLoginUniqueness(login) && accountDAO.checkEmailUniqueness(email)) {
+            if (validator.validateRegistration(login, email, password, passwordConfirm)
+                    && accountDAO.checkLoginUniqueness(login)
+                    && accountDAO.checkEmailUniqueness(email)) {
                 accountDAO.registerAccount(firstName, lastName, login, email, password);
                 return true;
             } else {
@@ -56,6 +58,20 @@ public class AccountLogic {
             return accountDAO.checkAdminRights(authorizationName);
         } catch (SQLException | DAOException e){
             throw new LogicException("Error while admin rights check in logic.", e);
+        }
+    }
+
+    public boolean createBonus(String price, String discount) throws LogicException {
+        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            if(accountDAO.checkBonus(price)) {
+                accountDAO.createBonus(price, discount);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | DAOException e){
+            throw new LogicException("Error while creating bonus in logic.", e);
         }
     }
 }

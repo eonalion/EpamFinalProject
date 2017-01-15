@@ -22,7 +22,7 @@
                 <ul>
                     <li><a href=""><fmt:message key="nav.account.settings"/></a></li>
                     <li><a href=""><fmt:message key="nav.account.purchases"/></a></li>
-                    <li><a href=""><fmt:message key="nav.account.logout"/></a></li>
+                    <li><a href="/s?command=logout"><fmt:message key="nav.account.logout"/></a></li>
                 </ul>
             </div>
             <div class="col-md-3  col-sm-3  col-sx-3 footer-wrap">
@@ -35,14 +35,12 @@
                     <button type="submit" name="command" value="changelanguage"><fmt:message
                             key="label.language"/></button>
                 </form>--%>
-
                 <ul>
                     <li><a href="/s?command=changelanguage&locale=en_US"><fmt:message
                             key="label.language.en"/></a></li>
                     <li><a href="/s?command=changelanguage&locale=ru_RU"><fmt:message
                             key="label.language.ru"/></a></li>
                 </ul>
-
             </div>
             <div class="col-md-3  col-sm-3 col-sx-3 footer-wrap">
                 <header><fmt:message key="footer.links"/></header>

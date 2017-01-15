@@ -3,15 +3,14 @@ package by.suboch.command;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
+import by.suboch.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static by.suboch.command.CommandConstants.PASSWORD_PARAM;
-import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
-import static by.suboch.command.CommandConstants.AUTHORIZATION_NAME_PARAM;
+import static by.suboch.command.CommandConstants.*;
 
 /**
  *
@@ -21,7 +20,9 @@ public class LogInCommand implements IServletCommand {
 
     private static final String USER_MAIN_PAGE = "path.page.mainUser";
     private static final String ADMIN_MAIN_PAGE = "path.page.mainAdmin";
-    private static final String TEST_PAGE = "path.page.test";
+    private static final String REGISTRATION_PAGE = "path.page.registration";
+    private static final String ERROR_PAGE = "path.page.error";
+    private static final String LOGIN_ERROR_MESSAGE = "message.loginError";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -38,11 +39,12 @@ public class LogInCommand implements IServletCommand {
                     return ConfigurationManager.getProperty(USER_MAIN_PAGE);
                 }
             } else {
-                //TODO
-                return ConfigurationManager.getProperty(TEST_PAGE);
+                //TODO: Set warn message through validator or what? It could be already set in validator, so just return current page.
+                return ConfigurationManager.getProperty(REGISTRATION_PAGE);
             }
         } catch (LogicException e) {
-            return ConfigurationManager.getProperty(TEST_PAGE);
+            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
+            return ConfigurationManager.getProperty(ERROR_PAGE);
         }
     }
 }

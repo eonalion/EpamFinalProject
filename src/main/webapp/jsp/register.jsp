@@ -1,6 +1,7 @@
 <%--
 --%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
@@ -29,59 +30,71 @@
     <div class="row">
         <nav class="col-md-6">
             <ul>
-                <li class="nav-menu-item nav-menu-item-active" onclick="showForm(event)"><fmt:message key="registration.label"/></li>
-                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm(event)"><fmt:message key="login.label"/></li>
+                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('register', event)"><fmt:message
+                        key="registration.label"/></li>
+                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('log-in', event)"><fmt:message
+                        key="login.label"/></li>
             </ul>
         </nav>
         <section class="col-md-6 section-description md-section">
             <h3><fmt:message key="authorization.section.header"/></h3>
         </section>
     </div>
+<%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
     <div class="row">
         <section id="register" class="active form col-md-6">
             <p>Welcome!</p>
             <form name="registration" method="post" action="/s">
                 <div class="row">
-                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>" required>
+                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
+                           required>
                 </div>
                 <div class="row">
-                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>" required>
+                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>"
+                           required>
                 </div>
                 <div class="row">
-                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>" maxlength="40"
-                           pattern="^[a-zA-Z][a-zA-Z0-9_]{4,}$" required>
+                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>"
+                           maxlength="40"
+                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$" required>
                 </div>
                 <div class="row">
                     <input type="password" name="password" placeholder="<fmt:message key="registration.form.password"/>"
-                           pattern="^.*(?=.{6,})(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+).*$" required>
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
                 </div>
                 <div class="row">
-                    <input type="password" name="passwordConfirm" placeholder="<fmt:message key="registration.form.confirmPassword"/>"
-                           pattern="^.*(?=.{6,})(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+).*$" required>
+                    <input type="password" name="passwordConfirm"
+                           placeholder="<fmt:message key="registration.form.confirmPassword"/>"
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
                 </div>
                 <div class="row">
-                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>" pattern="^.+@.+[.].+$"
+                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>"
+                           pattern="^.+@.+[.].+$"
                            required>
                 </div>
                 <div class="row">
                     <div class="input-wrap">
                         <input id="accept" type="checkbox" name="termsAccept" value="unchecked" required>
                         <label for="accept"></label>
-                        <span><fmt:message key="registration.form.acceptTerms.text"/> <a href=""><fmt:message key="registration.form.acceptTerms.agreement"/></a></span>
+                        <span><fmt:message key="registration.form.acceptTerms.text"/> <a href=""><fmt:message
+                                key="registration.form.acceptTerms.agreement"/></a></span>
                     </div>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="register" onclick="onSubmitAction()"><fmt:message key="registration.label"/></button>
+                    <button type="submit" name="command" value="register" onclick=""><fmt:message
+                            key="registration.label"/></button>
                 </div>
             </form>
         </section>
         <section id="log-in" class="inactive form col-md-6">
             <form name="login" method="post" action="/s">
                 <div class="row">
-                    <input type="text" name="authorizationName" placeholder="<fmt:message key="login.form.authName"/>" required>
+                    <input type="text" name="authorizationName" placeholder="<fmt:message key="login.form.authName"/>"
+                           required>
                 </div>
                 <div class="row">
-                    <input type="password" name="password" placeholder="<fmt:message key="login.form.password"/>" required>
+                    <input type="password" name="password" placeholder="<fmt:message key="login.form.password"/>"
+                           required>
                 </div>
                 <div class="row">
                     <button type="submit" name="command" value="login"><fmt:message key="login.label"/></button>

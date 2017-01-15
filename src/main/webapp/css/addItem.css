@@ -1,0 +1,38 @@
+@import "default.css";
+
+main nav ul {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+main nav li {
+    display: inline-block;
+    padding: 10px 10px;
+    cursor: pointer;
+    height: 40px;
+}
+
+section.active {
+    display: block;
+}
+
+section.inactive {
+    display: none;
+}
+
+form {
+    margin-left: 15px;
+    margin-top: 15px;
+}
+
+.description {
+    max-lines: 10;
+    height: 100px;
+    text-align: justify;
+}
+
+footer {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}

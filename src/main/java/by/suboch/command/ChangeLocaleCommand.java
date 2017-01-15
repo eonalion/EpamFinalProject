@@ -1,5 +1,6 @@
 package by.suboch.command;
 
+import by.suboch.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,8 +16,8 @@ import static by.suboch.command.CommandConstants.LOCALE_ATTR;
  */
 public class ChangeLocaleCommand implements IServletCommand {
     private static final Logger LOG = LogManager.getLogger();
-    private static final String LOCALE_DELIMITER = "_";
 
+    private static final String LOCALE_DELIMITER = "_";
     private static final int LANGUAGE = 0;
     private static final int COUNTRY = 1;
 
@@ -28,7 +29,6 @@ public class ChangeLocaleCommand implements IServletCommand {
         if (!chosenLocale.equals(currentLocale)) {
             request.getSession().setAttribute(LOCALE_ATTR, chosenLocale);
         }
-
         return (String) request.getSession().getAttribute(CURRENT_PAGE_ATTR);
     }
 }

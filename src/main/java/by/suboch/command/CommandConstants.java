@@ -13,7 +13,20 @@ public class CommandConstants {
     static final String PASSWORD_PARAM = "password";
     static final String PASSWORD_CONFIRM_PARAM = "passwordConfirm";
 
+    static final String TRACK_TITLE_PARAM = "trackTitle";
+    static final String TRACK_ARTIST_PARAM = "trackArtist";
+    static final String TRACK_ALBUM_PARAM = "trackAlbum";
+    static final String TRACK_GENRES_PARAM = "trackGenres";
+    static final String TRACK_DURATION_PARAM = "trackDuration";
+    static final String TRACK_PRICE_PARAM = "trackPrice";
+    static final String TRACK_DISCOUNT_PARAM = "trackDiscount";
+
+    static final String BONUS_PRICE_PARAM = "bonusPrice";
+    static final String BONUS_DISCOUNT_PARAM = "bonusDiscount";
+
     public static final String LOCALE_ATTR = "locale";
     public static final String VISITOR_ROLE_ATTR = "role";
     public static final String CURRENT_PAGE_ATTR = "currentPage";
+    public static final String MESSAGE_ATTR = "message";
+    public static final String NEXT_PAGE_ATTR = "nextPage";
 }

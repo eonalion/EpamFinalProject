@@ -7,7 +7,7 @@ import org.apache.logging.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
+import static by.suboch.command.CommandConstants.*;
 
 /**
  *
@@ -19,8 +19,9 @@ public class LogOutCommand implements IServletCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        //TODO: remove attributes from session
-
+        request.getSession().removeAttribute(LOCALE_ATTR);
+        request.getSession().removeAttribute(MESSAGE_ATTR);
+        request.getSession().removeAttribute(CURRENT_PAGE_ATTR);
         request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.GUEST.toString());
         return ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE);
     }

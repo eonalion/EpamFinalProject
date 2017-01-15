@@ -25,6 +25,18 @@ public enum CommandType {
             this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER, VisitorRole.GUEST);
         }
     },
+    ADDNEW {
+        {
+            this.command = new CreateEntityCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
+        }
+    },
+    ADDBONUS {
+        {
+            this.command = new CreateBonusCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
+        }
+    },
     LOGOUT {
         {
             this.command = new LogOutCommand();

@@ -29,8 +29,8 @@ public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
 
     private static final Locale DEFAULT_LOCALE = new Locale("en", "US");
-    
-    private static final String ERROR_PAGE = "path.page.result.illegalAction";
+
+    private static final String ERROR_PAGE = "path.page.error";
     private static final String REGISTRATION_LOGIN_PAGE = "path.page.registration";
 
     @Override
@@ -63,6 +63,8 @@ public class Controller extends HttpServlet {
             String page = command.execute(request, response);
             request.getSession().setAttribute(CURRENT_PAGE_ATTR, page);
             request.getRequestDispatcher(page).forward(request, response);
+            //TODO: Handle warn message.
+            //FIXME: If we are on error page how to define where to return?
         } else {
             // Illegal action
             // TODO: Clear session.

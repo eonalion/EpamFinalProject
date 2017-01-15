@@ -13,12 +13,16 @@ import java.sql.*;
 public class AccountDAO {
     private ProxyConnection connection;
     private static final Logger LOG = LogManager.getLogger();
-    private static final String REGISTER_SCRIPT = "INSERT INTO `audiotracks`.`clients` (`first_name`, `last_name`, `email_address`, `login`, `password`, `is_admin`) " +
+    private static final String REGISTER_ACCOUNT = "INSERT INTO `clients` (`first_name`, `last_name`, `email_address`, `login`, `password`, `is_admin`) " +
             "VALUES (?, ?, ?, ?, SHA2(?, 256), FALSE)";
     private static final String CHECK_ACCOUNT = "SELECT `login` FROM `clients` WHERE (`login` = ? OR `email_address` = ?) AND `password` = SHA2(?, 256)";
     private static final String CHECK_LOGIN = "SELECT `login` FROM `clients` WHERE `login` = ?";
-    private static final String CHECK_ADMIN_RIGHTS = "SELECT `login` FROM `clients` WHERE `login` = ? && `is_admin` = TRUE";
     private static final String CHECK_EMAIL = "SELECT `login` FROM `clients` WHERE `email_address` = ?";
+    private static final String CHECK_ADMIN_RIGHTS = "SELECT `login` FROM `clients` WHERE (`login` = ? OR `email_address` = ?) && `is_admin` = TRUE";
+
+    private static final String CREATE_BONUS = "INSERT INTO `bonuses` (`price`, `discount`) VALUES (?, ?)";
+    private static final String CHECK_BONUS = "SELECT `price` FROM `bonuses` WHERE `price` = ?";
+
 
 
     public AccountDAO(ProxyConnection connection) {
@@ -26,11 +30,11 @@ public class AccountDAO {
     }
 
     public void registerAccount(String firstName, String lastName, String login, String email, String password) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(REGISTER_SCRIPT)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(REGISTER_ACCOUNT)) {
             preparedStatement.setString(1, firstName);
             preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, login);
-            preparedStatement.setString(4, email);
+            preparedStatement.setString(3, email);
+            preparedStatement.setString(4, login);
             preparedStatement.setString(5, password);
             preparedStatement.execute();
         } catch (SQLException e) {
@@ -73,8 +77,30 @@ public class AccountDAO {
     public boolean checkAdminRights(String authorizationName) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_ADMIN_RIGHTS)) {
             preparedStatement.setString(1, authorizationName);
+            preparedStatement.setString(2, authorizationName);
             ResultSet resultSet = preparedStatement.executeQuery();
             return resultSet.next();
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking admin rights in database.", e);
+        }
+    }
+
+    public boolean checkBonus(String price) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CHECK_BONUS)) {
+            preparedStatement.setString(1, price);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return !resultSet.next();
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking bonus in database.", e);
+        }
+    }
+
+    public void createBonus(String price, String discount) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(CREATE_BONUS)) {
+            preparedStatement.setString(1, price);
+            preparedStatement.setString(2, discount);
+
+            preparedStatement.execute();
         } catch (SQLException e) {
             throw new DAOException("Error while checking admin rights in database.", e);
         }

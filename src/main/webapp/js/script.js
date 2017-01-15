@@ -1,7 +1,7 @@
 function init() {
     window.addEventListener('scroll', function (e) {
         var distanceY = window.pageYOffset || document.documentElement.scrollTop,
-            shrinkOn = 100,
+            shrinkOn = 50,
             nav = document.querySelector("nav"),
             profile = document.querySelector(".profile");
         if (distanceY > shrinkOn) {
@@ -19,19 +19,19 @@ function init() {
 }
 window.onload = init();
 
-function showForm(event) {
+function showForm(formId, event) {
     var activeForm = document.querySelector(".active"),
-        inactiveForm = document.querySelector(".inactive"),
-        activeTab  = document.querySelector(".nav-menu-item-active"),
-        inactiveTab  = document.querySelector(".nav-menu-item-inactive");
+        inactiveForm = document.getElementById(formId),
+        activeTab = document.querySelector("main .nav-menu-item-active"),
+        inactiveTab = event.srcElement;
 
-    classie.remove(activeForm, "active");
-    classie.add(activeForm, "inactive");
     classie.remove(inactiveForm, "inactive");
     classie.add(inactiveForm, "active");
+    classie.remove(activeForm, "active");
+    classie.add(activeForm, "inactive");
 
-    classie.remove(activeTab, "nav-menu-item-active");
-    classie.add(activeTab, "nav-menu-item-inactive");
     classie.remove(inactiveTab, "nav-menu-item-inactive");
     classie.add(inactiveTab, "nav-menu-item-active");
+    classie.remove(activeTab, "nav-menu-item-active");
+    classie.add(activeTab, "nav-menu-item-inactive");
 }
