@@ -1,13 +1,13 @@
 <%--
 --%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title><fmt:message key="authorization.title"/></title>
     <meta charset="UTF-8">
@@ -15,15 +15,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="shortcut icon" href="../../images/favicon.ico"/>
     <%-- CSS libraries --%>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%-- Custom CSS --%>
-    <link rel="stylesheet" type="text/css" href="../css/register.css">
+    <link rel="stylesheet" type="text/css" href="../../css/register.css">
     <%-- JS libraries --%>
-    <script src="../js/classie.js"></script>
+    <script src="../../js/classie.js"></script>
     <%-- Custom JS --%>
-    <script src="../js/script.js"></script>
+    <script src="../../js/script.js"></script>
 </head>
 <body>
 <main class="container">
@@ -97,7 +97,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="login"><fmt:message key="login.label"/></button>
+                    <button type="submit" name="command" value="log_in"><fmt:message key="login.label"/></button>
                 </div>
             </form>
         </section>
@@ -112,12 +112,13 @@
             <option value="en_US">English</option>
             <option value="ru_RU">Русский</option>
         </select>
-        <button type="submit" name="command" value="changelanguage"><fmt:message key="label.language"/></button>
+        <button type="submit" name="command" value="change_language"><fmt:message key="label.language"/></button>
     </form>
 </main>
 
-
-<jsp:include page="footer.jsp"/>
+<%--<jsp:include page="footer.jspf">
+<jsp:param name="locale" value="${locale}}"/>
+</jsp:include>--%>
 
 <%-- JS --%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>

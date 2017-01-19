@@ -15,6 +15,7 @@ import static by.suboch.command.CommandConstants.LOCALE_ATTR;
  *
  */
 public class ChangeLocaleCommand implements IServletCommand {
+
     private static final Logger LOG = LogManager.getLogger();
 
     private static final String LOCALE_DELIMITER = "_";

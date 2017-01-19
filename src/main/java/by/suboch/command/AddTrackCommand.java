@@ -10,7 +10,7 @@ import static by.suboch.command.CommandConstants.*;
 /**
  *
  */
-public class CreateTrackCommand implements IServletCommand {
+public class AddTrackCommand implements IServletCommand {
     private static final String CREATE_ENTITY_PAGE = "path.page.addNew";
 
     @Override

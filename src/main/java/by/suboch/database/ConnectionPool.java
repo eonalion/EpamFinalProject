@@ -26,7 +26,7 @@ public class ConnectionPool {
     private int poolSize = Integer.parseInt(RESOURCE_BUNDLE.getString("db.poolsize"));
 
     private static Lock connectionPoolLock = new ReentrantLock();
-    private static Lock connectionActionLock = new ReentrantLock();
+    private static Lock connectionActionLock = new ReentrantLock();//TODO: ROMAN!!! Use boolean flag instead. Call me may be.
     private static AtomicBoolean poolInstanceCreated = new AtomicBoolean(false);
     private static AtomicBoolean poolClosed = new AtomicBoolean(false);
 
@@ -51,7 +51,7 @@ public class ConnectionPool {
                 Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
                 freeConnections.put(new ProxyConnection(connection));
             }
-        } catch (SQLException | InterruptedException e) {
+        } catch (SQLException | InterruptedException e) {//TODO: ROMAN!!! See html.
             LOG.error("Error while getting new connection.", e);
         }
     }
@@ -103,13 +103,13 @@ public class ConnectionPool {
     public void closePool() {
         connectionActionLock.lock();
         try {
-            for (int i = 0; i < freeConnections.size(); i++) {
+            poolClosed.set(true);
+            for (int i = 0; i < poolSize; i++) {
                 freeConnections.take().finalClose();
             }
-            for (int i = 0; i < takenConnections.size(); i++) {
-                takenConnections.take().finalClose();
-            }
-            poolClosed.set(true);
+//            for (int i = 0; i < takenConnections.size(); i++) {
+//                takenConnections.take().finalClose();
+//            }
         } catch (SQLException | InterruptedException e) {
             LOG.error("Error while closing pool.", e);
         } finally {

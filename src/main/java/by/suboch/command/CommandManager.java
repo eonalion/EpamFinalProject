@@ -1,6 +1,5 @@
 package by.suboch.command;
 
-import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,7 @@ import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
 public class CommandManager {
     private static final Logger LOG = LogManager.getLogger();
 
-    private static final String ERROR_MESSAGE = "message.illegalAction";
+    private static final String ERROR_MESSAGE = "message.error.illegalAction";
 
     public IServletCommand defineCommand(HttpServletRequest request, HttpServletResponse response) {
         IServletCommand currentCommand = new EmptyCommand();
@@ -28,6 +27,7 @@ public class CommandManager {
         }
 
         CommandType currentType = CommandType.valueOf(currentAction.toUpperCase());
+
         VisitorRole currentRole = VisitorRole.valueOf((String) request.getSession().getAttribute(VISITOR_ROLE_ATTR));
 
         if (currentType.visitorRole.contains(currentRole)) {

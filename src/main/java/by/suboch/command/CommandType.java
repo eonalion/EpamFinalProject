@@ -7,7 +7,7 @@ import java.util.Set;
  *
  */
 public enum CommandType {
-    LOGIN {
+    LOG_IN {
         {
             this.command = new LogInCommand();
             this.visitorRole = EnumSet.of(VisitorRole.GUEST);
@@ -19,25 +19,61 @@ public enum CommandType {
             this.visitorRole = EnumSet.of(VisitorRole.GUEST);
         }
     },
-    CHANGELANGUAGE {
+    CHANGE_LANGUAGE {
         {
             this.command = new ChangeLocaleCommand();
             this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER, VisitorRole.GUEST);
         }
     },
-    ADDNEW {
+    ADD_BONUS {
         {
-            this.command = new CreateEntityCommand();
+            this.command = new AddBonusCommand();
             this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
         }
     },
-    ADDBONUS {
+    ADD_ARTIST {
         {
-            this.command = new CreateBonusCommand();
+            this.command = new AddArtistCommand();
             this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
         }
     },
-    LOGOUT {
+    FORWARD {
+        {
+            this.command = new ForwardCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER, VisitorRole.GUEST);
+        }
+    },
+    CHANGE_PERSONAL_INFO {
+        {
+            this.command = new ChangePersonalInfoCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+        }
+    },
+    CHANGE_LOGIN {
+        {
+            this.command = new ChangeLoginCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+        }
+    },
+    CHANGE_EMAIL{
+        {
+            this.command = new ChangeEmailCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+        }
+    },
+    CHANGE_PASSWORD{
+        {
+            this.command = new ChangePasswordCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+        }
+    },
+    CHANGE_AVATAR {
+        {
+            this.command = new ChangeAvatarCommand();
+            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+        }
+    },
+    LOG_OUT {
         {
             this.command = new LogOutCommand();
             this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);

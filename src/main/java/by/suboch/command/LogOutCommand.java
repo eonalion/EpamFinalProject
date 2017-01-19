@@ -22,6 +22,7 @@ public class LogOutCommand implements IServletCommand {
         request.getSession().removeAttribute(LOCALE_ATTR);
         request.getSession().removeAttribute(MESSAGE_ATTR);
         request.getSession().removeAttribute(CURRENT_PAGE_ATTR);
+        request.getSession().removeAttribute(ACCOUNT_ATTR);
         request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.GUEST.toString());
         return ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE);
     }

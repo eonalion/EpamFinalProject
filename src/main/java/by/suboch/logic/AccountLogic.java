@@ -2,33 +2,33 @@ package by.suboch.logic;
 
 import by.suboch.dao.AccountDAO;
 import by.suboch.database.ConnectionPool;
-import by.suboch.database.ProxyConnection;
+import by.suboch.entity.Account;
 import by.suboch.exception.DAOException;
 import by.suboch.exception.LogicException;
 import by.suboch.validator.AccountValidator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.temporal.ValueRange;
 
 /**
  *
  */
 
-public class AccountLogic {
-    private AccountValidator validator;
+public class AccountLogic {//TODO: ROMAN!!!Connection.
     private static final Logger LOG = LogManager.getLogger();
 
     public AccountLogic() {
-        validator = new AccountValidator();
     }
 
     public boolean registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) throws LogicException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (validator.validateRegistration(login, email, password, passwordConfirm)
-                    && accountDAO.checkLoginUniqueness(login)
-                    && accountDAO.checkEmailUniqueness(email)) {
+            if (AccountValidator.validateRegistration(login, email, password, passwordConfirm) &&
+                    accountDAO.checkLoginUniqueness(login) &&//TODO: ROMAN!!!return something more useful.
+                    accountDAO.checkEmailUniqueness(email)) {
                 accountDAO.registerAccount(firstName, lastName, login, email, password);
                 return true;
             } else {
@@ -40,9 +40,9 @@ public class AccountLogic {
     }
 
     public boolean authorizeAccount(String authorizationName, String password) throws LogicException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (validator.validateAuthorization(authorizationName, password)) {
+            if (AccountValidator.validateAuthorization(authorizationName, password)) {
                 return accountDAO.authorizeAccount(authorizationName, password);
             } else {
                 return false;
@@ -52,25 +52,124 @@ public class AccountLogic {
         }
     }
 
+    public Account loadAccount(String authorizationName) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            return accountDAO.findByAuthorizationName(authorizationName);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while account authorization.", e);
+        }
+    }
+
+    public boolean changeName(int accountId, String firstName, String lastName) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            accountDAO.updateName(accountId, firstName, lastName);
+            return true;
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while changing account first name and last name");
+        }
+    }
+
+    public boolean changeLogin(int accountId, String login) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            if (AccountValidator.validateLogin(login) &&
+                    accountDAO.checkLoginUniqueness(accountId, login)) {
+                accountDAO.updateLogin(accountId, login);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while changing account login.", e);
+        }
+    }
+
+    public boolean changeEmail(int accountId, String email) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            if (AccountValidator.validateEmail(email) &&
+                    accountDAO.checkEmailUniqueness(accountId, email)) {
+                accountDAO.updateEmail(accountId, email);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while changing account email.", e);
+        }
+    }
+
+    public boolean changePassword(int accountId, String oldPassword, String newPassword, String newPasswordConfirm) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            if (AccountValidator.validatePassword(oldPassword) &&
+                    accountDAO.checkPassword(accountId, oldPassword) &&
+                    AccountValidator.validatePassword(newPassword) &&
+                    !AccountValidator.checkPasswordsMatch(oldPassword, newPassword) &&
+                    AccountValidator.checkPasswordsMatch(newPassword, newPasswordConfirm)) {
+                accountDAO.updatePassword(accountId, newPassword);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while changing account password.", e);
+        }
+    }
+
+    public boolean changeAvatar(int accountId, byte[] avatar) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            accountDAO.updateAvatar(accountId, avatar);
+            return true;
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while changing account avatar.", e);
+        }
+    }
+
+   /* //FIXME:
+    public boolean editAccount(int accountId, String firstName, String secondName, String login, String email, byte[] avatar, String oldPassword, String newPassword, String newPasswordConfirm) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            if (AccountValidator.validateLogin(login) &&
+                    AccountValidator.validateEmail(email) &&
+                    AccountValidator.validatePassword(oldPassword) &&
+                    AccountValidator.validatePassword(newPassword) &&
+                    AccountValidator.checkPasswordsMatch(newPassword, newPasswordConfirm) &&
+                    accountDAO.checkPassword(accountId, oldPassword) &&
+                    accountDAO.checkEmailUniqueness(accountId, email) &&
+                    accountDAO.checkLoginUniqueness(accountId, login)) {
+                accountDAO.updateAccountByAccountId(accountId, firstName, secondName, login, email, avatar, newPassword);
+                return true;
+            } else {
+                return false;
+            }
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Problems with changing account info.", e);
+        }
+    }*/
+
     public boolean isAdmin(String authorizationName) throws LogicException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             return accountDAO.checkAdminRights(authorizationName);
-        } catch (SQLException | DAOException e){
+        } catch (SQLException | DAOException e) {
             throw new LogicException("Error while admin rights check in logic.", e);
         }
     }
 
     public boolean createBonus(String price, String discount) throws LogicException {
-        try(ProxyConnection connection = ConnectionPool.getInstance().getConnection()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if(accountDAO.checkBonus(price)) {
+            if (accountDAO.checkBonus(price)) {
                 accountDAO.createBonus(price, discount);
                 return true;
             } else {
                 return false;
             }
-        } catch (SQLException | DAOException e){
+        } catch (SQLException | DAOException e) {
             throw new LogicException("Error while creating bonus in logic.", e);
         }
     }

@@ -1,5 +1,6 @@
 package by.suboch.command;
 
+import by.suboch.entity.Account;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
@@ -22,21 +23,24 @@ public class LogInCommand implements IServletCommand {
     private static final String ADMIN_MAIN_PAGE = "path.page.mainAdmin";
     private static final String REGISTRATION_PAGE = "path.page.registration";
     private static final String ERROR_PAGE = "path.page.error";
-    private static final String LOGIN_ERROR_MESSAGE = "message.loginError";
+    private static final String LOGIN_ERROR_MESSAGE = "message.error.loginError";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String authorizationName = request.getParameter(AUTHORIZATION_NAME_PARAM);
         String password = request.getParameter(PASSWORD_PARAM);
         AccountLogic logic = new AccountLogic();
+        String nextPage;
         try {
             if(logic.authorizeAccount(authorizationName, password)) {
+                Account account = logic.loadAccount(authorizationName);
+                request.getSession().setAttribute(ACCOUNT_ATTR, account);
                 if(logic.isAdmin(authorizationName)) {
                     request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.ADMIN.toString());
-                    return ConfigurationManager.getProperty(ADMIN_MAIN_PAGE);
+                    nextPage =  ConfigurationManager.getProperty(ADMIN_MAIN_PAGE);
                 } else {
                     request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.USER.toString());
-                    return ConfigurationManager.getProperty(USER_MAIN_PAGE);
+                    nextPage = ConfigurationManager.getProperty(USER_MAIN_PAGE);
                 }
             } else {
                 //TODO: Set warn message through validator or what? It could be already set in validator, so just return current page.
@@ -44,7 +48,8 @@ public class LogInCommand implements IServletCommand {
             }
         } catch (LogicException e) {
             request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
-            return ConfigurationManager.getProperty(ERROR_PAGE);
+            nextPage = ConfigurationManager.getProperty(ERROR_PAGE);
         }
+        return nextPage;
     }
 }

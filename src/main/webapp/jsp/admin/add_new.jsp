@@ -1,7 +1,8 @@
 <%--
 --%>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
@@ -18,7 +19,7 @@
     <%-- CSS libraries --%>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <%-- Custom CSS --%>
-    <link rel="stylesheet" type="text/css" href="../../css/addItem.css">
+    <link rel="stylesheet" type="text/css" href="../../css/nav_tabs.css">
     <%-- JS libraries --%>
     <script src="../../js/classie.js"></script>
     <%-- Custom JS --%>
@@ -26,13 +27,13 @@
 </head>
 <body>
 <!--Navigation -->
-<jsp:include page="admin_navigation.jsp"/>
+<c:import url="admin_navigation.jsp"/>
 <main class="container">
     <div class="row">
         <nav class="col-md-12">
             <ul>
-                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-admin', event)"><fmt:message
-                        key="main.addNew.admin"/></li>
+                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-adminRights', event)"><fmt:message
+                        key="main.addNew.adminRights"/></li>
                 <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-track', event)"><fmt:message
                         key="main.addNew.track"/></li>
                 <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-artist', event)"><fmt:message
@@ -48,7 +49,7 @@
     </div>
 
     <div class="row">
-        <section id="add-admin" class="active form col-md-12">
+        <section id="add-adminRights" class="active form col-md-12">
             <form method="post" action="/s">
                 <div class="row">
                     <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
@@ -78,7 +79,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addAdmin" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_admin" onclick=""><fmt:message
                             key="main.addNew.addAdmin"/></button>
                 </div>
             </form>
@@ -114,7 +115,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addTrack" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_track" onclick=""><fmt:message
                             key="main.addNew.addTrack"/></button>
                 </div>
             </form>
@@ -136,17 +137,17 @@
                 <div class="row">
                     <input type="text" name="artistCareerEnd"
                            placeholder="<fmt:message key="main.addNew.form.careerEnd"/>" required>
-                </div>
+                </div><%--
                 <div class="row">
                     <input type="text" name="artistGenres" placeholder="<fmt:message key="main.addNew.form.genres"/>"
                            required>
-                </div>
+                </div>--%>
                 <div class="row">
                     <input type="text" name="artistDescription" class="description"
                            placeholder="<fmt:message key="main.addNew.form.description"/>" required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addArtist" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_artist" onclick=""><fmt:message
                             key="main.addNew.addArtist"/></button>
                 </div>
             </form>
@@ -174,7 +175,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addAlbum" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_album" onclick=""><fmt:message
                             key="main.addNew.addAlbum"/></button>
                 </div>
             </form>
@@ -186,7 +187,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addGenre" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_genre" onclick=""><fmt:message
                             key="main.addNew.addGenre"/></button>
                 </div>
             </form>
@@ -202,7 +203,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="addBonus" onclick=""><fmt:message
+                    <button type="submit" name="command" value="add_bonus" onclick=""><fmt:message
                             key="main.addNew.addBonus"/></button>
                 </div>
             </form>
@@ -211,7 +212,7 @@
 </main>
 
     <%-- Footer --%>
-<jsp:include page="../footer.jsp"/>
+<c:import url="../../WEB-INF/jspf/footer.jsp"/>
     <%-- JS --%>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

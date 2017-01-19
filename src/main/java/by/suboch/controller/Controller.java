@@ -5,6 +5,7 @@ import by.suboch.command.*;
 import by.suboch.database.ConnectionPool;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -25,10 +26,11 @@ import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
  */
 
 @WebServlet("/s")
+@MultipartConfig
 public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
 
-    private static final Locale DEFAULT_LOCALE = new Locale("en", "US");
+    private static final Locale DEFAULT_LOCALE = new Locale("en", "EN");
 
     private static final String ERROR_PAGE = "path.page.error";
     private static final String REGISTRATION_LOGIN_PAGE = "path.page.registration";
@@ -72,7 +74,7 @@ public class Controller extends HttpServlet {
         }
     }
 
-    private void setDefaultAttributes(HttpServletRequest request) {
+    private void setDefaultAttributes(HttpServletRequest request) {//TODO: ROMAN!!!FILTER   .
         // FIXME: If role is not null other attrs are set?
         if (request.getSession().getAttribute(VISITOR_ROLE_ATTR) == null) {
             request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.GUEST.toString());
