@@ -1,7 +1,7 @@
 package by.suboch.command;
 
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
-import by.suboch.logic.AccountLogic;
 import by.suboch.logic.ArtistLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
@@ -10,37 +10,45 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
  *
  */
 public class AddArtistCommand implements IServletCommand {
-    private static final String ADD_NEW_PAGE = "path.page.addNew";
-    private static final String ERROR_PAGE = "path.page.error";
-    private static final String ERROR_MESSAGE = "message.artist.error";
+
+    private static final String PARAM_ARTIST_NAME = "artistName";
+    private static final String PARAM_ARTIST_COUNTRY = "artistCountry";
+    private static final String PARAM_ARTIST_CAREER_START = "artistCareerStart";
+    private static final String PARAM_ARTIST_CAREER_END = "artistCareerEnd";
+    private static final String PARAM_ARTIST_DESCRIPTION = "artistDescription";
+    private static final String MESSAGE_ERROR_ADD_ARTIST = "message.artist.error";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {//TODO: ROMAN!!! init var and then only return statement.
-        String name = request.getParameter(ARTIST_NAME_PARAM);
-        String country = request.getParameter(ARTIST_COUNTRY_PARAM);
-        String careerStart = request.getParameter(ARTIST_CAREER_START_PARAM);
-        String careerEnd = request.getParameter(ARTIST_CAREER_END_PARAM);
-        String description = request.getParameter(ARTIST_DESCRIPTION_PARAM);
-        //TODO: ROMAN!!!String page = null;
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+
+        String name = request.getParameter(PARAM_ARTIST_NAME);
+        String country = request.getParameter(PARAM_ARTIST_COUNTRY);
+        String careerStart = request.getParameter(PARAM_ARTIST_CAREER_START);
+        String careerEnd = request.getParameter(PARAM_ARTIST_CAREER_END);
+        String description = request.getParameter(PARAM_ARTIST_DESCRIPTION);
+
+        String nextPage;
+
         ArtistLogic logic = new ArtistLogic();
         try {
-            if(logic.addArtist(name, country, careerStart, careerEnd, description)) {
+            if (logic.addArtist(name, country, careerStart, careerEnd, description)) {
                 // TODO: Set success message.
-                return ConfigurationManager.getProperty(ADD_NEW_PAGE);
             } else {
                 // TODO: Set warn message(or it's already set?).
-                return ConfigurationManager.getProperty(ADD_NEW_PAGE);
             }
+            nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
             //TODO: Handle exception;
-            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(ERROR_MESSAGE));
-            return ConfigurationManager.getProperty(ERROR_PAGE);
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_ERROR_ADD_ARTIST, visitor.getLocale()));
+            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
-        //TODO: ROMAN!!!return page;
+        return nextPage;
     }
 }

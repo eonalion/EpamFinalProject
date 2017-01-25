@@ -1,54 +1,60 @@
 package by.suboch.command;
 
 import by.suboch.entity.Account;
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
+import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
  *
  */
 public class LogInCommand implements IServletCommand {
-    private static  final Logger LOG = LogManager.getLogger();
 
-    private static final String USER_MAIN_PAGE = "path.page.mainUser";
-    private static final String ADMIN_MAIN_PAGE = "path.page.mainAdmin";
-    private static final String REGISTRATION_PAGE = "path.page.registration";
-    private static final String ERROR_PAGE = "path.page.error";
-    private static final String LOGIN_ERROR_MESSAGE = "message.error.loginError";
+    private static final String PARAM_AUTHORIZATION_NAME = "authorizationName";
+    private static final String PARAM_PASSWORD = "password";
+    private static final String ERROR_MESSAGE_LOGIN = "message.error.loginError";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String authorizationName = request.getParameter(AUTHORIZATION_NAME_PARAM);
-        String password = request.getParameter(PASSWORD_PARAM);
+        String authorizationName = request.getParameter(PARAM_AUTHORIZATION_NAME);
+        String password = request.getParameter(PARAM_PASSWORD);
+
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         AccountLogic logic = new AccountLogic();
         String nextPage;
         try {
             if(logic.authorizeAccount(authorizationName, password)) {
                 Account account = logic.loadAccount(authorizationName);
-                request.getSession().setAttribute(ACCOUNT_ATTR, account);
+                request.getSession().setAttribute(ATTR_ACCOUNT, account);
+
+                nextPage = ConfigurationManager.getProperty(USER_MAIN_PAGE);
+
                 if(logic.isAdmin(authorizationName)) {
-                    request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.ADMIN.toString());
-                    nextPage =  ConfigurationManager.getProperty(ADMIN_MAIN_PAGE);
+                    visitor.setRole(Visitor.Role.ADMIN);
                 } else {
-                    request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.USER.toString());
-                    nextPage = ConfigurationManager.getProperty(USER_MAIN_PAGE);
+                    visitor.setRole(Visitor.Role.USER);
                 }
+                //------------------
+                TrackLogic trackLogic = new TrackLogic();
+                request.getSession().setAttribute(ATTR_TRACK_LIST, trackLogic.showPopularTracks(0, 4));
+                //------------------
+
             } else {
                 //TODO: Set warn message through validator or what? It could be already set in validator, so just return current page.
-                return ConfigurationManager.getProperty(REGISTRATION_PAGE);
+                nextPage = ConfigurationManager.getProperty(PAGE_REGISTRATION);
             }
         } catch (LogicException e) {
-            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(LOGIN_ERROR_MESSAGE));
-            nextPage = ConfigurationManager.getProperty(ERROR_PAGE);
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(ERROR_MESSAGE_LOGIN, visitor.getLocale()));
+            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
         return nextPage;
     }

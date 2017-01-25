@@ -11,11 +11,11 @@ main nav li {
     height: 40px;
 }
 
-section.active {
+section.active-section {
     display: block;
 }
 
-section.inactive {
+section.inactive-section {
     display: none;
 }
 
@@ -37,5 +37,6 @@ form {
 
 footer {
     display: block;
+    bottom: 0;
     margin-bottom: 0;
 }

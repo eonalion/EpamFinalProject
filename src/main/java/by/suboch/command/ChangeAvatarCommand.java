@@ -1,6 +1,7 @@
 package by.suboch.command;
 
 import by.suboch.entity.Account;
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
@@ -12,28 +13,28 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 import java.io.IOException;
 
-import static by.suboch.command.CommandConstants.ACCOUNT_ATTR;
-import static by.suboch.command.CommandConstants.AVATAR_PARAM;
-import static by.suboch.command.CommandConstants.MESSAGE_ATTR;
+import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
  *
  */
 public class ChangeAvatarCommand implements IServletCommand {
-    private static final String SETTINGS_PAGE = "path.page.settings";
-    private static final String ERROR_PAGE = "path.page.error";
-    private static final String CHANGE_AVATAR_ERROR_MESSAGE = "message.error.changeAvatar";
+    private static final String MESSAGE_ERROR_CHANGE_AVATAR = "message.error.changeAvatar";
+    static final String PARAM_AVATAR = "avatar";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+
         int fileSize;
         byte [] avatar = null;
-        String nextPage = null;
-        Account account = (Account) request.getSession().getAttribute(ACCOUNT_ATTR);
+        String nextPage;
+        Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
         AccountLogic logic = new AccountLogic();
 
         try {
-            Part imagePart = request.getPart(AVATAR_PARAM);
+            Part imagePart = request.getPart(PARAM_AVATAR);
             fileSize = (int)imagePart.getSize();
             if (fileSize != 0) {
                 avatar = new byte[fileSize];
@@ -46,15 +47,14 @@ public class ChangeAvatarCommand implements IServletCommand {
         try {
             if(logic.changeAvatar(account.getAccountId(), avatar)) {
                 account.setAvatar(avatar);
-                request.getSession().setAttribute(ACCOUNT_ATTR, account);
-                nextPage = ConfigurationManager.getProperty(SETTINGS_PAGE);
             } else {
                 //TODO: Set message;
             }
+            nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
             //TODO: Handle exception;
-            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(CHANGE_AVATAR_ERROR_MESSAGE));
-            nextPage = ConfigurationManager.getProperty(ERROR_PAGE);
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_ERROR_CHANGE_AVATAR, visitor.getLocale()));
+            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 
         return nextPage;

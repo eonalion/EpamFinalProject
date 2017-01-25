@@ -17,11 +17,11 @@ nav li:hover {
     color: white;
 }
 
-section.active {
+section.active-section {
     display: block;
 }
 
-section.inactive {
+section.inactive-section {
     display: none;
 }
 

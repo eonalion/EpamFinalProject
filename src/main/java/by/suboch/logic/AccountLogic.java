@@ -17,8 +17,16 @@ import java.time.temporal.ValueRange;
  *
  */
 
-public class AccountLogic {//TODO: ROMAN!!!Connection.
+public class AccountLogic {
     private static final Logger LOG = LogManager.getLogger();
+
+    /*public enum ActionResult {
+        SUCCESS {
+        },
+        FAILURE {
+
+        };
+    }*/
 
     public AccountLogic() {
     }
@@ -27,7 +35,7 @@ public class AccountLogic {//TODO: ROMAN!!!Connection.
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             if (AccountValidator.validateRegistration(login, email, password, passwordConfirm) &&
-                    accountDAO.checkLoginUniqueness(login) &&//TODO: ROMAN!!!return something more useful.
+                    accountDAO.checkLoginUniqueness(login) &&//TODO: return something more useful.
                     accountDAO.checkEmailUniqueness(email)) {
                 accountDAO.registerAccount(firstName, lastName, login, email, password);
                 return true;
@@ -129,48 +137,12 @@ public class AccountLogic {//TODO: ROMAN!!!Connection.
         }
     }
 
-   /* //FIXME:
-    public boolean editAccount(int accountId, String firstName, String secondName, String login, String email, byte[] avatar, String oldPassword, String newPassword, String newPasswordConfirm) throws LogicException {
-        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
-            AccountDAO accountDAO = new AccountDAO(connection);
-            if (AccountValidator.validateLogin(login) &&
-                    AccountValidator.validateEmail(email) &&
-                    AccountValidator.validatePassword(oldPassword) &&
-                    AccountValidator.validatePassword(newPassword) &&
-                    AccountValidator.checkPasswordsMatch(newPassword, newPasswordConfirm) &&
-                    accountDAO.checkPassword(accountId, oldPassword) &&
-                    accountDAO.checkEmailUniqueness(accountId, email) &&
-                    accountDAO.checkLoginUniqueness(accountId, login)) {
-                accountDAO.updateAccountByAccountId(accountId, firstName, secondName, login, email, avatar, newPassword);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException | DAOException e) {
-            throw new LogicException("Problems with changing account info.", e);
-        }
-    }*/
-
     public boolean isAdmin(String authorizationName) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             return accountDAO.checkAdminRights(authorizationName);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while admin rights check in logic.", e);
-        }
-    }
-
-    public boolean createBonus(String price, String discount) throws LogicException {
-        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
-            AccountDAO accountDAO = new AccountDAO(connection);
-            if (accountDAO.checkBonus(price)) {
-                accountDAO.createBonus(price, discount);
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException | DAOException e) {
-            throw new LogicException("Error while creating bonus in logic.", e);
         }
     }
 }

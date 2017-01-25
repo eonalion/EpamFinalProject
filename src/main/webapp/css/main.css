@@ -1,5 +1,33 @@
 @import "default.css";
 
+
+ul.pagination {
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+}
+
+ul.pagination li {
+    display: inline;
+}
+
+ul.pagination li a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+}
+
+ul.pagination li a.active {
+    background-color: rgba(68, 88, 131, 0.2);
+    color: white;
+}
+
+ul.pagination li a:hover:not(.active) {
+    background-color: #010007;
+}
+
+
 .section-lead {
     font-size: 1.2em;
     margin-bottom: 20px;
@@ -29,7 +57,8 @@
     color: white;
 }
 
-.caption h4,h5 {
+.caption h4, h5 {
+    align-content: center;
     margin: 0;
 }
 
@@ -45,7 +74,7 @@
 }
 
 @media (max-width: 768px) {
-    .thumbnail{
+    .thumbnail {
         position: inherit;
         margin: auto;
     }

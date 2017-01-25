@@ -15,8 +15,8 @@ public class ArtistLogic {
     public boolean addArtist(String name, String country, String careerStart, String careerEnd, String description) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             ArtistDAO artistDAO = new ArtistDAO(connection);
-            if (artistDAO.checkArtist(name, country, careerStart, careerEnd)) {
-                artistDAO.addNewArtist(name, country, careerStart, careerEnd, description);
+            if (artistDAO.checkArtist(name, country)) {
+                artistDAO.addNewArtist(name, country, description);
                 return true;
             } else {
                 return false;

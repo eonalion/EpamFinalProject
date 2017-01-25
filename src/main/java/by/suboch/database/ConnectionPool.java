@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -18,42 +17,46 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ConnectionPool {
     private static final Logger LOG = LogManager.getLogger();
-    private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle("properties.database");
-    private static final String URL = RESOURCE_BUNDLE.getString("db.url");
-    private static final String DRIVER = RESOURCE_BUNDLE.getString("db.driver");
-    private static final String LOGIN = RESOURCE_BUNDLE.getString("db.login");
-    private static final String PASSWORD = RESOURCE_BUNDLE.getString("db.password");
-    private int poolSize = Integer.parseInt(RESOURCE_BUNDLE.getString("db.poolsize"));
 
-    private static Lock connectionPoolLock = new ReentrantLock();
-    private static Lock connectionActionLock = new ReentrantLock();//TODO: ROMAN!!! Use boolean flag instead. Call me may be.
     private static AtomicBoolean poolInstanceCreated = new AtomicBoolean(false);
     private static AtomicBoolean poolClosed = new AtomicBoolean(false);
+    private static Lock connectionPoolLock = new ReentrantLock(true);
+    private static Lock closePoolLock = new ReentrantLock(true);
+    private static int connectionAmount = 0;
 
     private BlockingQueue<ProxyConnection> freeConnections;
     private BlockingQueue<ProxyConnection> takenConnections;
 
+    private static DatabaseInitializer dbInitializer;
     private static ConnectionPool poolInstance;
 
     private ConnectionPool() {
-        freeConnections = new ArrayBlockingQueue<>(poolSize);
-        takenConnections = new ArrayBlockingQueue<>(poolSize);
+        dbInitializer = new DatabaseInitializer();
+        freeConnections = new ArrayBlockingQueue<>(dbInitializer.POOL_SIZE);
+        takenConnections = new ArrayBlockingQueue<>(dbInitializer.POOL_SIZE);
 
         try {
-            Class.forName(DRIVER).newInstance();
+            Class.forName(dbInitializer.DRIVER).newInstance();
         } catch (IllegalAccessException | InstantiationException | ClassNotFoundException e) {
             LOG.fatal("Error while initializing database driver.", e);
             throw new RuntimeException(e);
         }
 
-        try {
-            for (int i = 0; i < poolSize; i++) {
-                Connection connection = DriverManager.getConnection(URL, LOGIN, PASSWORD);
+        for (int i = 0; i < dbInitializer.POOL_SIZE; i++) {
+            try {
+                Connection connection = DriverManager.getConnection(dbInitializer.URL, dbInitializer.LOGIN, dbInitializer.PASSWORD);
                 freeConnections.put(new ProxyConnection(connection));
+                ++connectionAmount;
+                LOG.info("Get connection " + i + ".");
+            } catch (SQLException | InterruptedException e) {
+                LOG.error("Can't get connection " + i + ".", e);
             }
-        } catch (SQLException | InterruptedException e) {//TODO: ROMAN!!! See html.
-            LOG.error("Error while getting new connection.", e);
         }
+        if (connectionAmount < 1) {
+            LOG.fatal("Can't initialize connections. No connections are available.");
+            throw new RuntimeException("Error while initializing connections. No connections are available.");
+        }
+        LOG.info(connectionAmount+ " connections where taken.");
     }
 
     public static ConnectionPool getInstance() {
@@ -71,49 +74,49 @@ public class ConnectionPool {
         return poolInstance;
     }
 
-    public ProxyConnection getConnection() {
-        connectionActionLock.lock();
-        ProxyConnection connection = null;
-
-        if(poolClosed.get()) {
-            return connection;
+    public Connection getConnection() {
+        Connection connection = null;
+        if (!poolClosed.get()) {
+            closePoolLock.lock();
+            if (!poolClosed.get()) {
+                try {
+                    connection = freeConnections.take();
+                    takenConnections.put((ProxyConnection) connection);
+                } catch (InterruptedException e) {
+                    LOG.error("Can't take connection from available connections.", e);
+                } finally {
+                    closePoolLock.unlock();
+                }
+            }
         }
-
-        try {
-            connection = freeConnections.take();
-            takenConnections.put(connection);
-        } catch (InterruptedException e) {
-            LOG.error("Error while getting connection from pool.", e);
-        } finally {
-            connectionActionLock.unlock();
-        }
-
         return connection;
     }
 
-    public void freeConnection(ProxyConnection connection) {
+    void freeConnection(ProxyConnection connection) {
         takenConnections.remove(connection);
         try {
             freeConnections.put(connection);
         } catch (InterruptedException e) {
-            LOG.error("Error while returning connection to pool.", e);
+            LOG.error("Can't free connection.", e);
         }
     }
 
     public void closePool() {
-        connectionActionLock.lock();
-        try {
-            poolClosed.set(true);
-            for (int i = 0; i < poolSize; i++) {
-                freeConnections.take().finalClose();
+        if (!poolClosed.get()) {
+            closePoolLock.lock();
+            try {
+                if (!poolClosed.get()) {
+                    poolClosed.set(true);
+                    for (int i = 0; i < connectionAmount; ++i) {
+                        freeConnections.take().finalClose();
+                        LOG.info("Close connection " + i + ".");
+                    }
+                }
+            } catch (SQLException | InterruptedException e) {
+                LOG.error("Can't close connection pool.", e);
+            } finally {
+                closePoolLock.unlock();
             }
-//            for (int i = 0; i < takenConnections.size(); i++) {
-//                takenConnections.take().finalClose();
-//            }
-        } catch (SQLException | InterruptedException e) {
-            LOG.error("Error while closing pool.", e);
-        } finally {
-            connectionActionLock.unlock();
         }
     }
 }

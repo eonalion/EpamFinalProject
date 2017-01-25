@@ -13,19 +13,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Locale;
 
+import by.suboch.entity.Visitor;
 import by.suboch.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.suboch.command.CommandConstants.CURRENT_PAGE_ATTR;
-import static by.suboch.command.CommandConstants.LOCALE_ATTR;
-import static by.suboch.command.CommandConstants.VISITOR_ROLE_ATTR;
+import static by.suboch.command.CommandConstants.ATTR_CURRENT_PAGE;
+import static by.suboch.command.CommandConstants.ATTR_LOCALE;
+import static by.suboch.command.CommandConstants.ATTR_VISITOR_ROLE;
+import static by.suboch.controller.ControllerConstants.CONTROLLER_CONFIG_KEY;
 
 /**
  *
  */
 
-@WebServlet("/s")
+@WebServlet(urlPatterns = "/s", name = "Controller")
 @MultipartConfig
 public class Controller extends HttpServlet {
     private static final Logger LOG = LogManager.getLogger();
@@ -42,12 +44,12 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        process(request, response);
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        processRequest(request, response);
+        process(request, response);
     }
 
     @Override
@@ -56,35 +58,27 @@ public class Controller extends HttpServlet {
         ConnectionPool.getInstance().closePool();
     }
 
-    private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        setDefaultAttributes(request);
+    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        ControllerConfig servletConfig = (ControllerConfig) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
         CommandManager client = new CommandManager();
-        IServletCommand command = client.defineCommand(request, response);
+        IServletCommand command = client.defineCommand(servletConfig.getCommand());
 
-        if (!(command instanceof EmptyCommand)) {
-            String page = command.execute(request, response);
-            request.getSession().setAttribute(CURRENT_PAGE_ATTR, page);
-            request.getRequestDispatcher(page).forward(request, response);
-            //TODO: Handle warn message.
-            //FIXME: If we are on error page how to define where to return?
-        } else {
-            // Illegal action
-            // TODO: Clear session.
-            request.getRequestDispatcher(ConfigurationManager.getProperty(ERROR_PAGE)).forward(request, response);
+       /* if (servletConfig.getState() == ControllerConfig.State.SKIPPED) {
+            return;
+        }*/
+        //Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
+        String nextPage = command.execute(request, response);
+
+        switch (servletConfig.getState()) {
+            case FORWARD:
+                request.getRequestDispatcher(nextPage).forward(request, response);
+                break;
+            case REDIRECT:
+                response.sendRedirect(nextPage);
+                break;
+            case AJAX:
+                response.getWriter().write(nextPage);
+                break;
         }
     }
-
-    private void setDefaultAttributes(HttpServletRequest request) {//TODO: ROMAN!!!FILTER   .
-        // FIXME: If role is not null other attrs are set?
-        if (request.getSession().getAttribute(VISITOR_ROLE_ATTR) == null) {
-            request.getSession().setAttribute(VISITOR_ROLE_ATTR, VisitorRole.GUEST.toString());
-        }
-        if (request.getSession().getAttribute(LOCALE_ATTR) == null) {
-            request.getSession().setAttribute(LOCALE_ATTR, DEFAULT_LOCALE);
-        }
-        if (request.getSession().getAttribute(CURRENT_PAGE_ATTR) == null) {
-            request.getSession().setAttribute(CURRENT_PAGE_ATTR, ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE));
-        }
-    }
-
 }

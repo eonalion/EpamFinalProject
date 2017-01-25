@@ -1,6 +1,7 @@
 package by.suboch.command;
 
 import by.suboch.entity.Account;
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
@@ -10,34 +11,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
  *
  */
 public class ChangePasswordCommand implements IServletCommand {
-    private static final String SETTINGS_PAGE = "path.page.settings";
-    private static final String ERROR_PAGE = "path.page.error";
+    private static final String PARAM_OLD_PASSWORD = "oldPassword";
+    private static final String PARAM_NEW_PASSWORD = "newPassword";
+    private static final String PARAM_NEW_PASSWORD_CONFIRM = "newPasswordConfirm";
 
     private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changeName";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String oldPassword = request.getParameter(OLD_PASSWORD_PARAM);
-        String newPassword = request.getParameter(NEW_PASSWORD_PARAM);
-        String newPasswordConfirm = request.getParameter(NEW_PASSWORD_CONFIRM_PARAM);
-        Account account = (Account) request.getSession().getAttribute(ACCOUNT_ATTR);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+        String oldPassword = request.getParameter(PARAM_OLD_PASSWORD);
+        String newPassword = request.getParameter(PARAM_NEW_PASSWORD);
+        String newPasswordConfirm = request.getParameter(PARAM_NEW_PASSWORD_CONFIRM);
+        Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
         String nextPage;
         try {
-            nextPage = ConfigurationManager.getProperty(SETTINGS_PAGE);
             AccountLogic logic = new AccountLogic();
             if (logic.changePassword(account.getAccountId(), oldPassword, newPassword, newPasswordConfirm)) {
                 //TODO: Set message.
             } else {
                 //TODO: Set message.
             }
+            nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
-            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE));
-            nextPage = ConfigurationManager.getProperty(ERROR_PAGE);
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE, visitor.getLocale()));
+            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 
         return nextPage;

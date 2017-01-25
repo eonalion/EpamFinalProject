@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
-<fmt:setLocale value="${locale}" scope="session"/>
+<fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
 <nav class="navbar navbar-inverse navbar-fixed-top complex-navbar">
@@ -13,14 +13,14 @@
             <a class="navbar-brand" href="#"><fmt:message key="nav.website"/></a>
         </div>
         <ul class="nav navbar-nav">
-            <li><a class="nav-menu-item nav-menu-item-active" href="/s?command=forward&forward_action=main"><fmt:message
+            <li><a class="nav-menu-item nav-menu-item-active" href="/jsp/user/main.jsp"><fmt:message
                     key="nav.home"/></a>
             </li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/s?command=forward&forward_action=catalog"><fmt:message key="nav.catalog"/></a></li>
+                   href="/jsp/user/catalog.jsp"><fmt:message key="nav.catalog"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-            <li><a class="nav-menu-item nav-menu-item-inactive" href="/s?command=forward&forward_action=cart"></span>
+            <li><a class="nav-menu-item nav-menu-item-inactive" href="/jsp/user/cart.jsp"></span>
                 <fmt:message key="nav.cart"/></a>
             </li>
             <li class="dropdown"><a class="avatar-a dropdown-toggle nav-menu-item nav-menu-item-inactive"
@@ -36,9 +36,9 @@
                 </c:choose>
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/s?command=forward&forward_action=settings"><fmt:message
+                    <li><a href="/jsp/user/catalog.jsp"><fmt:message
                             key="nav.account.settings"/></a></li>
-                    <li><a href="/s?command=forward&forward_action=purchases"><fmt:message
+                    <li><a href="/jsp/user/purchases.jsp"><fmt:message
                             key="nav.account.purchases"/></a></li>
                     <li><a href="/s?command=log_out"><fmt:message key="nav.account.logout"/></a></li>
                 </ul>

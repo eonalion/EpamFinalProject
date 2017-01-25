@@ -1,7 +1,5 @@
 package by.suboch.entity;
 
-import by.suboch.command.VisitorRole;
-
 import java.util.Objects;
 
 /**
@@ -16,7 +14,7 @@ public class Account {
     private String password;
     private String email;
     private byte[] avatar;
-    private VisitorRole role;
+    private Visitor.Role role;
 
     public Account() {
     }
@@ -100,11 +98,11 @@ public class Account {
         this.avatar = avatar;
     }
 
-    public VisitorRole getRole() {
+    public Visitor.Role getRole() {
         return role;
     }
 
-    public void setRole(VisitorRole role) {
+    public void setRole(Visitor.Role role) {
         this.role = role;
     }
 }

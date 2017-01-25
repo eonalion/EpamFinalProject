@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
-<fmt:setLocale value="${locale}" scope="session"/>
+<fmt:setLocale value="${lvisitor.ocale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 <html>
 <head>
@@ -27,11 +27,11 @@
 <body>
 
 <c:choose>
-    <c:when test="${role eq 'ADMIN'}">
-        <jsp:include page="../admin/admin_navigation.jsp"/>
+    <c:when test="${visitor.role eq 'ADMIN'}">
+        <jsp:include page="../../WEB-INF/jspf/admin_navigation.jsp"/>
     </c:when>
     <c:otherwise>
-        <jsp:include page="../user/user_navigation.jsp"/>
+        <jsp:include page="../../WEB-INF/jspf/user_navigation.jsp"/>
     </c:otherwise>
 </c:choose>
 
@@ -39,16 +39,16 @@
     <div class="row">
         <nav class="col-md-12">
             <ul>
-                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('profile-settings', event)">
+                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('profile-settings', this)">
                     <fmt:message key="settings.changeProfile"/></li>
-                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('account-settings', event)">
+                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('account-settings', this)">
                     <fmt:message key="settings.changeAccount"/></li>
             </ul>
         </nav>
     </div>
 
     <div class="row">
-        <section id="profile-settings" class="active col-md-12">
+        <section id="profile-settings" class="active-section col-md-12">
             <h2><fmt:message key="settings.text.picture"/></h2>
             <div class="row">
                 <c:choose>
@@ -101,7 +101,7 @@
             </form>
         </section>
 
-        <section id="account-settings" class="inactive form col-md-12">
+        <section id="account-settings" class="inactive-section form col-md-12">
             <h2><fmt:message key="settings.text.email"/></h2>
             <form method="post" action="/s">
                 <div class="row">

@@ -1,5 +1,7 @@
 package by.suboch.command;
 
+import by.suboch.entity.Visitor;
+
 import java.util.EnumSet;
 import java.util.Set;
 
@@ -10,78 +12,84 @@ public enum CommandType {
     LOG_IN {
         {
             this.command = new LogInCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.GUEST);
+            this.role = EnumSet.of(Visitor.Role.GUEST);
         }
     },
     REGISTER {
         {
             this.command = new RegisterCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.GUEST);
+            this.role = EnumSet.of(Visitor.Role.GUEST);
         }
     },
     CHANGE_LANGUAGE {
         {
             this.command = new ChangeLocaleCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER, VisitorRole.GUEST);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER, Visitor.Role.GUEST);
         }
     },
     ADD_BONUS {
         {
             this.command = new AddBonusCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
+            this.role = EnumSet.of(Visitor.Role.ADMIN);
         }
     },
     ADD_ARTIST {
         {
             this.command = new AddArtistCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN);
+            this.role = EnumSet.of(Visitor.Role.ADMIN);
         }
     },
-    FORWARD {
+    ADD_ALBUM {
         {
-            this.command = new ForwardCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER, VisitorRole.GUEST);
+            this.command = new AddAlbumCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN);
+        }
+    },
+    ADD_TO_CART {
+        {
+            this.command = new AddToCartCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
     CHANGE_PERSONAL_INFO {
         {
             this.command = new ChangePersonalInfoCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
     CHANGE_LOGIN {
         {
             this.command = new ChangeLoginCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
-    CHANGE_EMAIL{
+    CHANGE_EMAIL {
         {
             this.command = new ChangeEmailCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
-    CHANGE_PASSWORD{
+    CHANGE_PASSWORD {
         {
             this.command = new ChangePasswordCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
     CHANGE_AVATAR {
         {
             this.command = new ChangeAvatarCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
     LOG_OUT {
         {
             this.command = new LogOutCommand();
-            this.visitorRole = EnumSet.of(VisitorRole.ADMIN, VisitorRole.USER);
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     };
 
     public IServletCommand command;
-    public Set<VisitorRole> visitorRole;
+    public Set<Visitor.Role> role;
 
     public IServletCommand getCurrentCommand() {
         return command;

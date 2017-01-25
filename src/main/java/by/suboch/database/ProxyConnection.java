@@ -8,7 +8,8 @@ import java.util.concurrent.Executor;
 /**
  *
  */
-class ProxyConnection implements Connection {//TODO: ROMAN!!! package private.
+class ProxyConnection implements Connection {
+
     private Connection connection;
 
     ProxyConnection(Connection connection) {

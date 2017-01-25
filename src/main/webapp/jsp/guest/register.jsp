@@ -3,7 +3,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${locale}" scope="session"/>
+<fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
 <!DOCTYPE html>
@@ -22,7 +22,10 @@
     <link rel="stylesheet" type="text/css" href="../../css/register.css">
     <%-- JS libraries --%>
     <script src="../../js/classie.js"></script>
+    <script src="../../js/jquery-3.1.1.min.js"></script>
+    <script src="../../js/jquery.form.min.js"></script>
     <%-- Custom JS --%>
+    <script src="../../js/registration_login.js"></script>
     <script src="../../js/script.js"></script>
 </head>
 <body>
@@ -30,9 +33,9 @@
     <div class="row">
         <nav class="col-md-6">
             <ul>
-                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('register', event)"><fmt:message
+                <li class="nav-menu-item nav-menu-item-active" onclick="showForm('register-section', this)"><fmt:message
                         key="registration.label"/></li>
-                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('log-in', event)"><fmt:message
+                <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('log-in-section', this)"><fmt:message
                         key="login.label"/></li>
             </ul>
         </nav>
@@ -42,35 +45,35 @@
     </div>
 <%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
     <div class="row">
-        <section id="register" class="active form col-md-6">
+        <section id="register-section" class="active-section col-md-6">
             <p>Welcome!</p>
-            <form name="registration" method="post" action="/s">
+            <form name="registration" id="registration" method="post" action="/s">
                 <div class="row">
                     <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
-                           required>
+                           >
                 </div>
                 <div class="row">
                     <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>"
-                           required>
+                           >
                 </div>
                 <div class="row">
                     <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>"
                            maxlength="40"
-                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$" required>
+                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$" >
                 </div>
                 <div class="row">
                     <input type="password" name="password" placeholder="<fmt:message key="registration.form.password"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" >
                 </div>
                 <div class="row">
                     <input type="password" name="passwordConfirm"
                            placeholder="<fmt:message key="registration.form.confirmPassword"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" >
                 </div>
                 <div class="row">
                     <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>"
                            pattern="^.+@.+[.].+$"
-                           required>
+                           >
                 </div>
                 <div class="row">
                     <div class="input-wrap">
@@ -86,8 +89,8 @@
                 </div>
             </form>
         </section>
-        <section id="log-in" class="inactive form col-md-6">
-            <form name="login" method="post" action="/s">
+        <section id="log-in-section" class="inactive-section col-md-6">
+            <form name="login" id="log-in" method="post" action="/s">
                 <div class="row">
                     <input type="text" name="authorizationName" placeholder="<fmt:message key="login.form.authName"/>"
                            required>
@@ -114,14 +117,17 @@
         </select>
         <button type="submit" name="command" value="change_language"><fmt:message key="label.language"/></button>
     </form>
-</main>
 
+    <audio controls>
+        <source src="file://media/win_d/im/EPAM/project/EpamFinalProject/src/main/webapp/images/1.mp3" type="audio/mp3">
+    </audio>
+</main>
 <%--<jsp:include page="footer.jspf">
 <jsp:param name="locale" value="${locale}}"/>
 </jsp:include>--%>
 
-<%-- JS --%>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<%-- JS --%><%--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>--%>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <%-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --%>
 <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>

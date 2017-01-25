@@ -1,6 +1,7 @@
 package by.suboch.command;
 
 import by.suboch.entity.Account;
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
@@ -10,28 +11,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
  *
  */
 public class ChangeLoginCommand implements IServletCommand {
-    private static final String SETTINGS_PAGE = "path.page.settings";
-    private static final String ERROR_PAGE = "path.page.error";
+
+    private static final String PARAM_LOGIN = "login";
 
     private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changeName";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String login = request.getParameter(LOGIN_PARAM);
-        Account account = (Account) request.getSession().getAttribute(ACCOUNT_ATTR);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+        String login = request.getParameter(PARAM_LOGIN);
+        Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
         String nextPage;
         try {
-            nextPage = ConfigurationManager.getProperty(SETTINGS_PAGE);
             if (!login.equals(account.getLogin())) {
                 AccountLogic logic = new AccountLogic();
                 if (logic.changeLogin(account.getAccountId(), login)) {
                     account.setLogin(login);
-                    request.getSession().setAttribute(ACCOUNT_ATTR, account);
                     //TODO: Set message.
                 } else {
                     //TODO: Set message.
@@ -39,9 +40,10 @@ public class ChangeLoginCommand implements IServletCommand {
             } else {
                 //TODO: Set message.
             }
+            nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
-            request.getSession().setAttribute(MESSAGE_ATTR, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE));
-            nextPage = ConfigurationManager.getProperty(ERROR_PAGE);
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE, visitor.getLocale()));
+            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 
         return nextPage;

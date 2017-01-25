@@ -12,7 +12,7 @@
 <body>
 <div class="container">
     <h1>Error!</h1>
-    <p>${sessionScope.message}</p>
+    <p>${message}</p>
     <%--<p><c:out value="${sessionScope.message}"/></p>--%>
 </div>
 </body>
