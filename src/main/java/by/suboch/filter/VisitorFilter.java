@@ -1,6 +1,5 @@
 package by.suboch.filter;
 
-import by.suboch.command.CommandConstants;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.manager.ConfigurationManager;

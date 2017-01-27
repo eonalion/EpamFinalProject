@@ -80,7 +80,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_admin" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_admin" onclick=""><fmt:message
                             key="main.addNew.addAdmin"/></button>
                 </div>
             </form>
@@ -104,7 +104,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_track" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_track" onclick=""><fmt:message
                             key="main.addNew.addTrack"/></button>
                 </div>
             </form>
@@ -124,7 +124,7 @@
                            placeholder="<fmt:message key="main.addNew.form.description"/>" >
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_artist" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_artist" onclick=""><fmt:message
                             key="main.addNew.addArtist"/></button>
                 </div>
             </form>
@@ -140,7 +140,7 @@
                            placeholder="<fmt:message key="main.addNew.form.releaseDate"/>" >
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_album" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_album" onclick=""><fmt:message
                             key="main.addNew.addAlbum"/></button>
                 </div>
             </form>
@@ -152,7 +152,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_genre" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_genre" onclick=""><fmt:message
                             key="main.addNew.addGenre"/></button>
                 </div>
             </form>
@@ -168,7 +168,7 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="add_bonus" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="add_bonus" onclick=""><fmt:message
                             key="main.addNew.addBonus"/></button>
                 </div>
             </form>

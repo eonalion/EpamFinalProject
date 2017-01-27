@@ -26,13 +26,33 @@ ul {
     margin: 0
 }
 
-button, .input-file-container {
+.btn-custom, .input-file-container {
     background-color: transparent;
     border: 1px solid rgba(255, 255, 255, 0.3);
     font-size: 1.1em;
     padding: 5px 20px;
     cursor: pointer;
     margin: 10px 0;
+}
+
+.btn-play {
+    width: 40px;
+    height: 40px;
+    background: 10px url("../images/play_btn.png") no-repeat;
+    background-size: 60%;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    opacity: 0.5;
+    padding: 5px;
+}
+
+.btn-play:hover {
+    opacity: 1;
+    border: 1px solid rgba(255, 255, 255, 0.7);
+}
+
+.btn-play:active {
+    background-image: url("../images/stop_btn.png");
 }
 
 input {
@@ -45,7 +65,7 @@ input {
     width: 50%;
 }
 
-button:hover {
+.btn-custom:hover {
     color: white;
     border: 1px solid rgba(255, 255, 255, 0.5);
 }

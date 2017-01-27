@@ -26,10 +26,9 @@ public class UserAccessFilter implements Filter {
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
         if (visitor.getRole() == Visitor.Role.GUEST) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-           // response.sendRedirect(ConfigurationManager.getProperty(PAGE_INDEX));
-            return;
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

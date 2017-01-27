@@ -10,15 +10,18 @@ public class CommandConstants {
     static final String PAGE_ERROR = "path.page.error";
     static final String PAGE_REGISTRATION = "path.page.registration";
     static final String PAGE_SETTINGS = "path.page.settings";
-    static final String USER_MAIN_PAGE = "path.page.mainUser";
+    static final String PAGE_USER_MAIN = "path.page.mainUser";
+    static final String RESOURCE_AUDIO = "path.resource.audiotracks";
 
-    static final String PARAM_FORWARD_ACTION = "forward_action";
-
-    public static final String ATTR_LOCALE = "locale";
     public static final String ATTR_ACCOUNT = "account";
-    public static final String ATTR_VISITOR_ROLE = "role";
-    public static final String ATTR_CURRENT_PAGE = "currentPage";
     public static final String ATTR_MESSAGE = "message";
-
     public static final String ATTR_TRACK_LIST = "trackList";
+    public static final String ATTR_TRACKS_PER_PAGE = "tracksPerPage";
+    public static final String ATTR_PAGE_AMOUNT = "pageAmount";
+    public static final int TRACKS_PER_PAGE = 2;
+    public static final int PAGES_AMOUNT = 5;
+
+    public static final String MIME_TYPE_APPLICATION_JSON = "application/json";
+    public static final String MIME_TYPE_IMAGE_JPG = "image/jpeg";
+    public static final String MIME_TYPE_AUDIO_MP3 = "audio/mpeg";
 }

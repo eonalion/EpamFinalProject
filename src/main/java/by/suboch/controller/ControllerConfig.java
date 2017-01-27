@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class ControllerConfig implements Serializable {
     //TODO: hashCode, equals, toString.
 
-    public enum State {FORWARD, REDIRECT, AJAX}
+    public enum State {FORWARD, REDIRECT, AJAX, RESPONSE}
     private ControllerConfig.State state;
     private String command;
 

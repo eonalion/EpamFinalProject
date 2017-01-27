@@ -37,16 +37,12 @@ public class ControllerFilter implements Filter {
             //FIXME: Duplicate code.
             if (!currentType.role.contains(currentRole)) {
                 response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                // controllerConfig.setState(ControllerConfig.State.SKIPPED);
-                return;
+            } else {
+                filterChain.doFilter(servletRequest, servletResponse);
             }
         } catch (IllegalArgumentException e) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            //controllerConfig.setState(ControllerConfig.State.SKIPPED);
-            return;
         }
-
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     private ControllerConfig initConfig(HttpServletRequest request) throws IOException {

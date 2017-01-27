@@ -1,6 +1,6 @@
 <%--
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
@@ -11,22 +11,15 @@
 <head>
     <title><fmt:message key="authorization.title"/></title>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <%-- icon --%>
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
-    <%-- CSS libraries --%>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <%-- Custom CSS --%>
+    <%-- CSS --%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../../css/register.css">
-    <%-- JS libraries --%>
-    <script src="../../js/classie.js"></script>
-    <script src="../../js/jquery-3.1.1.min.js"></script>
-    <script src="../../js/jquery.form.min.js"></script>
-    <%-- Custom JS --%>
-    <script src="../../js/registration_login.js"></script>
-    <script src="../../js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap3_player.css">
 </head>
 <body>
 <main class="container">
@@ -43,37 +36,38 @@
             <h3><fmt:message key="authorization.section.header"/></h3>
         </section>
     </div>
-<%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
+    <%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
     <div class="row">
         <section id="register-section" class="active-section col-md-6">
             <p>Welcome!</p>
             <form name="registration" id="registration" method="post" action="/s">
                 <div class="row">
                     <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
-                           >
+                    >
+                    <p>fdhgk</p>
                 </div>
                 <div class="row">
                     <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>"
-                           >
+                    >
                 </div>
                 <div class="row">
                     <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>"
                            maxlength="40"
-                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$" >
+                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$">
                 </div>
                 <div class="row">
                     <input type="password" name="password" placeholder="<fmt:message key="registration.form.password"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" >
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$">
                 </div>
                 <div class="row">
                     <input type="password" name="passwordConfirm"
                            placeholder="<fmt:message key="registration.form.confirmPassword"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" >
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$">
                 </div>
                 <div class="row">
                     <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>"
                            pattern="^.+@.+[.].+$"
-                           >
+                    >
                 </div>
                 <div class="row">
                     <div class="input-wrap">
@@ -84,7 +78,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="register" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="register" onclick=""><fmt:message
                             key="registration.label"/></button>
                 </div>
             </form>
@@ -100,7 +94,8 @@
                            required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="log_in"><fmt:message key="login.label"/></button>
+                    <button class="btn-custom" type="submit" name="command" value="log_in"><fmt:message
+                            key="login.label"/></button>
                 </div>
             </form>
         </section>
@@ -110,28 +105,38 @@
             <p><fmt:message key="authorization.section.p3"/></p>
         </section>
     </div>
-    <form action="/s" method="get">
+    <form class="row" action="/s" method="get">
         <select name="locale">
             <option value="en_US">English</option>
             <option value="ru_RU">Русский</option>
         </select>
-        <button type="submit" name="command" value="change_language"><fmt:message key="label.language"/></button>
+        <button class="btn-custom" type="submit" name="command" value="change_language"><fmt:message
+                key="label.language"/></button>
     </form>
 
-    <audio controls>
-        <source src="file://media/win_d/im/EPAM/project/EpamFinalProject/src/main/webapp/images/1.mp3" type="audio/mp3">
-    </audio>
+  <%--  <div class="row">
+        <audio controls
+               data-info-album-art="https://farm9.staticflickr.com/8642/16106988340_058071cdbe_z.jpg"
+               data-info-album-title="8874"
+               data-info-artist="Iain Houston and Felix Gibbons"
+               data-info-title="BeBop Aliens"
+               data-info-label="Independent"
+               data-info-year="2005"
+               data-info-att="Music: Iain Houston and Felix Gibbons."
+               data-info-att-link="https://github.com/iainhouston">
+            <source src="/s?command=load_track&trackId=22&location=a/Artist2_Album3_Track4.mp3" type="audio/mpeg">
+        </audio>
+    </div>--%>
 </main>
-<%--<jsp:include page="footer.jspf">
-<jsp:param name="locale" value="${locale}}"/>
-</jsp:include>--%>
-
-<%-- JS --%><%--
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>--%>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<%-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --%>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<%-- JS libraries --%><%--
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>--%>
+<script src="../../js/jquery-3.1.1.min.js"></script>
+<script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/classie.js"></script>
+<script src="../../js/registration_login.js"></script>
+<script src="../../js/script.js"></script>
+<script src="../../js/bootstrap3_player.js"></script>
 
 </body>
 </html>

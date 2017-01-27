@@ -20,13 +20,14 @@ import java.time.temporal.ValueRange;
 public class AccountLogic {
     private static final Logger LOG = LogManager.getLogger();
 
-    /*public enum ActionResult {
+    public enum ActionResult {
         SUCCESS {
+
         },
         FAILURE {
 
         };
-    }*/
+    }
 
     public AccountLogic() {
     }
@@ -127,6 +128,15 @@ public class AccountLogic {
         }
     }
 
+    public boolean isAdmin(String authorizationName) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            return accountDAO.checkAdminRights(authorizationName);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while admin rights check in logic.", e);
+        }
+    }
+
     public boolean changeAvatar(int accountId, byte[] avatar) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
@@ -137,12 +147,12 @@ public class AccountLogic {
         }
     }
 
-    public boolean isAdmin(String authorizationName) throws LogicException {
+    public byte[] loadImage(int accountId) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            return accountDAO.checkAdminRights(authorizationName);
+            return accountDAO.findImage(accountId);
         } catch (SQLException | DAOException e) {
-            throw new LogicException("Error while admin rights check in logic.", e);
+            throw new LogicException("Error while loading image.", e);
         }
     }
 }

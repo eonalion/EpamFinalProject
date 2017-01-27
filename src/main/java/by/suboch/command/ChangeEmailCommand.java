@@ -19,7 +19,7 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 public class ChangeEmailCommand implements IServletCommand {
 
     private static final String PARAM_EMAIL = "email";
-    private static final String CHANGE_EMAIL_ERROR_MESSAGE = "message.error.changeEmail";
+    private static final String MESSAGE_CHANGE_EMAIL_ERROR = "message.error.changeEmail";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -41,7 +41,7 @@ public class ChangeEmailCommand implements IServletCommand {
             }
             nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_EMAIL_ERROR_MESSAGE, visitor.getLocale()));
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_CHANGE_EMAIL_ERROR, visitor.getLocale()));
             nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 

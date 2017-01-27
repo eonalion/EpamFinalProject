@@ -17,6 +17,8 @@ public class AlbumDAO {
 
     private static final String COLUMN_IMAGE = "image";
 
+    private static final int INDEX_START = 0;
+
     public AlbumDAO(Connection connection) {
         this.connection = connection;
     }
@@ -44,10 +46,11 @@ public class AlbumDAO {
     }
 
     public byte[] findImage(int albumId) throws DAOException {
-        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
+            preparedStatement.setInt(1, albumId);
             ResultSet resultSet = preparedStatement.executeQuery();
             Blob blob = resultSet.getBlob(COLUMN_IMAGE);
-            return blob.getBytes(0, (int) blob.length());
+            return blob.getBytes(INDEX_START, (int) blob.length());
         } catch (SQLException e) {
             throw new DAOException("Error while searching for album image in database.");
         }

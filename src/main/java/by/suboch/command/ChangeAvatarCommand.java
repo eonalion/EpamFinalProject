@@ -26,13 +26,12 @@ public class ChangeAvatarCommand implements IServletCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+        Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
+        AccountLogic logic = new AccountLogic();
+        String nextPage;
 
         int fileSize;
         byte [] avatar = null;
-        String nextPage;
-        Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
-        AccountLogic logic = new AccountLogic();
-
         try {
             Part imagePart = request.getPart(PARAM_AVATAR);
             fileSize = (int)imagePart.getSize();

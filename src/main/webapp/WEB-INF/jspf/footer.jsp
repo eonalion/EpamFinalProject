@@ -4,13 +4,6 @@
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
-
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-</head>
-<body>
 <!-- Footer -->
 <footer>
     <div class="container">
@@ -55,12 +48,3 @@
         </div>
     </div>
 </footer>
-
-
-<%-- JS --%>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<%-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries --%>
-<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-</body>
-</html>

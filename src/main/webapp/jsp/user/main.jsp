@@ -1,6 +1,6 @@
 <%--
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
@@ -10,33 +10,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Home</title>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
+    <%-- icon --%>
     <link rel="shortcut icon" href="../../images/favicon.ico"/>
-    <%-- CSS libraries --%>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <%-- Custom CSS --%>
+    <%-- CSS --%>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="../../css/main.css">
-    <%-- JS libraries --%>
-    <script src="../../js/classie.js"></script>
-    <script src="../../js/jquery-3.1.1.min.js"></script>
-    <%--
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
-        <script src="http://malsup.github.com/jquery.form.js"></script>--%>
-    <script src="../../js/jquery.form.min.js"></script>
-    <script src="../../js/jquery.validate.min.js"></script>
-    <%-- Custom JS --%>
-    <script src="../../js/main.js"></script>
-    <script src="../../js/script.js"></script>
+    <link rel="stylesheet" type="text/css" href="../../css/bootstrap3_player.css">
 </head>
 
-<body><%--
-<!-- Navigation -->
-<c:import url="user_navigation.jsp"/>--%>
+<body>
 
 <c:choose>
     <c:when test="${visitor.role eq 'ADMIN'}">
@@ -72,8 +59,8 @@
             </div>
         </section>
 
-
-        <c:forEach items="${trackList}" var="track">
+        <c:forEach var="track" items="${trackList}">
+            <%-- <c:set var="currentTrack" value="${track}"/>--%>
             <div class="col-md-4 col-sm-6 item">
                 <div class="thumbnail">
                         <%--<img src="/s?......http://placehold.it/300x300" alt="">--%>
@@ -88,8 +75,13 @@
                                 </div>
                                 <div class="col-md-8 col-sm-8">
                                     <form class="add-to-cart" method="post" action="/s">
-                                        <button type="submit" class="add-to-cart-button" name="" value=""><fmt:message key="main.label.addToCart"/></button>
+                                        <button type="submit" class="btn-custom add-to-cart-button" name="" value="">
+                                            <fmt:message key="main.label.addToCart"/></button>
+
                                     </form>
+                                    <button class="btn-custom btn-play"
+                                            onclick='playTrack(${track.trackId}, "${track.location}")'>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -99,21 +91,44 @@
         </c:forEach>
 
         <div class="col-md-12">
-            <ul class="pagination">
-                <li><a href="#">«</a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#">4</a></li>
-                <li><a href="#">»</a></li>
+            <ul class="pagination pagination-sm">
+                <li><a href="/s?command=switch_page&toFirstPage=true&toLastPage=false">«</a></li>
+                <c:forEach var="i" begin="1" end="${pageAmount}">
+                    <li><a href="/s?command=switch_page&pageNumber=${i}&toFirstPage=false&toLastPage=false">${i}</a>
+                    </li>
+                </c:forEach>
+                <li><a href="/s?command=switch_page&toFirstPage=false&toLastPage=true">»</a></li>
             </ul>
         </div>
 
+        <audio id="player" controls
+               data-info-album-art="https://farm9.staticflickr.com/8642/16106988340_058071cdbe_z.jpg"
+               data-info-album-title="${currentTrack.price}"
+               data-info-artist="Iain Houston and Felix Gibbons"
+               data-info-title="${currentTrack.title}"
+               data-info-label="Independent"
+               data-info-year="2005"
+               data-info-att="Music: Iain Houston and Felix Gibbons."
+               data-info-att-link="https://github.com/iainhouston">
+            <source src="" type="audio/mpeg">
+        </audio>
     </div>
 </main>
 
+
 <%-- Footer --%>
 <c:import url="../../WEB-INF/jspf/footer.jsp"/>
+
+<script src="../../js/jquery-3.1.1.min.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
+<script src="../../js/jquery.validate.min.js"></script>
+<script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/classie.js"></script>
+<script src="../../js/script.js"></script>
+<script src="../../js/pagination.js"></script>
+<%--<script src="../../js/main.js"></script>--%>
+<script src="../../js/bootstrap3_player.js"></script>
+<script src="../../js/play_track.js"></script>
 
 </body>
 </html>

@@ -26,12 +26,16 @@ public class AccountDAO {
     private static final String SQL_CHECK_PASSWORD_BY_ACCOUNT_ID = "SELECT `login` FROM `accounts` WHERE `account_id` = ? AND `password` = SHA2(?, 256)";
 
     private static final String SQL_FIND_ACCOUNT_BY_AUTHORIZATION_NAME = "SELECT * FROM `accounts` WHERE (`login` = ? OR `email` = ?)";
+    private static final String SQL_LOAD_IMAGE = "SELECT `image` FROM `accounts` WHERE `account_id` = ?";
 
     private static final String SQL_UPDATE_LOGIN = "UPDATE `accounts` SET `login` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_AVATAR = "UPDATE `accounts` SET `avatar` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_NAME = "UPDATE `accounts` SET `first_name` = ?, `last_name` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_EMAIL = "UPDATE `accounts` SET `email` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_PASSWORD = "UPDATE `accounts` SET `password` = SHA2(?,256) WHERE `account_id` = ?";
+
+
+    private static final int INDEX_START = 0;
 
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_FIRST_NAME = "first_name";
@@ -215,6 +219,17 @@ public class AccountDAO {
             statement.execute();
         } catch (SQLException e) {
             throw new DAOException("Error while updating account password in database.", e);
+        }
+    }
+
+    public byte[] findImage(int accountId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
+            preparedStatement.setInt(1, accountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Blob blob = resultSet.getBlob(COLUMN_AVATAR);
+            return blob.getBytes(INDEX_START, (int) blob.length());
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for artist avatar in database.");
         }
     }
 }

@@ -1,8 +1,10 @@
 package by.suboch.command;
 
+import by.suboch.controller.ControllerConfig;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AlbumLogic;
+import by.suboch.logic.LogicActionResult;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
 
@@ -14,6 +16,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 import static by.suboch.command.CommandConstants.*;
+import static by.suboch.controller.ControllerConstants.CONTROLLER_CONFIG_KEY;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
@@ -29,17 +32,20 @@ public class AddAlbumCommand implements IServletCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
 
         String title = request.getParameter(PARAM_ALBUM_TITLE);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN_DATE);
-        formatter = formatter.withLocale((Locale) request.getSession().getAttribute(ATTR_LOCALE));
+        formatter = formatter.withLocale(visitor.getLocale());
         LocalDate releaseDate = LocalDate.parse(request.getParameter(PARAM_ALBUM_RELEASE_DATE), formatter);
 
         AlbumLogic logic = new AlbumLogic();
 
         String nextPage;
         try {
-            if (logic.addAlbum(title, releaseDate)) {
+            LogicActionResult actionResult = logic.addAlbum(title, releaseDate);
+            if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
+                nextPage = "";//toJson(signUpResult);
                 // TODO: Set success message.
             } else {
                 // TODO: Set warn message(or it's already set?).

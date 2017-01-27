@@ -81,6 +81,24 @@ public enum CommandType {
             this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
+    LOAD_IMAGE {
+        {
+            this.command = new LoadImageCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
+        }
+    },
+    LOAD_TRACK {
+        {
+            this.command = new LoadTrackCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
+        }
+    },
+    SWITCH_PAGE {
+        {
+            this.command = new SwitchPageCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
+        }
+    },
     LOG_OUT {
         {
             this.command = new LogOutCommand();

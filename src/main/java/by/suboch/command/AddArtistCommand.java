@@ -19,8 +19,6 @@ public class AddArtistCommand implements IServletCommand {
 
     private static final String PARAM_ARTIST_NAME = "artistName";
     private static final String PARAM_ARTIST_COUNTRY = "artistCountry";
-    private static final String PARAM_ARTIST_CAREER_START = "artistCareerStart";
-    private static final String PARAM_ARTIST_CAREER_END = "artistCareerEnd";
     private static final String PARAM_ARTIST_DESCRIPTION = "artistDescription";
     private static final String MESSAGE_ERROR_ADD_ARTIST = "message.artist.error";
 
@@ -30,15 +28,13 @@ public class AddArtistCommand implements IServletCommand {
 
         String name = request.getParameter(PARAM_ARTIST_NAME);
         String country = request.getParameter(PARAM_ARTIST_COUNTRY);
-        String careerStart = request.getParameter(PARAM_ARTIST_CAREER_START);
-        String careerEnd = request.getParameter(PARAM_ARTIST_CAREER_END);
         String description = request.getParameter(PARAM_ARTIST_DESCRIPTION);
 
         String nextPage;
 
         ArtistLogic logic = new ArtistLogic();
         try {
-            if (logic.addArtist(name, country, careerStart, careerEnd, description)) {
+            if (logic.addArtist(name, country, description)) {
                 // TODO: Set success message.
             } else {
                 // TODO: Set warn message(or it's already set?).

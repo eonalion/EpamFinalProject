@@ -53,19 +53,28 @@
             <div class="row">
                 <c:choose>
                     <c:when test="${account.avatar != null}">
-                        <img class="avatar" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>
+                        <%--<img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>--%>
+                        <img class="avatar" src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
                     </c:when>
                     <c:otherwise>
                         <img class="avatar" src="../../images/default_avatar.jpg">
                     </c:otherwise>
                 </c:choose>
+            <%--    <c:choose>
+                    <c:when test="${account.avatar != null}">
+                        <img class="avatar" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>
+                    </c:when>
+                    <c:otherwise>
+                        <img class="avatar" src="../../images/default_avatar.jpg">
+                    </c:otherwise>
+                </c:choose>--%>
             </div>
             <form method="post" action="/s" enctype="multipart/form-data">
                 <div class="row">
                     <fmt:message key="settings.file"/> <input type="file" name="avatar"<%--style="display: none;"--%>>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="change_avatar" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="change_avatar" onclick=""><fmt:message
                             key="settings.uploadImage"/></button>
                 </div>
             </form>
@@ -81,7 +90,7 @@
                                                                           value="${account.lastName}">
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="change_personal_info" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="change_personal_info" onclick=""><fmt:message
                             key="settings.changeName"/></button>
                 </div>
             </form>
@@ -95,7 +104,7 @@
                                                                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$">
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="change_login" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="change_login" onclick=""><fmt:message
                             key="settings.changeLogin"/></button>
                 </div>
             </form>
@@ -109,7 +118,7 @@
                                                                        pattern="^.+@.+[.].+$">
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="change_email" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="change_email" onclick=""><fmt:message
                             key="settings.changeEmail"/></button>
                 </div>
             </form>
@@ -127,7 +136,7 @@
                                                                                 pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
                 </div>
                 <div class="row">
-                    <button type="submit" name="command" value="change_password" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="change_password" onclick=""><fmt:message
                             key="settings.changePassword"/></button>
                 </div>
             </form>

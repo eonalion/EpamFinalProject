@@ -32,7 +32,8 @@
                                     href="#" style="padding: 6px">${account.login}
                 <c:choose>
                     <c:when test="${account.avatar != null}">
-                        <img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>
+                        <%--<img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>--%>
+                        <img class="avatar-nav" src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
                     </c:when>
                     <c:otherwise>
                         <img class="avatar-nav" src="../../images/default_avatar.jpg">

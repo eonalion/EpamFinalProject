@@ -2,10 +2,7 @@ package by.suboch.dao;
 
 import by.suboch.exception.DAOException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  *
@@ -15,6 +12,9 @@ public class ArtistDAO {
     private static final String SQL_ADD_ARTIST = "INSERT INTO `artists` (`artist_name`, `country`, `description`) " +
             "VALUES (?, ?, ?)";
     private static final String SQL_CHECK_ARTIST = "SELECT * FROM `artists` WHERE `artist_name` = ? AND `country` = ?";
+    private static final String SQL_LOAD_IMAGE = "SELECT `image` FROM `artists` WHERE `artist_id` = ?";
+
+    private static final String COLUMN_IMAGE = "image";
 
 
     public ArtistDAO(Connection connection) {
@@ -40,6 +40,17 @@ public class ArtistDAO {
             return !resultSet.next();
         } catch (SQLException e) {
             throw new DAOException("Error while checking artist in database.", e);
+        }
+    }
+
+    public byte[] findImage(int artistId) throws DAOException {
+        try(PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
+            preparedStatement.setInt(1, artistId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Blob blob = resultSet.getBlob(COLUMN_IMAGE);
+            return blob.getBytes(0, (int) blob.length());
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for artist image in database.");
         }
     }
 }

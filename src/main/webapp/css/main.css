@@ -1,10 +1,9 @@
 @import "default.css";
 
-
 ul.pagination {
-    display: inline-block;
+    display: table;
     padding: 0;
-    margin: 0;
+    margin: 0 auto 30px;
 }
 
 ul.pagination li {
@@ -33,46 +32,46 @@ ul.pagination li a:hover:not(.active) {
     margin-bottom: 20px;
 }
 
-.jumbotron {
-    background: transparent;
+.section-paragraph {
+    font-size: 0.9em;
+    margin: 0;
 }
+
 
 .item {
     position: relative;
     margin-bottom: 20px;
 }
 
-.thumbnail {
+.item .jumbotron {
+    background: transparent;
+}
+
+.item .thumbnail {
     background: transparent;
     width: 300px;
     height: 450px;
     border: 1px solid rgba(255, 255, 255, .25);
 }
 
-.thumbnail:hover {
+.item .thumbnail:hover {
     background-color: rgba(68, 88, 131, 0.2);
 }
 
-.caption a {
+.item .caption a {
     color: white;
 }
 
-.caption h4, h5 {
+.item .caption h4, h5 {
     align-content: center;
     margin: 0;
 }
 
-.caption .price {
+.item .caption .price {
     padding: 15px;
     color: white;
     font: 1.2em "Nixie One", Tahoma, serif;
 }
-
-.section-paragraph {
-    font-size: 0.9em;
-    margin: 0;
-}
-
 @media (max-width: 768px) {
     .thumbnail {
         position: inherit;

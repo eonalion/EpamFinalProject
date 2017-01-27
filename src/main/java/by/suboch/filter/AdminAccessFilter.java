@@ -21,11 +21,10 @@ public class AdminAccessFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
         if (visitor.getRole() != Visitor.Role.ADMIN) {
-            //response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
-            return;
+        } else {
+            filterChain.doFilter(servletRequest, servletResponse);
         }
-        filterChain.doFilter(servletRequest, servletResponse);
     }
 
     @Override

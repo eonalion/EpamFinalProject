@@ -48,7 +48,7 @@
                                 <p class="price">0.2$</p>
                             </div>
                             <div class="col-md-8 col-sm-8">
-                                <button name="" value="">Add to cart</button>
+                                <button class="btn-custom" name="" value="">Add to cart</button>
                             </div>
                         </div>
                     </div>

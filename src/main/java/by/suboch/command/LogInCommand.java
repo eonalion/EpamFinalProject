@@ -36,7 +36,7 @@ public class LogInCommand implements IServletCommand {
                 Account account = logic.loadAccount(authorizationName);
                 request.getSession().setAttribute(ATTR_ACCOUNT, account);
 
-                nextPage = ConfigurationManager.getProperty(USER_MAIN_PAGE);
+                nextPage = ConfigurationManager.getProperty(PAGE_USER_MAIN);
 
                 if(logic.isAdmin(authorizationName)) {
                     visitor.setRole(Visitor.Role.ADMIN);
@@ -44,8 +44,9 @@ public class LogInCommand implements IServletCommand {
                     visitor.setRole(Visitor.Role.USER);
                 }
                 //------------------
+                request.getSession().setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
                 TrackLogic trackLogic = new TrackLogic();
-                request.getSession().setAttribute(ATTR_TRACK_LIST, trackLogic.showPopularTracks(0, 4));
+                request.getSession().setAttribute(ATTR_TRACK_LIST, trackLogic.showPopularTracks(0, CommandConstants.TRACKS_PER_PAGE));
                 //------------------
 
             } else {
