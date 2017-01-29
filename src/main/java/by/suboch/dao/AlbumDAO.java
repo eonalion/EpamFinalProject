@@ -1,33 +1,48 @@
 package by.suboch.dao;
 
+import by.suboch.entity.Album;
 import by.suboch.exception.DAOException;
 
+import java.io.ByteArrayInputStream;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
  */
 public class AlbumDAO {
     private Connection connection;
-    private static final String SQL_ADD_ALBUM = "INSERT INTO `albums` (`album_title`, `release_date`  /*`album_image`,*/) " +
-            "VALUES (?, ?)";
+    private static final String SQL_ADD_ALBUM = "INSERT INTO `albums` (`album_title`, `release_date`, `album_image`) " +
+            "VALUES (?, ?, ?)";
     private static final String SQL_CHECK_ALBUM = "SELECT * FROM `albums` WHERE `album_title` = ? AND `release_date` = ?";
-    private static final String SQL_LOAD_IMAGE = "SELECT `image` FROM `albums` WHERE `album_id` = ?";
+    private static final String SQL_LOAD_IMAGE = "SELECT `album_image` FROM `albums` WHERE `album_id` = ?";
+    private static final String SQL_FIND_ALBUM = "SELECT * FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
+    private static final String SQL_LOAD_ALL_ALBUMS = "SELECT * FROM `albums`";
+    private static final String SQL_FIND_ALBUM_ID = "SELECT `album_id` FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
+    private static final String SQL_UPDATE_ARTIST_ID = "UPDATE `albums` SET `artist_id` = ? WHERE `album_id` = ?";
 
-    private static final String COLUMN_IMAGE = "image";
+    private static final String COLUMN_ALBUM_ID = "album_id";
+    private static final String COLUMN_ARTIST_ID = "artist_id";
+    private static final String COLUMN_TITLE = "album_title";
+    private static final String COLUMN_RELEASE_DATE = "release_date";
+    private static final String COLUMN_IMAGE = "album_image";
 
-    private static final int INDEX_START = 0;
 
     public AlbumDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public void addNewAlbum(String title, LocalDate releaseDate) throws DAOException {
+    public void addNewAlbum(String title, LocalDate releaseDate, byte[] image) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ALBUM)) {
             preparedStatement.setString(1, title);
-            preparedStatement.setDate(2, Date.valueOf(releaseDate));/*
-            preparedStatement.setBlob(4, new ByteArrayInputStream(image));*/
+            preparedStatement.setDate(2, Date.valueOf(releaseDate));
+            if (image != null) {
+                preparedStatement.setBlob(3, new ByteArrayInputStream(image));
+            } else {
+                preparedStatement.setBlob(3, (Blob) null);
+            }
             preparedStatement.execute();
         } catch (SQLException e) {
             throw new DAOException("Error while inserting new album into database.", e);
@@ -45,14 +60,91 @@ public class AlbumDAO {
         }
     }
 
+    public Album findAlbum(String title, LocalDate releaseDate) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALBUM)) {
+            preparedStatement.setString(1, title);
+            preparedStatement.setDate(2, Date.valueOf(releaseDate));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Album album = new Album();
+                album.setAlbumId(resultSet.getInt(COLUMN_ALBUM_ID));
+                album.setArtistId(resultSet.getInt(COLUMN_ARTIST_ID));
+                album.setTitle(resultSet.getString(COLUMN_TITLE));
+                album.setReleaseDate(resultSet.getDate(COLUMN_RELEASE_DATE));
+                Blob image = resultSet.getBlob(COLUMN_IMAGE);
+                if (image == null) {
+                    album.setImage(null);
+                } else {
+                    album.setImage(image.getBytes(1, (int) image.length()));
+                }
+                return album;
+            } else {
+                throw new DAOException("No album with such title and release date found in database.");
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for album by title and release date in database.", e);
+        }
+    }
+
+    public int findAlbumId(String title, LocalDate releaseDate) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALBUM_ID)) {
+            preparedStatement.setString(1, title);
+            preparedStatement.setDate(2, Date.valueOf(releaseDate));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt(COLUMN_ALBUM_ID);
+            } else {
+                throw new DAOException("No album with such title and release date found in database.");
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for album by title and release date in database.", e);
+        }
+    }
+
+    public List<Album> loadAllAlbums() throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALL_ALBUMS)) {
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Album> albumList = new LinkedList<>();
+
+            while (resultSet.next()) {
+                Album album = new Album();
+                album.setAlbumId(resultSet.getInt(COLUMN_ALBUM_ID));
+                album.setTitle(resultSet.getString(COLUMN_TITLE));
+                album.setReleaseDate(resultSet.getDate(COLUMN_RELEASE_DATE));
+                albumList.add(album);
+            }
+            return albumList;
+        } catch (SQLException e) {
+            throw new DAOException("Error while selecting all albums from database.", e);
+        }
+    }
+
     public byte[] findImage(int albumId) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
             preparedStatement.setInt(1, albumId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Blob blob = resultSet.getBlob(COLUMN_IMAGE);
-            return blob.getBytes(INDEX_START, (int) blob.length());
+            byte[] image = null;
+            while (resultSet.next()) {
+                image = resultSet.getBytes(COLUMN_IMAGE);
+            }
+            return image;
         } catch (SQLException e) {
             throw new DAOException("Error while searching for album image in database.");
+        }
+    }
+
+
+    public void updateArtistId(String[] albumIds, int artistId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ARTIST_ID)) {
+            for (int i = 0; i < albumIds.length; i++) {
+                preparedStatement.setInt(1, artistId);
+                preparedStatement.setInt(2, Integer.parseInt(albumIds[i]));
+                preparedStatement.execute();
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while updating artist id for albums in database.");
         }
     }
 }

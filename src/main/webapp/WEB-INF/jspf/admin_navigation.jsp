@@ -20,7 +20,7 @@
             <li><a class="nav-menu-item nav-menu-item-inactive"
                    href="/jsp/user/catalog.jsp"><fmt:message key="nav.catalog"/></a></li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/jsp/admin/add_new.jsp"><fmt:message
+                   href="/jsp/admin/administrate.jsp"><fmt:message
                     key="nav.addNew"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -32,7 +32,6 @@
                                     href="#" style="padding: 6px">${account.login}
                 <c:choose>
                     <c:when test="${account.avatar != null}">
-                        <%--<img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>--%>
                         <img class="avatar-nav" src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
                     </c:when>
                     <c:otherwise>

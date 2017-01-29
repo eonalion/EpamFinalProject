@@ -65,7 +65,11 @@ public class Controller extends HttpServlet {
                 response.sendRedirect(commandExecuteRes);
                 break;
             case RESPONSE:
-                response.getOutputStream().write(Base64.getDecoder().decode(commandExecuteRes));
+                if(!commandExecuteRes.isEmpty()) {
+                    response.getOutputStream().write(Base64.getDecoder().decode(commandExecuteRes));
+                } else {
+                    response.sendError(HttpServletResponse.SC_NOT_FOUND);
+                }
                 break;
             case AJAX:
                 response.getWriter().write(commandExecuteRes);

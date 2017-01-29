@@ -113,20 +113,6 @@
         <button class="btn-custom" type="submit" name="command" value="change_language"><fmt:message
                 key="label.language"/></button>
     </form>
-
-  <%--  <div class="row">
-        <audio controls
-               data-info-album-art="https://farm9.staticflickr.com/8642/16106988340_058071cdbe_z.jpg"
-               data-info-album-title="8874"
-               data-info-artist="Iain Houston and Felix Gibbons"
-               data-info-title="BeBop Aliens"
-               data-info-label="Independent"
-               data-info-year="2005"
-               data-info-att="Music: Iain Houston and Felix Gibbons."
-               data-info-att-link="https://github.com/iainhouston">
-            <source src="/s?command=load_track&trackId=22&location=a/Artist2_Album3_Track4.mp3" type="audio/mpeg">
-        </audio>
-    </div>--%>
 </main>
 <%-- JS libraries --%><%--
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>

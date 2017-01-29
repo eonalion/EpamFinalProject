@@ -12,17 +12,31 @@ import java.sql.SQLException;
  *
  */
 public class ArtistLogic {
-    public boolean addArtist(String name, String country, String description) throws LogicException {
+    public LogicActionResult addArtist(String name, String country, String description, byte[] image) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             ArtistDAO artistDAO = new ArtistDAO(connection);
+            LogicActionResult actionResult = new LogicActionResult();
+
             if (artistDAO.checkArtist(name, country)) {
-                artistDAO.addNewArtist(name, country, description);
-                return true;
+                artistDAO.addNewArtist(name, country, description, image);
+                actionResult.setState(LogicActionResult.State.SUCCESS);
+                actionResult.addOutcome(ResultConstants.SUCCESS_ADD_ALBUM);
             } else {
-                return false;
+                actionResult.setState(LogicActionResult.State.FAILURE);
+                actionResult.addOutcome(ResultConstants.FAILURE_ALBUM_NOT_UNIQUE);
             }
+            return actionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while creating artist in logic.", e);
+        }
+    }
+
+    public int loadArtistId(String name, String country) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            ArtistDAO artistDAO = new ArtistDAO(connection);
+            return artistDAO.findArtistId(name, country);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while loading album id in logic.", e);
         }
     }
 

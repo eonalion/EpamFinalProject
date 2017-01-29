@@ -15,11 +15,13 @@ public class CommandConstants {
 
     public static final String ATTR_ACCOUNT = "account";
     public static final String ATTR_MESSAGE = "message";
+    public static final String ATTR_TRACKS_ON_PAGE = "tracksOnPage";
     public static final String ATTR_TRACK_LIST = "trackList";
-    public static final String ATTR_TRACKS_PER_PAGE = "tracksPerPage";
+    public static final String ATTR_GENRE_LIST = "genreList";
+    public static final String ATTR_ALBUM_LIST = "albumList";
     public static final String ATTR_PAGE_AMOUNT = "pageAmount";
-    public static final int TRACKS_PER_PAGE = 2;
-    public static final int PAGES_AMOUNT = 5;
+    public static final int TRACKS_PER_PAGE = 3;
+    public static final int PAGES_AMOUNT = 4;
 
     public static final String MIME_TYPE_APPLICATION_JSON = "application/json";
     public static final String MIME_TYPE_IMAGE_JPG = "image/jpeg";

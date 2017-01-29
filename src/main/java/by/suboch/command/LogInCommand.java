@@ -4,6 +4,8 @@ import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
+import by.suboch.logic.AlbumLogic;
+import by.suboch.logic.GenreLogic;
 import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
@@ -44,9 +46,16 @@ public class LogInCommand implements IServletCommand {
                     visitor.setRole(Visitor.Role.USER);
                 }
                 //------------------
-                request.getSession().setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
+
                 TrackLogic trackLogic = new TrackLogic();
-                request.getSession().setAttribute(ATTR_TRACK_LIST, trackLogic.showPopularTracks(0, CommandConstants.TRACKS_PER_PAGE));
+                AlbumLogic albumLogic = new AlbumLogic();
+                GenreLogic genreLogic = new GenreLogic();
+                request.getSession().setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
+                request.getSession().setAttribute(CommandConstants.ATTR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(0, CommandConstants.TRACKS_PER_PAGE));
+                request.getSession().setAttribute(CommandConstants.ATTR_TRACK_LIST, trackLogic.loadAllTracks());
+                request.getSession().setAttribute(CommandConstants.ATTR_ALBUM_LIST, albumLogic.loadAllAlbums());
+                request.getSession().setAttribute(CommandConstants.ATTR_GENRE_LIST, genreLogic.loadAllGenres());
+
                 //------------------
 
             } else {

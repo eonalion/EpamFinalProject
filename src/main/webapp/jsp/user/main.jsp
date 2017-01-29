@@ -59,12 +59,11 @@
             </div>
         </section>
 
-        <c:forEach var="track" items="${trackList}">
+        <c:forEach var="track" items="${tracksOnPage}">
             <%-- <c:set var="currentTrack" value="${track}"/>--%>
             <div class="col-md-4 col-sm-6 item">
                 <div class="thumbnail">
-                        <%--<img src="/s?......http://placehold.it/300x300" alt="">--%>
-                    <img src="http://placehold.it/300x300" alt="">
+                    <img src="/s?command=load_image&elementId=${track.albumId}&target=album" onerror="this.src='../../images/default_album.png'" alt="">
                     <div class="caption">
                         <h4><a href="#">${track.title}</a></h4>
                             <%-- <h5><a href="#">${track.artist}</a></h5>--%>
@@ -77,7 +76,6 @@
                                     <form class="add-to-cart" method="post" action="/s">
                                         <button type="submit" class="btn-custom add-to-cart-button" name="" value="">
                                             <fmt:message key="main.label.addToCart"/></button>
-
                                     </form>
                                     <button class="btn-custom btn-play"
                                             onclick='playTrack(${track.trackId}, "${track.location}")'>
@@ -102,14 +100,14 @@
         </div>
 
         <audio id="player" controls
-               data-info-album-art="https://farm9.staticflickr.com/8642/16106988340_058071cdbe_z.jpg"
+               data-info-album-art="/s?command=load_image&elementId="
                data-info-album-title="${currentTrack.price}"
                data-info-artist="Iain Houston and Felix Gibbons"
                data-info-title="${currentTrack.title}"
                data-info-label="Independent"
                data-info-year="2005"
                data-info-att="Music: Iain Houston and Felix Gibbons."
-               data-info-att-link="https://github.com/iainhouston">
+               data-info-att-link="}">
             <source src="" type="audio/mpeg">
         </audio>
     </div>
@@ -126,7 +124,6 @@
 <script src="../../js/classie.js"></script>
 <script src="../../js/script.js"></script>
 <script src="../../js/pagination.js"></script>
-<%--<script src="../../js/main.js"></script>--%>
 <script src="../../js/bootstrap3_player.js"></script>
 <script src="../../js/play_track.js"></script>
 

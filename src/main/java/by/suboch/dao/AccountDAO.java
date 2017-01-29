@@ -26,7 +26,7 @@ public class AccountDAO {
     private static final String SQL_CHECK_PASSWORD_BY_ACCOUNT_ID = "SELECT `login` FROM `accounts` WHERE `account_id` = ? AND `password` = SHA2(?, 256)";
 
     private static final String SQL_FIND_ACCOUNT_BY_AUTHORIZATION_NAME = "SELECT * FROM `accounts` WHERE (`login` = ? OR `email` = ?)";
-    private static final String SQL_LOAD_IMAGE = "SELECT `image` FROM `accounts` WHERE `account_id` = ?";
+    private static final String SQL_LOAD_IMAGE = "SELECT `avatar` FROM `accounts` WHERE `account_id` = ?";
 
     private static final String SQL_UPDATE_LOGIN = "UPDATE `accounts` SET `login` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_AVATAR = "UPDATE `accounts` SET `avatar` = ? WHERE `account_id` = ?";
@@ -159,7 +159,7 @@ public class AccountDAO {
                 account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
                 return account;
             } else {
-                throw new DAOException("No account with such email or login in database.");
+                throw new DAOException("No account with such email or login found in database.");
             }
 
         } catch (SQLException e) {
@@ -226,10 +226,13 @@ public class AccountDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_IMAGE)) {
             preparedStatement.setInt(1, accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
-            Blob blob = resultSet.getBlob(COLUMN_AVATAR);
-            return blob.getBytes(INDEX_START, (int) blob.length());
+            byte[] avatar = null;
+            while(resultSet.next()) {
+                avatar = resultSet.getBytes(COLUMN_AVATAR);
+            }
+            return avatar;
         } catch (SQLException e) {
-            throw new DAOException("Error while searching for artist avatar in database.");
+            throw new DAOException("Error while searching for account avatar in database.");
         }
     }
 }

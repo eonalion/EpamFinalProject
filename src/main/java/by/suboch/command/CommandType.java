@@ -45,6 +45,12 @@ public enum CommandType {
             this.role = EnumSet.of(Visitor.Role.ADMIN);
         }
     },
+    ADD_TRACK{
+        {
+            this.command = new AddTrackCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER, Visitor.Role.GUEST);
+        }
+    },
     ADD_TO_CART {
         {
             this.command = new AddToCartCommand();
