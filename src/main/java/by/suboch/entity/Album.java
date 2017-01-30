@@ -13,9 +13,6 @@ public class Album {
     private Date releaseDate;
     private byte[] image;
 
-    public Album() {
-    }
-
     public int getAlbumId() {
         return albumId;
     }

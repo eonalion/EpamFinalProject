@@ -10,14 +10,18 @@
 
 /* general */
 
-body {
-    margin-top: 190px;
-    background-color: #010007;
-}
-
 * {
     color: rgba(214, 214, 214, 0.73);
     font: 1.02em "Anaheim", Tahoma, serif;
+}
+
+body {
+    margin-top: 60px;
+    background-color: #010007;
+}
+
+main {
+    padding-bottom: 150px;
 }
 
 ul {
@@ -223,9 +227,14 @@ nav {
 /* footer */
 
 footer {
+    z-index: 1;
     color: rgb(97, 98, 102);
     font: 1.2em "Anaheim", Tahoma, serif;
     border-top: 1px solid rgba(255, 255, 255, .1);
+    background-color: #010007;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 .footer-wrap ul {

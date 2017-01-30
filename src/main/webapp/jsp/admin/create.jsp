@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title></title>
+    <title>Create</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,13 +35,15 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">About</a>
-        <a href="#">Services</a>
-        <a href="#">Clients</a>
+        <a href="../../jsp/admin/create.jsp">Create</a>
+        <a href="../../jsp/admin/edit.jsp">Edit</a>
+        <a href="../../jsp/admin/clients.jsp">Clients</a>
         <a href="#">Contact</a>
     </div>
     <div id="main">
-        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Admin panel</span>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+        <h1>Create</h1>
+        <hr>
         <div class="row">
             <nav class="col-md-12">
                 <ul>
@@ -59,7 +61,6 @@
             </nav>
         </div>
 
-
         <div class="row">
             <section id="add-track" class="active-section col-md-12">
                 <form method="post" action="/s" enctype="multipart/form-data">
@@ -67,8 +68,7 @@
                         <input type="text" name="title" placeholder="<fmt:message key="main.addNew.form.track"/>">
                     </div>
                     <div class="row">
-                        Choose file (name in format "Artist_Title.mp3")<input type="file" name="file"
-                                                                              accept="audio/mpeg">
+                        <input type="file" name="file" accept="audio/mpeg">
                     </div>
                     <div class="row">
                         <p>Genres</p>
@@ -199,8 +199,8 @@
 </script>
 <script>
     function openNav() {
-        document.getElementById("side-nav").style.width = "250px";
-        document.getElementById("main").style.marginLeft = "250px";
+        document.getElementById("side-nav").style.width = "200px";
+        document.getElementById("main").style.marginLeft = "100px";
     }
 
     function closeNav() {

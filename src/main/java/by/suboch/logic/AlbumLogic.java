@@ -44,6 +44,15 @@ public class AlbumLogic {
         }
     }
 
+    public Album loadAlbumById(int albumId) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AlbumDAO albumDAO = new AlbumDAO(connection);
+            return albumDAO.findAlbumById(albumId);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while loading album in logic.", e);
+        }
+    }
+
     public int loadAlbumId(String title, LocalDate releaseDate) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AlbumDAO albumDAO = new AlbumDAO(connection);

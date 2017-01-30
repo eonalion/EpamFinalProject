@@ -149,5 +149,7 @@
 
 <%-- Footer --%>
 <jsp:include page="../../WEB-INF/jspf/footer.jsp"/>
+<script src="../../js/jquery-3.1.1.min.js"></script>
+<script src="../../js/bootstrap-3.3.1.min.js"></script>
 </body>
 </html>

@@ -17,10 +17,11 @@ public class TrackDAO {
     private Connection connection;
 
 
-    private static final String SQL_ADD_TRACK= "INSERT INTO `tracks` (`track_title`, `track_price`, `track_location`, `genres_id`) " +
+    private static final String SQL_ADD_TRACK = "INSERT INTO `tracks` (`track_title`, `track_price`, `track_location`, `genres_id`) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_LOAD_POPULAR_TRACKS = "SELECT * FROM `tracks` LIMIT ?,?";
-    private static final String SQL_LOAD_ALL_TRACKS = "SELECT * FROM `tracks`";
+    private static final String SQL_LOAD_ALL_TRACKS = "SELECT * FROM `tracks` ORDER BY `track_title`";
+    private static final String SQL_LOAD_TRACK_BY_ID = "SELECT * FROM `tracks` WHERE `track_id` = ?";
     private static final String SQL_UPDATE_ALBUM_ID = "UPDATE `tracks` SET `album_id` = ? WHERE `track_id` = ?";
 
     private static final String COLUMN_TRACK_ID = "track_id";
@@ -94,6 +95,30 @@ public class TrackDAO {
         } catch (SQLException e) {
             throw new DAOException("Error while selecting popular tracks from database.", e);
         }
+    }
+
+    public Track findTrackById(int trackId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_TRACK_BY_ID)) {
+            preparedStatement.setInt(1, trackId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Track track = new Track();
+                track.setTrackId(resultSet.getInt(COLUMN_TRACK_ID));
+                track.setAlbumId(resultSet.getInt(COLUMN_ALBUM_ID));
+                track.setGenreId(resultSet.getInt(COLUMN_GENRE_ID));
+                track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
+                track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
+                track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
+                track.setDiscount(resultSet.getShort(COLUMN_TRACK_DISCOUNT));
+                return track;
+            } else {
+                throw new DAOException("No track with such id found in database.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while selecting track from database.", e);
+        }
+
     }
 
     public void updateAlbumId(String[] trackIds, int albumId) throws DAOException {

@@ -8,6 +8,16 @@
     <tlib-version>1.0</tlib-version>
     <short-name>adt</short-name>
     <uri>http://suboch.by/jsp/</uri>
+    <tag>
+        <name>admin</name>
+        <tag-class>by.suboch.tag.AdminTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>role</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
     <function>
         <name>base64Encoder</name>
         <function-class>by.suboch.util.Base64Encoder</function-class>

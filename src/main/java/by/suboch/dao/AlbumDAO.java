@@ -19,7 +19,8 @@ public class AlbumDAO {
     private static final String SQL_CHECK_ALBUM = "SELECT * FROM `albums` WHERE `album_title` = ? AND `release_date` = ?";
     private static final String SQL_LOAD_IMAGE = "SELECT `album_image` FROM `albums` WHERE `album_id` = ?";
     private static final String SQL_FIND_ALBUM = "SELECT * FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
-    private static final String SQL_LOAD_ALL_ALBUMS = "SELECT * FROM `albums`";
+    private static final String SQL_FIND_ALBUM_BY_ID = "SELECT * FROM `albums` WHERE `album_id` = ?";
+    private static final String SQL_LOAD_ALL_ALBUMS = "SELECT * FROM `albums` ORDER BY `album_title`";
     private static final String SQL_FIND_ALBUM_ID = "SELECT `album_id` FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
     private static final String SQL_UPDATE_ARTIST_ID = "UPDATE `albums` SET `artist_id` = ? WHERE `album_id` = ?";
 
@@ -64,6 +65,32 @@ public class AlbumDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALBUM)) {
             preparedStatement.setString(1, title);
             preparedStatement.setDate(2, Date.valueOf(releaseDate));
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Album album = new Album();
+                album.setAlbumId(resultSet.getInt(COLUMN_ALBUM_ID));
+                album.setArtistId(resultSet.getInt(COLUMN_ARTIST_ID));
+                album.setTitle(resultSet.getString(COLUMN_TITLE));
+                album.setReleaseDate(resultSet.getDate(COLUMN_RELEASE_DATE));
+                Blob image = resultSet.getBlob(COLUMN_IMAGE);
+                if (image == null) {
+                    album.setImage(null);
+                } else {
+                    album.setImage(image.getBytes(1, (int) image.length()));
+                }
+                return album;
+            } else {
+                throw new DAOException("No album with such title and release date found in database.");
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for album by title and release date in database.", e);
+        }
+    }
+
+    public Album findAlbumById(int albumId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ALBUM_BY_ID)) {
+            preparedStatement.setInt(1, albumId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 Album album = new Album();

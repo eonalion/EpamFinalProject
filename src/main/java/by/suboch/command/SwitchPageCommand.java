@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-import static by.suboch.command.CommandConstants.ATTR_TRACKS_ON_PAGE;
+import static by.suboch.command.CommandConstants.ATTR_POPULAR_TRACKS_ON_PAGE;
 
 /**
  *
@@ -40,7 +40,7 @@ public class SwitchPageCommand implements IServletCommand {
 
         try {
             TrackLogic trackLogic = new TrackLogic();
-            request.getSession().setAttribute(ATTR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(pageNumber*CommandConstants.TRACKS_PER_PAGE, CommandConstants.TRACKS_PER_PAGE));
+            request.getSession().setAttribute(ATTR_POPULAR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(pageNumber*CommandConstants.POPULAR_TRACKS_PER_PAGE, CommandConstants.POPULAR_TRACKS_PER_PAGE));
         } catch (LogicException e){
             //TODO: Handle exception.
         }

@@ -7,6 +7,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.sql.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -27,6 +29,8 @@ public class AccountDAO {
 
     private static final String SQL_FIND_ACCOUNT_BY_AUTHORIZATION_NAME = "SELECT * FROM `accounts` WHERE (`login` = ? OR `email` = ?)";
     private static final String SQL_LOAD_IMAGE = "SELECT `avatar` FROM `accounts` WHERE `account_id` = ?";
+    private static final String SQL_LOAD_ALL_ACCOUNTS = "SELECT * FROM `accounts`";
+    private static final String SQL_LOAD_ACCOUNT_BY_ID = "SELECT * FROM `accounts` WHERE `account_id` = ?";
 
     private static final String SQL_UPDATE_LOGIN = "UPDATE `accounts` SET `login` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_AVATAR = "UPDATE `accounts` SET `avatar` = ? WHERE `account_id` = ?";
@@ -167,6 +171,59 @@ public class AccountDAO {
         }
     }
 
+    public List<Account> loadAllAccounts() throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_LOAD_ALL_ACCOUNTS)) {
+            ResultSet resultSet = statement.executeQuery();
+            List<Account> accounts = new LinkedList<>();
+            while (resultSet.next()) {
+                Account account = new Account();
+                account.setAccountId(resultSet.getInt(COLUMN_ACCOUNT_ID));
+                account.setFirstName(resultSet.getString(COLUMN_FIRST_NAME));
+                account.setLastName(resultSet.getString(COLUMN_LAST_NAME));
+                account.setLogin(resultSet.getString(COLUMN_LOGIN));
+                account.setEmail(resultSet.getString(COLUMN_EMAIL));
+                Blob avatar = resultSet.getBlob(COLUMN_AVATAR);
+                if (avatar == null) {
+                    account.setAvatar(null);
+                } else {
+                    account.setAvatar(avatar.getBytes(1, (int) avatar.length()));
+                }
+                account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
+                accounts.add(account);
+            }
+            return accounts;
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for account by email or login in database.", e);
+        }
+    }
+
+    public Account loadAccountById(int accountId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ACCOUNT_BY_ID)) {
+            preparedStatement.setInt(1, accountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                Account account = new Account();
+                account.setAccountId(resultSet.getInt(COLUMN_ACCOUNT_ID));
+                account.setFirstName(resultSet.getString(COLUMN_FIRST_NAME));
+                account.setLastName(resultSet.getString(COLUMN_LAST_NAME));
+                account.setLogin(resultSet.getString(COLUMN_LOGIN));
+                account.setEmail(resultSet.getString(COLUMN_EMAIL));
+                Blob avatar = resultSet.getBlob(COLUMN_AVATAR);
+                if (avatar == null) {
+                    account.setAvatar(null);
+                } else {
+                    account.setAvatar(avatar.getBytes(1, (int) avatar.length()));
+                }
+                account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
+                return account;
+            } else {
+                throw new DAOException("No account with such id found in database.");
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for account by email or login in database.", e);
+        }
+    }
+
     public void updateLogin(int accountId, String login) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(SQL_UPDATE_LOGIN)) {
             statement.setString(1, login);
@@ -227,7 +284,7 @@ public class AccountDAO {
             preparedStatement.setInt(1, accountId);
             ResultSet resultSet = preparedStatement.executeQuery();
             byte[] avatar = null;
-            while(resultSet.next()) {
+            while (resultSet.next()) {
                 avatar = resultSet.getBytes(COLUMN_AVATAR);
             }
             return avatar;

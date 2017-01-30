@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.temporal.ValueRange;
+import java.util.List;
 
 /**
  *
@@ -19,15 +20,6 @@ import java.time.temporal.ValueRange;
 
 public class AccountLogic {
     private static final Logger LOG = LogManager.getLogger();
-
-    public enum ActionResult {
-        SUCCESS {
-
-        },
-        FAILURE {
-
-        };
-    }
 
     public AccountLogic() {
     }
@@ -65,6 +57,24 @@ public class AccountLogic {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             return accountDAO.findByAuthorizationName(authorizationName);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while account authorization.", e);
+        }
+    }
+
+    public Account loadAccount(int accountId) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            return accountDAO.loadAccountById(accountId);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while account authorization.", e);
+        }
+    }
+
+    public List<Account> loadAllAccounts() throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            AccountDAO accountDAO = new AccountDAO(connection);
+            return accountDAO.loadAllAccounts();
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while account authorization.", e);
         }

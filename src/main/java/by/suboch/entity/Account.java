@@ -1,11 +1,12 @@
 package by.suboch.entity;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
  *
  */
-public class Account {
+public class Account implements IDatabaseEntity {
     private int accountId;
     private boolean adminRights;
     private String firstName;
@@ -14,24 +15,40 @@ public class Account {
     private String password;
     private String email;
     private byte[] avatar;
-    private Visitor.Role role;
 
-    public Account() {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Account account = (Account) o;
+        return accountId == account.accountId &&
+                adminRights == account.adminRights &&
+                Objects.equals(firstName, account.firstName) &&
+                Objects.equals(lastName, account.lastName) &&
+                Objects.equals(login, account.login) &&
+                Objects.equals(password, account.password) &&
+                Objects.equals(email, account.email) &&
+                Arrays.equals(avatar, account.avatar);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, adminRights, firstName, lastName, login, password, email);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        return super.equals(o);
+        return Objects.hash(accountId, adminRights, firstName, lastName, login, password, email, avatar);
     }
 
     @Override
     public String toString() {
-        return super.toString();
+        final StringBuilder sb = new StringBuilder("Account{");
+        sb.append("accountId=").append(accountId);
+        sb.append(", adminRights=").append(adminRights);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", login='").append(login).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", avatar=").append(Arrays.toString(avatar));
+        sb.append('}');
+        return sb.toString();
     }
 
     public int getAccountId() {
@@ -96,13 +113,5 @@ public class Account {
 
     public void setAvatar(byte[] avatar) {
         this.avatar = avatar;
-    }
-
-    public Visitor.Role getRole() {
-        return role;
-    }
-
-    public void setRole(Visitor.Role role) {
-        this.role = role;
     }
 }

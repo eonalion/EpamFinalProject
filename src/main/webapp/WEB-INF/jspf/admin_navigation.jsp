@@ -7,7 +7,7 @@
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
-<nav class="navbar navbar-inverse navbar-fixed-top complex-navbar">
+<nav class="navbar navbar-inverse navbar-fixed-top simple-navbar">
     <div class="filter"></div>
     <div class="container">
         <div class="navbar-header">
@@ -18,10 +18,9 @@
                     key="nav.home"/></a>
             </li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/jsp/user/catalog.jsp"><fmt:message key="nav.catalog"/></a></li>
+                   href="/jsp/user/catalog_tracks.jsp"><fmt:message key="nav.catalog"/></a></li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/jsp/admin/administrate.jsp"><fmt:message
-                    key="nav.addNew"/></a></li>
+                   href="/jsp/admin/create.jsp">Manage</a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="nav-menu-item nav-menu-item-inactive" href="/jsp/user/cart.jsp"></span>

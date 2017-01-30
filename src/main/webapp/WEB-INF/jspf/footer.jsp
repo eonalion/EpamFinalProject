@@ -12,14 +12,14 @@
                 <header><fmt:message key="footer.menu"/></header>
                 <ul>
                     <li><a href="/jsp/user/main.jsp"><fmt:message key="nav.home"/></a></li>
-                    <li><a href="/jsp/user/catalog.jsp"><fmt:message key="nav.catalog"/></a></li>
+                    <li><a href="/jsp/user/catalog_about.jsp"><fmt:message key="nav.catalog"/></a></li>
                     <li><a href="/jsp/user/cart.jsp"><fmt:message key="nav.cart"/></a></li>
                 </ul>
             </div>
             <div class="col-md-3  col-sm-3 col-sx-3  footer-wrap">
                 <header><fmt:message key="footer.profile"/></header>
                 <ul>
-                    <li><a href="/jsp/user/catalog.jsp"><fmt:message key="nav.account.settings"/></a></li>
+                    <li><a href="/jsp/user/catalog_about.jsp"><fmt:message key="nav.account.settings"/></a></li>
                     <li><a href="/jsp/user/purchases.jsp"><fmt:message key="nav.account.purchases"/></a></li>
                     <li><a href="/s?command=log_out"><fmt:message key="nav.account.logout"/></a></li>
                 </ul>

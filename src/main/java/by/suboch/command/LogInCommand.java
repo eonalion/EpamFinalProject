@@ -45,18 +45,7 @@ public class LogInCommand implements IServletCommand {
                 } else {
                     visitor.setRole(Visitor.Role.USER);
                 }
-                //------------------
 
-                TrackLogic trackLogic = new TrackLogic();
-                AlbumLogic albumLogic = new AlbumLogic();
-                GenreLogic genreLogic = new GenreLogic();
-                request.getSession().setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
-                request.getSession().setAttribute(CommandConstants.ATTR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(0, CommandConstants.TRACKS_PER_PAGE));
-                request.getSession().setAttribute(CommandConstants.ATTR_TRACK_LIST, trackLogic.loadAllTracks());
-                request.getSession().setAttribute(CommandConstants.ATTR_ALBUM_LIST, albumLogic.loadAllAlbums());
-                request.getSession().setAttribute(CommandConstants.ATTR_GENRE_LIST, genreLogic.loadAllGenres());
-
-                //------------------
 
             } else {
                 //TODO: Set warn message through validator or what? It could be already set in validator, so just return current page.

@@ -38,9 +38,18 @@ public class TrackLogic {
     }
 
     public List<Track> loadAllTracks() throws LogicException {
-        try(Connection connection = ConnectionPool.getInstance().getConnection()) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             TrackDAO trackDAO = new TrackDAO(connection);
             return trackDAO.loadAllTracks();
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while loading all tracks in logic.", e);
+        }
+    }
+
+    public Track loadTrackById(int trackId) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            TrackDAO trackDAO = new TrackDAO(connection);
+            return trackDAO.findTrackById(trackId);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while loading all tracks in logic.", e);
         }
