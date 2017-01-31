@@ -47,8 +47,8 @@
         <div class="row">
             <nav class="col-md-12">
                 <ul>
-                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-track', this)"><fmt:message
-                            key="main.addNew.track"/></li>
+                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-test', this)"><fmt:message
+                            key="main.addNew.test"/></li>
                     <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-artist', this)"><fmt:message
                             key="main.addNew.artist"/></li>
                     <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-album', this)"><fmt:message
@@ -62,10 +62,10 @@
         </div>
 
         <div class="row">
-            <section id="add-track" class="active-section col-md-12">
+            <section id="add-test" class="active-section col-md-12">
                 <form method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
-                        <input type="text" name="title" placeholder="<fmt:message key="main.addNew.form.track"/>">
+                        <input type="text" name="title" placeholder="<fmt:message key="main.addNew.form.test"/>">
                     </div>
                     <div class="row">
                         <input type="file" name="file" accept="audio/mpeg">

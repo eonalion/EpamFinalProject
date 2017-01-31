@@ -18,6 +18,46 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>emptyLoop</name>
+        <tag-class>by.suboch.tag.EmptyLoopTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>iterNum</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>cartItem</name>
+        <tag-class>by.suboch.tag.CartItemTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>test</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+        <name>items</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    </tag>
+    <tag>
+        <name>notCartItem</name>
+        <tag-class>by.suboch.tag.NotCartItemTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>test</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+        <name>items</name>
+        <required>true</required>
+        <rtexprvalue>true</rtexprvalue>
+    </attribute>
+    </tag>
     <function>
         <name>base64Encoder</name>
         <function-class>by.suboch.util.Base64Encoder</function-class>

@@ -13,7 +13,7 @@
                 <ul>
                     <li><a href="/jsp/user/main.jsp"><fmt:message key="nav.home"/></a></li>
                     <li><a href="/jsp/user/catalog_tracks.jsp"><fmt:message key="nav.catalog"/></a></li>
-                    <li><a href="/jsp/user/cart.jsp"><fmt:message key="nav.cart"/></a></li>
+                    <li><a href="/jsp/user/items.jsp"><fmt:message key="nav.items"/></a></li>
                 </ul>
             </div>
             <div class="col-md-3  col-sm-3 col-sx-3  footer-wrap">

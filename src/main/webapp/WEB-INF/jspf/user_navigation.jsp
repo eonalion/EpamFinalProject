@@ -21,19 +21,13 @@
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="nav-menu-item nav-menu-item-inactive" href="/jsp/user/cart.jsp"></span>
-                <fmt:message key="nav.cart"/></a>
+                <fmt:message key="nav.items"/></a>
             </li>
             <li class="dropdown"><a class="avatar-a dropdown-toggle nav-menu-item nav-menu-item-inactive"
                                     data-toggle="dropdown"
                                     href="#" style="padding: 6px">${account.login}
-                <c:choose>
-                    <c:when test="${account.avatar != null}">
-                        <img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <img class="avatar-nav" src="../../images/default_avatar.jpg">
-                    </c:otherwise>
-                </c:choose>
+                <img class="avatar-nav" src="/s?command=load_image&elementId=${account.accountId}&target=account"
+                     onerror="this.src='../../images/default_avatar.jpg'" alt="">
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="/jsp/user/settings.jsp"><fmt:message

@@ -10,6 +10,11 @@
 
 /* general */
 
+html {
+    position: relative;
+    min-height: 100%;
+}
+
 * {
     color: rgba(214, 214, 214, 0.73);
     font: 1.02em "Anaheim", Tahoma, serif;
@@ -233,6 +238,7 @@ footer {
     border-top: 1px solid rgba(255, 255, 255, .1);
     background-color: #010007;
     position: absolute;
+    left: 0;
     bottom: 0;
     width: 100%;
 }

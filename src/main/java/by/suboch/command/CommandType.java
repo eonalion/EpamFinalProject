@@ -61,6 +61,12 @@ public enum CommandType {
             this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
+    REMOVE_FROM_CART {
+        {
+            this.command = new RemoveFromCart();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
+        }
+    },
     CHANGE_PERSONAL_INFO {
         {
             this.command = new ChangePersonalInfoCommand();

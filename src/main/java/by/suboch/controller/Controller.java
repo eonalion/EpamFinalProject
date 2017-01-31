@@ -45,13 +45,13 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ControllerConfiguration servletConfig = (ControllerConfiguration) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
         CommandManager commandManager = new CommandManager();
-        IServletCommand command = commandManager.defineCommand(servletConfig.getCommand());
+        IServletCommand command = commandManager.defineCommand(controllerConfiguration.getCommand());
 
         String commandExecuteRes = command.execute(request, response);
 
-        switch (servletConfig.getState()) {
+        switch (controllerConfiguration.getState()) {
             case FORWARD:
                 request.getRequestDispatcher(commandExecuteRes).forward(request, response);
                 break;

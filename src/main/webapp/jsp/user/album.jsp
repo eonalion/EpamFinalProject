@@ -56,9 +56,9 @@
         <hr>
         <%--<c:set var="i" value="1" scope="page"/>
         <ol>
-            <c:forEach var="track" items="albumTracks">
+            <c:forEach var="test" items="albumTracks">
                 <li>
-                    <a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a>
+                    <a href="/s?command=show_element&type=test&id=${test.trackId}">${test.title}</a>
                 </li>
                 <c:set var="i" value="${i+1}" scope="page"/>
             </c:forEach>

@@ -14,7 +14,6 @@ public class Visitor {
     private Role role;
     private Locale locale;
     private String currentPage;
-    private List<Track> cart;
 
     public Role getRole() {
         return role;
@@ -38,13 +37,5 @@ public class Visitor {
 
     public void setCurrentPage(String currentPage) {
         this.currentPage = currentPage;
-    }
-
-    public List<Track> getCart() {
-        return cart;
-    }
-
-    public void setCart(List<Track> cart) {
-        this.cart = cart;
     }
 }

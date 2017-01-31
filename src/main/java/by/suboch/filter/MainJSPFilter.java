@@ -3,7 +3,6 @@ package by.suboch.filter;
 import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
 import by.suboch.controller.ControllerConstants;
-import by.suboch.entity.Track;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.TrackLogic;
@@ -25,9 +24,9 @@ public class MainJSPFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
-        if (visitor.getCart() == null) {
-            visitor.setCart(new ArrayList<>());
+
+        if (request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS) == null) {
+            request.getSession().setAttribute(CommandConstants.ATTR_CART_ITEMS, new ArrayList<>());
         }
 
         TrackLogic trackLogic = new TrackLogic();

@@ -45,7 +45,7 @@ public class LogInCommand extends AbstractServletCommand {
         String resultData;
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
-            request.setAttribute(PARAM_AUTHORIZATION_NAME, emailOrLogin);
+            request.setAttribute(PARAM_AUTHORIZATION_NAME,   emailOrLogin);
             request.setAttribute(PARAM_PASSWORD, password);
         } else {
             try {

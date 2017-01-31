@@ -25,6 +25,7 @@ public class CommandConstants {
     public static final String ATTR_ARTIST_LIST = "artistList";
     public static final String ATTR_ACCOUNT_LIST = "accountList";
     public static final String ATTR_PAGE_AMOUNT = "pageAmount";
+    public static final String ATTR_CART_ITEMS = "cartItems";
     public static final String ATTR_ERROR = "error";
 
     //    Additional parameters.
@@ -38,6 +39,8 @@ public class CommandConstants {
 
     //    Messages.
     public static final String MESSAGE_SUCCESS_REGISTER = "message.success.register";
+    public static final String MESSAGE_SUCCESS_ADD_TO_CART = "message.success.addToCart";
+    public static final String MESSAGE_SUCCESS_REMOVE_FROM_CART = "message.success.removeFromCart";
     public static final String MESSAGE_SUCCESS_SAVE_CHANGES = "message.success.saveChanges";
     public static final String MESSAGE_FAILURE_INVALID_LOGIN = "message.failure.invalid.login";
     public static final String MESSAGE_FAILURE_INVALID_EMAIL = "message.failure.invalid.email";

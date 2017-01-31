@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Current track</title>
+    <title>Current test</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -57,8 +57,8 @@
         <hr>
         <div class="row">
             Price:<p class="price">${currentTrack.price}$</p>
-            <form class="add-to-cart" method="post" action="/s">
-                <button type="submit" class="btn-custom add-to-cart-button" name="" value="">
+            <form class="add-to-items" method="post" action="/s">
+                <button type="submit" class="btn-custom add-to-items-button" name="" value="">
                     <fmt:message key="main.label.addToCart"/></button>
             </form>
         </div>

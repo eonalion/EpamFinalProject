@@ -46,7 +46,7 @@
         </div>
         <h1>Tracks</h1>
         <c:forEach var="track" items="${trackList}">
-            <a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a>
+            <a href="/s?command=show_element&type=test&id=${track.trackId}">${track.title}</a>
             <hr>
         </c:forEach>
     </div>

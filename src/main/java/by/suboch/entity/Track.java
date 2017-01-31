@@ -1,9 +1,12 @@
 package by.suboch.entity;
 
+import java.util.Arrays;
+import java.util.Objects;
+
 /**
  *
  */
-public class Track {
+public class Track implements IDatabaseEntity {
     private int trackId;
     private int albumId;
     private int genreId;
@@ -12,6 +15,26 @@ public class Track {
     private int discount;
     private String location;
     private byte[] image;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Track track = (Track) o;
+        return trackId == track.trackId &&
+                albumId == track.albumId &&
+                genreId == track.genreId &&
+                Double.compare(track.price, price) == 0 &&
+                discount == track.discount &&
+                Objects.equals(title, track.title) &&
+                Objects.equals(location, track.location) &&
+                Arrays.equals(image, track.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(trackId, albumId, genreId, title, price, discount, location, image);
+    }
 
     public Track(){}
 
