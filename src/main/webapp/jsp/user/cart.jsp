@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Current test</title>
+    <title>Cart</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -35,9 +35,9 @@
 </c:choose>
 
 <main class="container">
-    <h1>Items in your items</h1>
+    <h1>Items in your shopping cart</h1>
     <hr>
-    <div class="table-responsive">
+    <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
             <tr>
@@ -57,8 +57,6 @@
                     <td>
                         <form class="remove-from" method="post" action="/s">
                             <a href="/s?command=remove_from_cart&trackId=${track.trackId}">Remove</a>
-                           <%-- <button type="submit" class="btn-custom remove-from-cart-btn" name="command" value="remove_from_cart">Delete</button>
-                            <input type="hidden" name="trackId" value="${track.trackId}">--%>
                         </form>
                     </td>
                 </tr>
@@ -68,6 +66,10 @@
         </table>
         <adt:emptyLoop iterNum="${fn:length(cartItems)}">Your shopping cart is empty.</adt:emptyLoop>
     </div>
+
+    <form id="makePurchaseForm" method="post" action="/s">
+        <button type="submit" class="btn-custom" name="command" value="make_purchase">Buy tracks</button>
+    </form>
 </main>
 
 <%-- Footer --%>
@@ -75,5 +77,6 @@
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/jquery.form.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/cart.js"></script>
 </body>
 </html>

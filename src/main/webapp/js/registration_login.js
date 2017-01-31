@@ -35,7 +35,7 @@ $(document).ready(function () {
                     $registerForm.prepend($respTag);
                     $inputs.val('');
                 } else if (response.right.state == "FAILURE") {
-                    var inputSelector = 'input[name=' + response.right.inputName + ']';
+                    var inputSelector = 'input[name=' + response.right.target + ']';
                     var $input = $(inputSelector);
                     $respTag.css(failureStyle);
                     $respTag.text(response.right.message);

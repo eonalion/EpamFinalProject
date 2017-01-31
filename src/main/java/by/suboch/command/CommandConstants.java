@@ -13,6 +13,7 @@ public class CommandConstants {
     public static final String PAGE_ALBUM = "path.page.album";
     public static final String PAGE_ARTIST = "path.page.artist";
     public static final String PAGE_CLIENT = "path.page.client";
+    public static final String PAGE_CART = "path.page.cart";
     public static final String RESOURCE_AUDIO = "path.resource.audiotracks";
 
     //    Session and request attributes.
@@ -42,6 +43,9 @@ public class CommandConstants {
     public static final String MESSAGE_SUCCESS_ADD_TO_CART = "message.success.addToCart";
     public static final String MESSAGE_SUCCESS_REMOVE_FROM_CART = "message.success.removeFromCart";
     public static final String MESSAGE_SUCCESS_SAVE_CHANGES = "message.success.saveChanges";
+    public static final String MESSAGE_SUCCESS_MAKE_PURCHASE = "message.success.makePurchase";
+    public static final String MESSAGE_FAILURE_MAKE_PURCHASE = "message.failure.makePurchase";
+    public static final String MESSAGE_FAILURE_EMPTY_SHOPPING_CART = "message.failure.empty.cart";
     public static final String MESSAGE_FAILURE_INVALID_LOGIN = "message.failure.invalid.login";
     public static final String MESSAGE_FAILURE_INVALID_EMAIL = "message.failure.invalid.email";
     public static final String MESSAGE_FAILURE_INVALID_PASSWORD = "message.failure.invalid.password";

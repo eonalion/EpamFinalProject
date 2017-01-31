@@ -4,14 +4,14 @@ package by.suboch.logic;
  *
  */
 public class LogicActionResult {
-    enum State {
+    public enum State {
         SUCCESS, FAILURE
     }
 
     private State state;
     private ActionResult result;
     private String message;
-    private String inputName;
+    private String target;
 
     public State getState() {
         return state;
@@ -37,11 +37,11 @@ public class LogicActionResult {
         this.message = message;
     }
 
-    public String getInputName() {
-        return inputName;
+    public String getTarget() {
+        return target;
     }
 
-    public void setInputName(String inputName) {
-        this.inputName = inputName;
+    public void setTarget(String target) {
+        this.target = target;
     }
 }

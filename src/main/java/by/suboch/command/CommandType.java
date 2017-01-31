@@ -67,6 +67,12 @@ public enum CommandType {
             this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
         }
     },
+    MAKE_PURCHASE {
+        {
+            this.command = new MakePurchaseCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER);
+        }
+    },
     CHANGE_PERSONAL_INFO {
         {
             this.command = new ChangePersonalInfoCommand();

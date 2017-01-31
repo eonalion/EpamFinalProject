@@ -1,0 +1,88 @@
+package by.suboch.dao;
+
+import by.suboch.ajax.BiTuple;
+import by.suboch.entity.Purchase;
+import by.suboch.exception.DAOException;
+
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+/**
+ *
+ */
+public class PurchaseDAO {
+    private Connection connection;
+    private static final String SQL_ADD_PURCHASE = "INSERT INTO `purchases` (`account_id`) VALUES (?)";
+    private static final String SQL_INSERT_PURCHASE_M2M_TRACKS_TABLE = "INSERT INTO `purchases_m2m_tracks` (`purchase_id`, `track_id`) VALUES (?, ?)";
+    private static final String SQL_LOAD_ALL_PURCHASES = "SELECT * FROM `purchases` WHERE  `account_id` = ?";
+    private static final String SQL_LOAD_TRACKS_ID = "SELECT `track_id` FROM `purchases_m2m_tracks` WHERE `purchase_id` = ?";
+    private static final String COLUMN_ACCOUNT_ID = "account_id";
+    private static final String COLUMN_PURCHASE_ID = "purchase_id";
+    private static final String COLUMN_TRACK_ID = "track_id";
+
+    public PurchaseDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    public int addPurchase(int accountId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_PURCHASE, Statement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setInt(1, accountId);
+            preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new DAOException("  "); //FIXME
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while adding purchase to database.", e);
+        }
+    }
+
+    public void fillPurchaseM2mTracks(int purchaseId, List<Integer> tracksId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_PURCHASE_M2M_TRACKS_TABLE)) {
+            for (int i = 0; i < tracksId.size(); i++) {
+                preparedStatement.setInt(1, purchaseId);
+                preparedStatement.setInt(2, tracksId.get(i));
+                preparedStatement.execute();
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Error while filling purchase_m2m_tracks table.", e);
+        }
+    }
+
+    public List<Purchase> loadAccountPurchases(int accountId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALL_PURCHASES)) {
+            preparedStatement.setInt(1, accountId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Purchase> purchases = new LinkedList<>();
+            while (resultSet.next()) {
+                Purchase purchase = new Purchase();
+                int purchaseId = resultSet.getInt(COLUMN_PURCHASE_ID);
+                purchase.setPurchaseId(purchaseId);
+                purchase.setAccountId(resultSet.getInt(COLUMN_ACCOUNT_ID));
+                purchase.setTrackIds(loadPurchaseTracksId(purchaseId));
+                purchases.add(purchase);
+            }
+            return purchases;
+        } catch (SQLException e) {
+            throw new DAOException("Error while selecting all purchases from database.", e);
+        }
+    }
+
+    public List<Integer> loadPurchaseTracksId(int purchaseId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_TRACKS_ID)) {
+            preparedStatement.setInt(1, purchaseId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Integer> tracksId = new ArrayList<>();
+            while (resultSet.next()) {
+                tracksId.add(resultSet.getInt(COLUMN_TRACK_ID));
+            }
+            return tracksId;
+        } catch (SQLException e) {
+            throw new DAOException("Error while selecting purchase tracks id from database.", e);
+        }
+    }
+}

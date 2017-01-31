@@ -73,27 +73,27 @@ public class RegisterCommand extends AbstractServletCommand {
         switch (registrationResult.getResult()) {
             case FAILURE_INVALID_USERNAME:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_LOGIN, locale));
-                registrationResult.setInputName(PARAM_LOGIN);
+                registrationResult.setTarget(PARAM_LOGIN);
                 break;
             case FAILURE_INVALID_EMAIL:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_EMAIL, locale));
-                registrationResult.setInputName(PARAM_EMAIL);
+                registrationResult.setTarget(PARAM_EMAIL);
                 break;
             case FAILURE_INVALID_PASSWORD:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_PASSWORD, locale));
-                registrationResult.setInputName(PARAM_EMAIL);
+                registrationResult.setTarget(PARAM_EMAIL);
                 break;
             case FAILURE_PASSWORDS_NOT_EQUALS:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_PASSWORDS_NOT_EQUALS, locale));
-                registrationResult.setInputName(PARAM_PASSWORD_CONFIRM);
+                registrationResult.setTarget(PARAM_PASSWORD_CONFIRM);
                 break;
             case FAILURE_USERNAME_NOT_UNIQUE:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_LOGIN_NOT_UNIQUE, locale));
-                registrationResult.setInputName(PARAM_LOGIN);
+                registrationResult.setTarget(PARAM_LOGIN);
                 break;
             case FAILURE_EMAIL_NOT_UNIQUE:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_EMAIL_NOT_UNIQUE, locale));
-                registrationResult.setInputName(PARAM_EMAIL);
+                registrationResult.setTarget(PARAM_EMAIL);
                 break;
             case SUCCESS_REGISTER:
                 registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_SUCCESS_REGISTER, locale));

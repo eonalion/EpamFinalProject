@@ -31,8 +31,10 @@ public class MainJSPFilter implements Filter {
 
         TrackLogic trackLogic = new TrackLogic();
         try {
-            request.setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
-            request.setAttribute(CommandConstants.ATTR_POPULAR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(0, CommandConstants.POPULAR_TRACKS_PER_PAGE));
+            if(request.getSession().getAttribute(CommandConstants.ATTR_PAGE_AMOUNT) == null) {
+                request.getSession().setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
+                request.getSession().setAttribute(CommandConstants.ATTR_POPULAR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(0, CommandConstants.POPULAR_TRACKS_PER_PAGE));
+            }
         } catch (LogicException e) {
             AbstractServletCommand.handleDBError(e, request, response);
             return;

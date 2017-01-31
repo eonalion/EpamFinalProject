@@ -39,20 +39,24 @@ public class AddToCartCommand extends AbstractServletCommand {
         TrackLogic trackLogic = new TrackLogic();
         String resultData = null;
 
-        //TODO: What to return if not ajax?
-        if(controllerConfiguration.getState() == ControllerConfiguration.State.AJAX) {
-            try {BiTuple<AJAXState, Object> data;
-                Track track = trackLogic.loadTrackById(trackId);
-                List<Track> cart = (List<Track>) request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS);
-                if(!cart.contains(track)) {
-                    cart.add(track);
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_USER_MAIN);
+        } else {
+            if (controllerConfiguration.getState() == ControllerConfiguration.State.AJAX) {
+                try {
+                    BiTuple<AJAXState, Object> data;
+                    Track track = trackLogic.loadTrackById(trackId);
+                    List<Track> cart = (List<Track>) request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS);
+                    if (!cart.contains(track)) {
+                        cart.add(track);
+                    }
+                    data = new BiTuple<>(AJAXState.OK, null);
+                    response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                    resultData = toJson(data);
+                } catch (LogicException e) {
+                    LOG.log(Level.ERROR, "Errors during sign in guest.", e);
+                    resultData = handleDBError(e, request, response);
                 }
-                data = new BiTuple<>(AJAXState.OK, null);
-                response.setContentType(CommandConstants.MIME_TYPE_JSON);
-                resultData = toJson(data);
-            } catch (LogicException e) {
-                LOG.log(Level.ERROR, "Errors during sign in guest.", e);
-                resultData = handleDBError(e, request, response);
             }
         }
 

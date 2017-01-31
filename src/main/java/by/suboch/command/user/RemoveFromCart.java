@@ -10,6 +10,7 @@ import by.suboch.entity.Track;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.TrackLogic;
+import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -35,21 +36,20 @@ public class RemoveFromCart extends AbstractServletCommand {
 
         TrackLogic trackLogic = new TrackLogic();
         String resultData = null; //FIXME:
-
-        try {
-            BiTuple<AJAXState, Object> data;
-            Track track = trackLogic.loadTrackById(trackId);
-            List<Track> cartItems = (List<Track>) request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS);
-            cartItems.remove(track);
-            resultData = visitor.getCurrentPage();
-            /*data = new BiTuple<>(AJAXState.OK, visitor.getCurrentPage());
-            response.setContentType(CommandConstants.MIME_TYPE_JSON);
-            resultData = toJson(data);*/
-        } catch (LogicException e) {
-            LOG.log(Level.ERROR, "Errors during sign in guest.", e);
-            resultData = handleDBError(e, request, response);
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CART);
+        } else {
+            try {
+                BiTuple<AJAXState, Object> data;
+                Track track = trackLogic.loadTrackById(trackId);
+                List<Track> cartItems = (List<Track>) request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS);
+                cartItems.remove(track);
+                resultData = visitor.getCurrentPage();
+            } catch (LogicException e) {
+                LOG.log(Level.ERROR, "Errors during sign in guest.", e);
+                resultData = handleDBError(e, request, response);
+            }
         }
-
         return resultData;
     }
 }
