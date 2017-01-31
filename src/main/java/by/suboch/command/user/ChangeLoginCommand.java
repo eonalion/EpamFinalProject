@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.user;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -16,22 +17,23 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 /**
  *
  */
-public class ChangeEmailCommand implements IServletCommand {
+public class ChangeLoginCommand implements IServletCommand {
 
-    private static final String PARAM_EMAIL = "email";
-    private static final String MESSAGE_CHANGE_EMAIL_ERROR = "message.error.changeEmail";
+    private static final String PARAM_LOGIN = "login";
+
+    private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changeName";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
-        String email = request.getParameter(PARAM_EMAIL);
+        String login = request.getParameter(PARAM_LOGIN);
         Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
         String nextPage;
         try {
-            if (!email.equals(account.getEmail())) {
+            if (!login.equals(account.getLogin())) {
                 AccountLogic logic = new AccountLogic();
-                if (logic.changeEmail(account.getAccountId(), email)) {
-                    account.setEmail(email);
+                if (logic.changeLogin(account.getAccountId(), login)) {
+                    account.setLogin(login);
                     //TODO: Set message.
                 } else {
                     //TODO: Set message.
@@ -41,7 +43,7 @@ public class ChangeEmailCommand implements IServletCommand {
             }
             nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_CHANGE_EMAIL_ERROR, visitor.getLocale()));
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE, visitor.getLocale()));
             nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 

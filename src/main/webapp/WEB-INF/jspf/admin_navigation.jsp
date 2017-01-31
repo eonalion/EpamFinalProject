@@ -31,7 +31,8 @@
                                     href="#" style="padding: 6px">${account.login}
                 <c:choose>
                     <c:when test="${account.avatar != null}">
-                        <img class="avatar-nav" src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
+                        <img class="avatar-nav"
+                             src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
                     </c:when>
                     <c:otherwise>
                         <img class="avatar-nav" src="../../images/default_avatar.jpg">

@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.admin;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.dao.BonusDAO;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;

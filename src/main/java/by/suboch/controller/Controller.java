@@ -11,13 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.Locale;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import static by.suboch.controller.ControllerConstants.CONTROLLER_CONFIG_KEY;
 
@@ -51,7 +45,7 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ControllerConfig servletConfig = (ControllerConfig) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration servletConfig = (ControllerConfiguration) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
         CommandManager commandManager = new CommandManager();
         IServletCommand command = commandManager.defineCommand(servletConfig.getCommand());
 

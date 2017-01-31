@@ -1,8 +1,10 @@
-package by.suboch.command;
+package by.suboch.command.guest;
 
 import by.suboch.ajax.AJAXState;
 import by.suboch.ajax.BiTuple;
-import by.suboch.controller.ControllerConfig;
+import by.suboch.command.AbstractServletCommand;
+import by.suboch.command.CommandConstants;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
@@ -16,34 +18,35 @@ import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.stream.Stream;
 
 /**
  *
  */
-public class AddAdminCommand extends AbstractServletCommand {
+public class LogInCommand extends AbstractServletCommand {
     private static final Logger LOG = LogManager.getLogger();
 
-    private static final String EMAIL_OR_LOGIN_PARAM = "emailOrLogin";
-    private static final String PASSWORD_PARAM = "signInPassword";
+    private static final String PARAM_AUTHORIZATION_NAME = "authorizationName";
+    private static final String PARAM_PASSWORD = "password";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String emailOrLogin = request.getParameter(EMAIL_OR_LOGIN_PARAM);
-        String password = request.getParameter(PASSWORD_PARAM);
-        boolean formValid = !Stream.of(emailOrLogin, password).anyMatch(s -> s == null);
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        String emailOrLogin = request.getParameter(PARAM_AUTHORIZATION_NAME);
+        String password = request.getParameter(PARAM_PASSWORD);
+
+        /*boolean formValid = !Stream.of(emailOrLogin, password).anyMatch(s -> s == null);
         if (!formValid) {
             LOG.log(Level.WARN, "Sign in form consists null on non-nullable parameters.");
             return suitablePageForm(ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION), request, response);
-        }
-        String resultData;
+        }*/
+
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
         AccountLogic accountLogic = new AccountLogic();
-        Visitor visitor = (Visitor)request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
-        if (controllerConfig.getState() != ControllerConfig.State.AJAX) {
+        String resultData;
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
-            request.setAttribute(EMAIL_OR_LOGIN_PARAM, emailOrLogin);
-            request.setAttribute(PASSWORD_PARAM, password);
+            request.setAttribute(PARAM_AUTHORIZATION_NAME, emailOrLogin);
+            request.setAttribute(PARAM_PASSWORD, password);
         } else {
             try {
                 BiTuple<AJAXState, Object> data;
@@ -57,7 +60,7 @@ public class AddAdminCommand extends AbstractServletCommand {
                     request.getSession().setAttribute(CommandConstants.ATTR_ACCOUNT, account);
                     data = new BiTuple<>(AJAXState.LOCATION_REDIRECT, request.getContextPath() + ConfigurationManager.getProperty(CommandConstants.PAGE_USER_MAIN));
                 } else {
-                    data = new BiTuple<>(AJAXState.HANDLE, MessageManager.getProperty(CommandConstants.MESSAGE_SIGN_IN_INVALID, visitor.getLocale()));
+                    data = new BiTuple<>(AJAXState.HANDLE, MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_LOGIN, visitor.getLocale()));
                 }
                 response.setContentType(CommandConstants.MIME_TYPE_JSON);
                 resultData = toJson(data);

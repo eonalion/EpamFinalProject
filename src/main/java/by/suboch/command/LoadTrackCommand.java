@@ -1,8 +1,7 @@
 package by.suboch.command;
 
-import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
-import by.suboch.entity.Account;
 import by.suboch.manager.ConfigurationManager;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +20,7 @@ public class LoadTrackCommand implements IServletCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         String trackId = request.getParameter(PARAM_TRACK_ID);
         String location = request.getParameter(PARAM_TRACK_LOCATION);
 
@@ -39,7 +38,7 @@ public class LoadTrackCommand implements IServletCommand {
             }
 
             response.setContentType(CommandConstants.MIME_TYPE_AUDIO_MP3);
-            controllerConfig.setState(ControllerConfig.State.RESPONSE);
+            controllerConfiguration.setState(ControllerConfiguration.State.RESPONSE);
         } catch (IOException e) {
             //TODO: Handle exception;
         }

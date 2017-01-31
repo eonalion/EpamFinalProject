@@ -1,7 +1,9 @@
-package by.suboch.command;
+package by.suboch.command.guest;
 
 import by.suboch.ajax.AJAXState;
-import by.suboch.controller.ControllerConfig;
+import by.suboch.command.AbstractServletCommand;
+import by.suboch.command.CommandConstants;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -18,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.util.Locale;
 
-import static by.suboch.command.CommandConstants.*;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**
@@ -42,11 +43,11 @@ public class RegisterCommand extends AbstractServletCommand {
         String password = request.getParameter(PARAM_PASSWORD);
         String passwordConfirm = request.getParameter(PARAM_PASSWORD_CONFIRM);
 
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         AccountLogic logic = new AccountLogic();
         String resultData;
-        if (controllerConfig.getState() != ControllerConfig.State.AJAX) {
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
             request.setAttribute(PARAM_FIRST_NAME, firstName);
             request.setAttribute(PARAM_LAST_NAME, lastName);
@@ -71,31 +72,31 @@ public class RegisterCommand extends AbstractServletCommand {
     private void setResultMessage(LogicActionResult registrationResult, Locale locale) {
         switch (registrationResult.getResult()) {
             case FAILURE_INVALID_USERNAME:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_LOGIN, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_LOGIN, locale));
                 registrationResult.setInputName(PARAM_LOGIN);
                 break;
             case FAILURE_INVALID_EMAIL:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_EMAIL, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_EMAIL, locale));
                 registrationResult.setInputName(PARAM_EMAIL);
                 break;
             case FAILURE_INVALID_PASSWORD:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_PASSWORD, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_INVALID_PASSWORD, locale));
                 registrationResult.setInputName(PARAM_EMAIL);
                 break;
             case FAILURE_PASSWORDS_NOT_EQUALS:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_PASSWORDS_NOT_EQUALS, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_PASSWORDS_NOT_EQUALS, locale));
                 registrationResult.setInputName(PARAM_PASSWORD_CONFIRM);
                 break;
             case FAILURE_USERNAME_NOT_UNIQUE:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_LOGIN_NOT_UNIQUE, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_LOGIN_NOT_UNIQUE, locale));
                 registrationResult.setInputName(PARAM_LOGIN);
                 break;
             case FAILURE_EMAIL_NOT_UNIQUE:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_EMAIL_NOT_UNIQUE, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_EMAIL_NOT_UNIQUE, locale));
                 registrationResult.setInputName(PARAM_EMAIL);
                 break;
             case SUCCESS_REGISTER:
-                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_REGISTRATION_OK, locale));
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_SUCCESS_REGISTER, locale));
                 break;
             default:
         }

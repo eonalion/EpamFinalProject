@@ -5,11 +5,11 @@ import java.io.Serializable;
 /**
  *
  */
-public class ControllerConfig implements Serializable {
+public class ControllerConfiguration implements Serializable {
     //TODO: hashCode, equals, toString.
 
     public enum State {FORWARD, REDIRECT, AJAX, RESPONSE}
-    private ControllerConfig.State state;
+    private ControllerConfiguration.State state;
     private String command;
 
     public State getState() {

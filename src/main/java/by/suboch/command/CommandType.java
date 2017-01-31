@@ -1,5 +1,9 @@
 package by.suboch.command;
 
+import by.suboch.command.admin.*;
+import by.suboch.command.guest.LogInCommand;
+import by.suboch.command.guest.RegisterCommand;
+import by.suboch.command.user.*;
 import by.suboch.entity.Visitor;
 
 import java.util.EnumSet;

@@ -1,14 +1,10 @@
-package by.suboch.command;
+package by.suboch.command.admin;
 
-import by.suboch.controller.ControllerConfig;
-import by.suboch.entity.Album;
+import by.suboch.command.IServletCommand;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.entity.Visitor;
-import by.suboch.exception.LogicException;
 import by.suboch.logic.AlbumLogic;
-import by.suboch.logic.LogicActionResult;
 import by.suboch.logic.TrackLogic;
-import by.suboch.manager.ConfigurationManager;
-import by.suboch.manager.MessageManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -16,17 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import static by.suboch.command.CommandConstants.*;
 import static by.suboch.controller.ControllerConstants.CONTROLLER_CONFIG_KEY;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
@@ -45,7 +33,7 @@ public class AddAlbumCommand implements IServletCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
 
         String title = request.getParameter(PARAM_ALBUM_TITLE);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(PATTERN_DATE);

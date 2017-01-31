@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.user;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -16,31 +17,32 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 /**
  *
  */
-public class ChangePasswordCommand implements IServletCommand {
-    private static final String PARAM_OLD_PASSWORD = "oldPassword";
-    private static final String PARAM_NEW_PASSWORD = "newPassword";
-    private static final String PARAM_NEW_PASSWORD_CONFIRM = "newPasswordConfirm";
+public class ChangeEmailCommand implements IServletCommand {
 
-    private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changeName";
+    private static final String PARAM_EMAIL = "email";
+    private static final String MESSAGE_CHANGE_EMAIL_ERROR = "message.error.changeEmail";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
-        String oldPassword = request.getParameter(PARAM_OLD_PASSWORD);
-        String newPassword = request.getParameter(PARAM_NEW_PASSWORD);
-        String newPasswordConfirm = request.getParameter(PARAM_NEW_PASSWORD_CONFIRM);
+        String email = request.getParameter(PARAM_EMAIL);
         Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
         String nextPage;
         try {
-            AccountLogic logic = new AccountLogic();
-            if (logic.changePassword(account.getAccountId(), oldPassword, newPassword, newPasswordConfirm)) {
-                //TODO: Set message.
+            if (!email.equals(account.getEmail())) {
+                AccountLogic logic = new AccountLogic();
+                if (logic.changeEmail(account.getAccountId(), email)) {
+                    account.setEmail(email);
+                    //TODO: Set message.
+                } else {
+                    //TODO: Set message.
+                }
             } else {
                 //TODO: Set message.
             }
             nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE, visitor.getLocale()));
+            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_CHANGE_EMAIL_ERROR, visitor.getLocale()));
             nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
 

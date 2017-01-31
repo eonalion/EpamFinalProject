@@ -2,7 +2,7 @@ package by.suboch.command;
 
 import by.suboch.ajax.AJAXState;
 import by.suboch.ajax.BiTuple;
-import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.manager.ConfigurationManager;
@@ -32,8 +32,8 @@ public abstract class AbstractServletCommand implements IServletCommand {
 
     public static String handleError(ErrorHolder holder, HttpServletRequest request, HttpServletResponse response) {
         String resultData;
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
-        if (controllerConfig.getState() == ControllerConfig.State.AJAX) {
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        if (controllerConfiguration.getState() == ControllerConfiguration.State.AJAX) {
             response.setContentType(CommandConstants.MIME_TYPE_JSON);
             return toJson(AJAXState.ERROR, holder);
         } else {
@@ -64,8 +64,8 @@ public abstract class AbstractServletCommand implements IServletCommand {
     }*/
 
     public String suitablePageForm(String uri, HttpServletRequest request, HttpServletResponse response) {
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
-        if (controllerConfig.getState() == ControllerConfig.State.AJAX) {
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        if (controllerConfiguration.getState() == ControllerConfiguration.State.AJAX) {
             response.setContentType(CommandConstants.MIME_TYPE_JSON);
             return toJson(AJAXState.LOCATION_GO, request.getContextPath() + uri);
         } else {

@@ -1,13 +1,19 @@
 package by.suboch.filter;
 
+import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
+import by.suboch.controller.ControllerConstants;
+import by.suboch.entity.Track;
+import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.TrackLogic;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  *
@@ -18,12 +24,18 @@ public class MainJSPFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
+        Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
+        if (visitor.getCart() == null) {
+            visitor.setCart(new ArrayList<>());
+        }
+
         TrackLogic trackLogic = new TrackLogic();
         try {
             request.setAttribute(CommandConstants.ATTR_PAGE_AMOUNT, CommandConstants.PAGES_AMOUNT);
             request.setAttribute(CommandConstants.ATTR_POPULAR_TRACKS_ON_PAGE, trackLogic.loadPopularTracks(0, CommandConstants.POPULAR_TRACKS_PER_PAGE));
         } catch (LogicException e) {
-            //TODO: Handle.
+            AbstractServletCommand.handleDBError(e, request, response);
             return;
         }
 

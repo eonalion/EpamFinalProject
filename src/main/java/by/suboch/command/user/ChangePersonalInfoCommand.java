@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.user;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -19,7 +20,7 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 public class ChangePersonalInfoCommand implements IServletCommand {
     private static final String FIRST_NAME_PARAM = "firstName";
     private static final String LAST_NAME_PARAM = "lastName";
-    private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changePersonalInfo";
+    private static final String CHANGE_NAME_ERROR_MESSAGE = "message.failure.changePersonalInfo";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {

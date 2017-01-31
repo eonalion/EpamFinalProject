@@ -1,8 +1,7 @@
 package by.suboch.filter;
 
 import by.suboch.command.CommandType;
-import by.suboch.command.IServletCommand;
-import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 
@@ -22,17 +21,17 @@ public class ControllerFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        ControllerConfig controllerConfig = initConfig(request);
+        ControllerConfiguration controllerConfiguration = initConfig(request);
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
 
-        if (controllerConfig.getCommand() == null) {
+        if (controllerConfiguration.getCommand() == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         CommandType currentType;
         try {
-            currentType = CommandType.valueOf(controllerConfig.getCommand().toUpperCase());
+            currentType = CommandType.valueOf(controllerConfiguration.getCommand().toUpperCase());
             Visitor.Role currentRole = visitor.getRole();
             //FIXME: Duplicate code.
             if (!currentType.role.contains(currentRole)) {
@@ -45,16 +44,16 @@ public class ControllerFilter implements Filter {
         }
     }
 
-    private ControllerConfig initConfig(HttpServletRequest request) throws IOException {
-        ControllerConfig servletConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+    private ControllerConfiguration initConfig(HttpServletRequest request) throws IOException {
+        ControllerConfiguration servletConfig = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         if (servletConfig == null) {
-            servletConfig = new ControllerConfig();
+            servletConfig = new ControllerConfiguration();
             request.getSession().setAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY, servletConfig);
         }
         if (ControllerConstants.AJAX_HEADER_VALUE.equals(request.getHeader(ControllerConstants.X_REQUESTED_WITH))) {
-            servletConfig.setState(ControllerConfig.State.AJAX);
+            servletConfig.setState(ControllerConfiguration.State.AJAX);
         } else {
-            servletConfig.setState(ControllerConfig.State.FORWARD);
+            servletConfig.setState(ControllerConfiguration.State.FORWARD);
         }
 
         servletConfig.setCommand(request.getParameter(ControllerConstants.COMMAND_PARAM));

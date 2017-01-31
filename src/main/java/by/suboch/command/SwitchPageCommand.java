@@ -1,6 +1,6 @@
 package by.suboch.command;
 
-import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -26,7 +26,7 @@ public class SwitchPageCommand implements IServletCommand {
         boolean toLastPage = Boolean.parseBoolean(request.getParameter(PARAM_TO_LAST_PAGE));
         int pageAmount  = (int) request.getSession().getAttribute(CommandConstants.ATTR_PAGE_AMOUNT);
 
-        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
 
         int pageNumber;
@@ -45,7 +45,7 @@ public class SwitchPageCommand implements IServletCommand {
             //TODO: Handle exception.
         }
 
-        controllerConfig.setState(ControllerConfig.State.FORWARD);
+        controllerConfiguration.setState(ControllerConfiguration.State.FORWARD);
 
         return visitor.getCurrentPage();
     }

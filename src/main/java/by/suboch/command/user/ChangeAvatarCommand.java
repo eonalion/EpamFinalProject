@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.user;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
@@ -20,7 +21,7 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
  *
  */
 public class ChangeAvatarCommand implements IServletCommand {
-    private static final String MESSAGE_ERROR_CHANGE_AVATAR = "message.error.changeAvatar";
+    private static final String MESSAGE_ERROR_CHANGE_AVATAR = "message.failure.changeAvatar";
     static final String PARAM_AVATAR = "avatar";
 
     @Override

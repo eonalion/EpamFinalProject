@@ -1,5 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.user;
 
+import by.suboch.command.IServletCommand;
 import by.suboch.entity.Visitor;
 import by.suboch.manager.ConfigurationManager;
 import org.apache.logging.log4j.LogManager;

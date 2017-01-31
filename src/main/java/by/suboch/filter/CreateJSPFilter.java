@@ -1,5 +1,6 @@
 package by.suboch.filter;
 
+import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AlbumLogic;
@@ -9,6 +10,7 @@ import by.suboch.logic.TrackLogic;
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
@@ -20,6 +22,7 @@ public class CreateJSPFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse) servletResponse;
         try {
             TrackLogic trackLogic = new TrackLogic();
             AlbumLogic albumLogic = new AlbumLogic();
@@ -28,7 +31,7 @@ public class CreateJSPFilter implements Filter {
             request.setAttribute(CommandConstants.ATTR_ALBUM_LIST, albumLogic.loadAllAlbums());
             request.setAttribute(CommandConstants.ATTR_GENRE_LIST, genreLogic.loadAllGenres());
         } catch (LogicException e) {
-            //TODO: Handle.
+            AbstractServletCommand.handleDBError(e, request, response);
             return;
         }
 

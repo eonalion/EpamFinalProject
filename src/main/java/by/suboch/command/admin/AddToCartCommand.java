@@ -1,4 +1,6 @@
-package by.suboch.command;
+package by.suboch.command.admin;
+
+import by.suboch.command.IServletCommand;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

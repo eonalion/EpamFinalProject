@@ -7,7 +7,7 @@
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
-<nav class="navbar navbar-inverse navbar-fixed-top complex-navbar">
+<nav class="navbar navbar-inverse navbar-fixed-top simple-navbar">
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="#"><fmt:message key="nav.website"/></a>
@@ -17,7 +17,7 @@
                     key="nav.home"/></a>
             </li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/jsp/user/catalog_about.jsp"><fmt:message key="nav.catalog"/></a></li>
+                   href="/jsp/user/catalog_tracks.jsp.jsp"><fmt:message key="nav.catalog"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="nav-menu-item nav-menu-item-inactive" href="/jsp/user/cart.jsp"></span>
@@ -36,7 +36,7 @@
                 </c:choose>
                 <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                    <li><a href="/jsp/user/catalog_about.jsp"><fmt:message
+                    <li><a href="/jsp/user/settings.jsp"><fmt:message
                             key="nav.account.settings"/></a></li>
                     <li><a href="/jsp/user/purchases.jsp"><fmt:message
                             key="nav.account.purchases"/></a></li>
