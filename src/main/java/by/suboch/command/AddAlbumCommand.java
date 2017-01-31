@@ -69,8 +69,8 @@ public class AddAlbumCommand implements IServletCommand {
         AlbumLogic albumLogic = new AlbumLogic();
         TrackLogic trackLogic = new TrackLogic();
 
-        String nextPage;
-        try {
+        String nextPage = "";
+       /* try {
             LogicActionResult actionResult = albumLogic.addAlbum(title, releaseDate, image);
             if(tracksInAlbumIds!=null) {
                 int albumId = albumLogic.loadAlbumId(title, releaseDate);
@@ -87,7 +87,7 @@ public class AddAlbumCommand implements IServletCommand {
             //TODO: Handle exception;
             request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_ERROR_ADD_ALBUM, visitor.getLocale()));
             nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
-        }
+        }*/
         return nextPage;
     }
 }

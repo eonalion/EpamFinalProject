@@ -39,35 +39,26 @@
     <%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
     <div class="row">
         <section id="register-section" class="active-section col-md-6">
-            <p>Welcome!</p>
             <form name="registration" id="registration" method="post" action="/s">
                 <div class="row">
-                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
-                    >
-                    <p>fdhgk</p>
+                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>">
                 </div>
                 <div class="row">
-                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>"
-                    >
+                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>">
                 </div>
                 <div class="row">
-                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>"
-                           maxlength="40"
-                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$">
+                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>">
                 </div>
                 <div class="row">
-                    <input type="password" name="password" placeholder="<fmt:message key="registration.form.password"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$">
+                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>">
+                </div>
+                <div class="row">
+                    <input type="password" name="password"
+                           placeholder="<fmt:message key="registration.form.password"/>">
                 </div>
                 <div class="row">
                     <input type="password" name="passwordConfirm"
-                           placeholder="<fmt:message key="registration.form.confirmPassword"/>"
-                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$">
-                </div>
-                <div class="row">
-                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>"
-                           pattern="^.+@.+[.].+$"
-                    >
+                           placeholder="<fmt:message key="registration.form.confirmPassword"/>">
                 </div>
                 <div class="row">
                     <div class="input-wrap">
@@ -78,7 +69,7 @@
                     </div>
                 </div>
                 <div class="row">
-                    <button class="btn-custom" type="submit" name="command" value="register" onclick=""><fmt:message
+                    <button class="btn-custom" type="submit" name="command" value="register"><fmt:message
                             key="registration.label"/></button>
                 </div>
             </form>
@@ -118,11 +109,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>--%>
 <script src="../../js/jquery-3.1.1.min.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
 <script src="../../js/classie.js"></script>
-<script src="../../js/registration_login.js"></script>
 <script src="../../js/script.js"></script>
 <script src="../../js/bootstrap3_player.js"></script>
+<script src="../../js/registration_login.js"></script>
 
 </body>
 </html>

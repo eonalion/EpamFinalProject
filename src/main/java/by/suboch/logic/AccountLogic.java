@@ -6,12 +6,9 @@ import by.suboch.entity.Account;
 import by.suboch.exception.DAOException;
 import by.suboch.exception.LogicException;
 import by.suboch.validator.AccountValidator;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.Connection;
 import java.sql.SQLException;
-import java.time.temporal.ValueRange;
 import java.util.List;
 
 /**
@@ -19,22 +16,32 @@ import java.util.List;
  */
 
 public class AccountLogic {
-    private static final Logger LOG = LogManager.getLogger();
-
     public AccountLogic() {
     }
 
-    public boolean registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) throws LogicException {
+    public LogicActionResult registerAccount(String firstName, String lastName, String login, String email, String password, String passwordConfirm) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (AccountValidator.validateRegistration(login, email, password, passwordConfirm) &&
-                    accountDAO.checkLoginUniqueness(login) &&//TODO: return something more useful.
-                    accountDAO.checkEmailUniqueness(email)) {
-                accountDAO.registerAccount(firstName, lastName, login, email, password);
-                return true;
+            LogicActionResult logicActionResult = new LogicActionResult();
+            logicActionResult.setState(LogicActionResult.State.FAILURE);
+            if (!AccountValidator.validateLogin(login)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_USERNAME);
+            } else if (!AccountValidator.validateEmail(email)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_EMAIL);
+            } else if (!AccountValidator.validatePassword(password)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_PASSWORD);
+            } else if (!AccountValidator.checkPasswordsMatch(password, passwordConfirm)) {
+                logicActionResult.setResult(ActionResult.FAILURE_PASSWORDS_NOT_EQUALS);
+            } else if (!accountDAO.checkLoginUniqueness(login)) {
+                logicActionResult.setResult(ActionResult.FAILURE_USERNAME_NOT_UNIQUE);
+            } else if (!accountDAO.checkEmailUniqueness(email)) {
+                logicActionResult.setResult(ActionResult.FAILURE_EMAIL_NOT_UNIQUE);
             } else {
-                return false;
+                logicActionResult.setState(LogicActionResult.State.SUCCESS);
+                logicActionResult.setResult(ActionResult.SUCCESS_REGISTER);
+                accountDAO.registerAccount(firstName, lastName, login, email, password);
             }
+            return logicActionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while account registration.", e);
         }

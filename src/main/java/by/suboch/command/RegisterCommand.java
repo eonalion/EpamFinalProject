@@ -1,14 +1,22 @@
 package by.suboch.command;
 
+import by.suboch.ajax.AJAXState;
+import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
-import by.suboch.logic.TrackLogic;
+import by.suboch.logic.LogicActionResult;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import java.util.Locale;
 
 import static by.suboch.command.CommandConstants.*;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
@@ -16,8 +24,8 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 /**
  *
  */
-public class RegisterCommand implements IServletCommand {
-
+public class RegisterCommand extends AbstractServletCommand {
+    private static final Logger LOG = LogManager.getLogger();
     private static final String PARAM_FIRST_NAME = "firstName";
     private static final String PARAM_LAST_NAME = "lastName";
     private static final String PARAM_EMAIL = "email";
@@ -27,7 +35,6 @@ public class RegisterCommand implements IServletCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         String firstName = request.getParameter(PARAM_FIRST_NAME);
         String lastName = request.getParameter(PARAM_LAST_NAME);
         String email = request.getParameter(PARAM_EMAIL);
@@ -35,21 +42,62 @@ public class RegisterCommand implements IServletCommand {
         String password = request.getParameter(PARAM_PASSWORD);
         String passwordConfirm = request.getParameter(PARAM_PASSWORD_CONFIRM);
 
+        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         AccountLogic logic = new AccountLogic();
-
-        try {
-            if(logic.registerAccount(firstName, lastName, login, email, password, passwordConfirm)) {
-                request.setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_REGISTRATION_OK, visitor.getLocale()));
-
-                return ConfigurationManager.getProperty(PAGE_REGISTRATION);
-                //TODO: DAO methods. Register. Return current page with positive message.
-            } else {
-                //TODO: Set warn message. Return current page with warn message.
+        String resultData;
+        if (controllerConfig.getState() != ControllerConfig.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
+            request.setAttribute(PARAM_FIRST_NAME, firstName);
+            request.setAttribute(PARAM_LAST_NAME, lastName);
+            request.setAttribute(PARAM_LOGIN, login);
+            request.setAttribute(PARAM_EMAIL, email);
+        } else {
+            try {
+                LogicActionResult registrationResult = logic.registerAccount(firstName, lastName, login, email, password, passwordConfirm);
+                setResultMessage(registrationResult, visitor.getLocale());
+                response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                AJAXState state = AJAXState.HANDLE;
+                resultData = toJson(state, registrationResult);
+            } catch (LogicException e) {
+                LOG.log(Level.ERROR, "Errors during sign up guest.", e);
+                resultData = handleDBError(e, request, response);
             }
-        } catch (LogicException e) {
-            //TODO: Handle exception. Set error message. Return error page.
         }
 
-        return "";
+        return resultData;
+    }
+
+    private void setResultMessage(LogicActionResult registrationResult, Locale locale) {
+        switch (registrationResult.getResult()) {
+            case FAILURE_INVALID_USERNAME:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_LOGIN, locale));
+                registrationResult.setInputName(PARAM_LOGIN);
+                break;
+            case FAILURE_INVALID_EMAIL:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_EMAIL, locale));
+                registrationResult.setInputName(PARAM_EMAIL);
+                break;
+            case FAILURE_INVALID_PASSWORD:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_INVALID_PASSWORD, locale));
+                registrationResult.setInputName(PARAM_EMAIL);
+                break;
+            case FAILURE_PASSWORDS_NOT_EQUALS:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_PASSWORDS_NOT_EQUALS, locale));
+                registrationResult.setInputName(PARAM_PASSWORD_CONFIRM);
+                break;
+            case FAILURE_USERNAME_NOT_UNIQUE:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_LOGIN_NOT_UNIQUE, locale));
+                registrationResult.setInputName(PARAM_LOGIN);
+                break;
+            case FAILURE_EMAIL_NOT_UNIQUE:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_EMAIL_NOT_UNIQUE, locale));
+                registrationResult.setInputName(PARAM_EMAIL);
+                break;
+            case SUCCESS_REGISTER:
+                registrationResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_REGISTRATION_OK, locale));
+                break;
+            default:
+        }
     }
 }

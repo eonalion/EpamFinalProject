@@ -3,8 +3,7 @@ package by.suboch.logic;
 /**
  *
  */
-
-public enum  ResultConstants {
+public enum ActionResult {
     SUCCESS_REGISTER,
     SUCCESS_ADD_TRACK,
     SUCCESS_ADD_ALBUM,
@@ -26,5 +25,5 @@ public enum  ResultConstants {
     FAILURE_ARTIST_NOT_UNIQUE,
     FAILURE_ALBUM_NOT_UNIQUE,
     FAILURE_TRACK_NOT_UNIQUE,
-    FAILURE_BONUS_NOT_UNIQUE,
+    FAILURE_BONUS_NOT_UNIQUE;
 }

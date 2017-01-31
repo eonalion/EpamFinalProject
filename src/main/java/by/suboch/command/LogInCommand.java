@@ -1,60 +1,73 @@
 package by.suboch.command;
 
+import by.suboch.ajax.AJAXState;
+import by.suboch.ajax.BiTuple;
+import by.suboch.controller.ControllerConfig;
+import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
-import by.suboch.logic.AlbumLogic;
-import by.suboch.logic.GenreLogic;
-import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import static by.suboch.command.CommandConstants.*;
-import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
+import java.util.stream.Stream;
 
 /**
  *
  */
-public class LogInCommand implements IServletCommand {
+public class LogInCommand extends AbstractServletCommand {
+    private static final Logger LOG = LogManager.getLogger();
 
     private static final String PARAM_AUTHORIZATION_NAME = "authorizationName";
     private static final String PARAM_PASSWORD = "password";
-    private static final String ERROR_MESSAGE_LOGIN = "message.error.loginError";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String authorizationName = request.getParameter(PARAM_AUTHORIZATION_NAME);
+        String emailOrLogin = request.getParameter(PARAM_AUTHORIZATION_NAME);
         String password = request.getParameter(PARAM_PASSWORD);
 
-        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
-        AccountLogic logic = new AccountLogic();
-        String nextPage;
-        try {
-            if(logic.authorizeAccount(authorizationName, password)) {
-                Account account = logic.loadAccount(authorizationName);
-                request.getSession().setAttribute(ATTR_ACCOUNT, account);
+        /*boolean formValid = !Stream.of(emailOrLogin, password).anyMatch(s -> s == null);
+        if (!formValid) {
+            LOG.log(Level.WARN, "Sign in form consists null on non-nullable parameters.");
+            return suitablePageForm(ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION), request, response);
+        }*/
 
-                nextPage = ConfigurationManager.getProperty(PAGE_USER_MAIN);
-
-                if(logic.isAdmin(authorizationName)) {
-                    visitor.setRole(Visitor.Role.ADMIN);
+        ControllerConfig controllerConfig = (ControllerConfig) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
+        AccountLogic accountLogic = new AccountLogic();
+        String resultData;
+        if (controllerConfig.getState() != ControllerConfig.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
+            request.setAttribute(PARAM_AUTHORIZATION_NAME, emailOrLogin);
+            request.setAttribute(PARAM_PASSWORD, password);
+        } else {
+            try {
+                BiTuple<AJAXState, Object> data;
+                if (accountLogic.authorizeAccount(emailOrLogin, password)) {
+                    Account account = accountLogic.loadAccount(emailOrLogin);
+                    if (account.getAdminRights()) {
+                        visitor.setRole(Visitor.Role.ADMIN);
+                    } else {
+                        visitor.setRole(Visitor.Role.USER);
+                    }
+                    request.getSession().setAttribute(CommandConstants.ATTR_ACCOUNT, account);
+                    data = new BiTuple<>(AJAXState.LOCATION_REDIRECT, request.getContextPath() + ConfigurationManager.getProperty(CommandConstants.PAGE_USER_MAIN));
                 } else {
-                    visitor.setRole(Visitor.Role.USER);
+                    data = new BiTuple<>(AJAXState.HANDLE, MessageManager.getProperty(CommandConstants.MESSAGE_SIGN_IN_INVALID, visitor.getLocale()));
                 }
-
-
-            } else {
-                //TODO: Set warn message through validator or what? It could be already set in validator, so just return current page.
-                nextPage = ConfigurationManager.getProperty(PAGE_REGISTRATION);
+                response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                resultData = toJson(data);
+            } catch (LogicException e) {
+                LOG.log(Level.ERROR, "Errors during sign in guest.", e);
+                resultData = handleDBError(e, request, response);
             }
-        } catch (LogicException e) {
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(ERROR_MESSAGE_LOGIN, visitor.getLocale()));
-            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
         }
-        return nextPage;
+        return resultData;
     }
 }

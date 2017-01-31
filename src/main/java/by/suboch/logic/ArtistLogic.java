@@ -2,7 +2,6 @@ package by.suboch.logic;
 
 import by.suboch.dao.ArtistDAO;
 import by.suboch.database.ConnectionPool;
-import by.suboch.entity.Album;
 import by.suboch.entity.Artist;
 import by.suboch.exception.DAOException;
 import by.suboch.exception.LogicException;
@@ -23,10 +22,10 @@ public class ArtistLogic {
             if (artistDAO.checkArtist(name, country)) {
                 artistDAO.addNewArtist(name, country, description, image);
                 actionResult.setState(LogicActionResult.State.SUCCESS);
-                actionResult.addOutcome(ResultConstants.SUCCESS_ADD_ALBUM);
+                actionResult.setResult(ActionResult.SUCCESS_ADD_ALBUM);
             } else {
                 actionResult.setState(LogicActionResult.State.FAILURE);
-                actionResult.addOutcome(ResultConstants.FAILURE_ALBUM_NOT_UNIQUE);
+                actionResult.setResult(ActionResult.FAILURE_ALBUM_NOT_UNIQUE);
             }
             return actionResult;
         } catch (SQLException | DAOException e) {

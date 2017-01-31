@@ -20,7 +20,7 @@ public class TrackLogic {
             LogicActionResult actionResult = new LogicActionResult();
             trackDAO.addNewTrack(title, location, price, genreId);
             actionResult.setState(LogicActionResult.State.SUCCESS);
-            actionResult.addOutcome(ResultConstants.SUCCESS_ADD_ALBUM);
+            actionResult.setResult(ActionResult.SUCCESS_ADD_ALBUM);
             return actionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while creating track in logic.", e);

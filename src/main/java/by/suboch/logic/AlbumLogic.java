@@ -6,7 +6,6 @@ import by.suboch.entity.Album;
 import by.suboch.exception.DAOException;
 import by.suboch.exception.LogicException;
 
-import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -23,11 +22,11 @@ public class AlbumLogic {
             if (albumDAO.checkAlbum(title, releaseDate)) {
                 albumDAO.addNewAlbum(title, releaseDate, image);
                 actionResult.setState(LogicActionResult.State.SUCCESS);
-                actionResult.addOutcome(ResultConstants.SUCCESS_ADD_ALBUM);
+                actionResult.setResult(ActionResult.SUCCESS_ADD_ALBUM);
                 //return true;
             } else {
                 actionResult.setState(LogicActionResult.State.FAILURE);
-                actionResult.addOutcome(ResultConstants.FAILURE_ALBUM_NOT_UNIQUE);
+                actionResult.setResult(ActionResult.FAILURE_ALBUM_NOT_UNIQUE);
             }
             return actionResult;
         } catch (SQLException | DAOException e) {

@@ -62,12 +62,12 @@ public class AddArtistCommand implements IServletCommand {
                 int artistId = artistLogic.loadArtistId(name, country);
                 albumLogic.setArtistId(albumIds, artistId);
             }
-            if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
+           /* if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
                 nextPage = "";//toJson(signUpResult);
                 // TODO: Set success message.
             } else {
                 // TODO: Set warn message(or it's already set?).
-            }
+            }*/
             nextPage = visitor.getCurrentPage();
         } catch (LogicException e) {
             //TODO: Handle exception;

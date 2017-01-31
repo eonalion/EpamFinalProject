@@ -88,12 +88,12 @@ public class AddTrackCommand implements IServletCommand {
             String location = relativePath + SEPARATOR + fileName;
             LogicActionResult actionResult = trackLogic.addTrack(fileName, location, price, genreId);
 
-            if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
+           /* if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
                 nextPage = "";//toJson(signUpResult);
                 // TODO: Set success message.
             } else {
                 // TODO: Set warn message(or it's already set?).
-            }
+            }*/
             nextPage = visitor.getCurrentPage();
 
         } catch (LogicException e) {

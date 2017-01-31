@@ -25,13 +25,6 @@ public class AccountValidator {
         return password.equals(passwordConfirm);
     }
 
-    public static boolean validateRegistration(String login, String email, String password, String passwordConfirm) {
-        return validateLogin(login)
-                && validateEmail(email)
-                && validatePassword(password)
-                && checkPasswordsMatch(password, passwordConfirm);
-    }
-
     public static boolean validateAuthorization(String authorizationName, String password) {
         return (validateLogin(authorizationName) || validateEmail(authorizationName))
                 && validatePassword(password);

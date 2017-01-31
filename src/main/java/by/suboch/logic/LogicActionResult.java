@@ -1,29 +1,47 @@
 package by.suboch.logic;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  *
  */
 public class LogicActionResult {
-    public enum State {
+    enum State {
         SUCCESS, FAILURE
     }
 
     private State state;
+    private ActionResult result;
+    private String message;
+    private String inputName;
 
-    private List<ResultConstants> outcomes = new ArrayList<>();
-
-    public void addOutcome(ResultConstants outcome) {
-        outcomes.add(outcome);
+    public State getState() {
+        return state;
     }
 
     public void setState(State state) {
         this.state = state;
     }
 
-    public State getState() {
-        return state;
+    public ActionResult getResult() {
+        return result;
+    }
+
+    public void setResult(ActionResult result) {
+        this.result = result;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getInputName() {
+        return inputName;
+    }
+
+    public void setInputName(String inputName) {
+        this.inputName = inputName;
     }
 }

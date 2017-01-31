@@ -52,8 +52,8 @@ public class Controller extends HttpServlet {
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         ControllerConfig servletConfig = (ControllerConfig) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
-        CommandManager client = new CommandManager();
-        IServletCommand command = client.defineCommand(servletConfig.getCommand());
+        CommandManager commandManager = new CommandManager();
+        IServletCommand command = commandManager.defineCommand(servletConfig.getCommand());
 
         String commandExecuteRes = command.execute(request, response);
 
