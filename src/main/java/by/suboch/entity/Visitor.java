@@ -1,6 +1,5 @@
 package by.suboch.entity;
 
-import java.util.List;
 import java.util.Locale;
 
 /**

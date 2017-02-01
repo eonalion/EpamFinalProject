@@ -20,7 +20,6 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 public class ChangeLoginCommand implements IServletCommand {
 
     private static final String PARAM_LOGIN = "login";
-
     private static final String CHANGE_NAME_ERROR_MESSAGE = "message.error.changeName";
 
     @Override

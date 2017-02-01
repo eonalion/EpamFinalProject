@@ -16,6 +16,10 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>XSSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>VisitorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -34,6 +38,46 @@
     <filter-mapping>
         <filter-name>GuestAccessFilter</filter-name>
         <url-pattern>/jsp/guest/*</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CatalogAlbumsJSPFilter</filter-name>
+        <url-pattern>/jsp/user/catalog_albums.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CatalogArtistsJSPFilter</filter-name>
+        <url-pattern>/jsp/user/catalog_artists.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CatalogTracksJSPFilter</filter-name>
+        <url-pattern>/jsp/user/catalog_tracks.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>ClientsJSPFilter</filter-name>
+        <url-pattern>/jsp/admin/clients.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CreateJSPFilter</filter-name>
+        <url-pattern>/jsp/admin/create.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>EditJSPFilter</filter-name>
+        <url-pattern>/jsp/admin/edit.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>PurchasesJSPFilter</filter-name>
+        <url-pattern>/jsp/user/purchases.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>TrackJSPFilter</filter-name>
+        <url-pattern>/jsp/user/track.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>MainJSPFilter</filter-name>
+        <url-pattern>/jsp/user/main.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
+        <filter-name>CommentsJSPFilter</filter-name>
+        <url-pattern>/jsp/admin/comments.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>ControllerFilter</filter-name>

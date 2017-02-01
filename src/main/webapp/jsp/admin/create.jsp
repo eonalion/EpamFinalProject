@@ -38,7 +38,7 @@
         <a href="../../jsp/admin/create.jsp">Create</a>
         <a href="../../jsp/admin/edit.jsp">Edit</a>
         <a href="../../jsp/admin/clients.jsp">Clients</a>
-        <a href="#">Contact</a>
+        <a href="../../jsp/admin/comments.jsp">Comments</a>
     </div>
     <div id="main">
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>

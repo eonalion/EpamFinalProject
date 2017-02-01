@@ -109,11 +109,41 @@
     </div>
     <hr>
     <h2>Leave comments</h2>
-    <form id="commentForm" action="/s" method="post">
-        <label for="comment">Comment:</label>
-        <textarea class="form-control" rows="3" id="comment"></textarea>
-        <button class="btn-custom " type="submit" name="command" value="leave_comment">Comment</button>
-    </form>
+    <div class="row">
+        <form id="commentForm" action="/s" method="post">
+            <label for="comment">Comment:</label>
+            <textarea id="comment" class="form-control" rows="3" maxlength="500" name="comment" form="commentForm"
+                      placeholder="Comment track..." style="background-color:transparent"></textarea>
+            <button class="btn-custom " type="submit" name="command" value="leave_comment">Comment</button>
+        </form>
+    </div>
+    <hr>
+
+    <div id="comments">
+        <c:forEach var="comment" items="${trackCommentList}">
+            <div class="row">
+                <div class="col-sm-1">
+                    <img class="img-responsive avatar-nav"
+                         src="/s?command=load_image&elementId=${comment.right.accountId}&target=account"
+                         onerror="this.src='../../images/default_album.png'" alt="">
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="panel panel-default" style="background-color:transparent">
+                        <div class="panel-heading" style="background-color:transparent">
+                            <strong>${comment.right.login}</strong> <span
+                                class="text-muted">${comment.left.dateTime}</span>
+                        </div>
+                        <div class="panel-body">
+                                ${comment.left.text}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </c:forEach>
+        <adt:emptyList items="${trackCommentList}">No comments.</adt:emptyList>
+    </div>
+
 </main>
 
 <c:import url="../../WEB-INF/jspf/footer.jsp"/>
@@ -123,6 +153,7 @@
 <script src="../../js/bootstrap3_player.js"></script>
 <script src="../../js/play_track.js"></script>
 <script src="../../js/cart.js"></script>
+<script src="../../js/comment.js"></script>
 
 <script>
     function openNav() {

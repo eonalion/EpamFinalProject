@@ -5,7 +5,6 @@ import by.suboch.command.CommandConstants;
 import by.suboch.entity.Account;
 import by.suboch.entity.Purchase;
 import by.suboch.exception.LogicException;
-import by.suboch.logic.AccountLogic;
 import by.suboch.logic.PurchaseLogic;
 
 import javax.servlet.*;

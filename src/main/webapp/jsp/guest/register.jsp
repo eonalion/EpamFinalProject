@@ -36,7 +36,6 @@
             <h3><fmt:message key="authorization.section.header"/></h3>
         </section>
     </div>
-    <%--    <div class="row"><h3><c:out value="${sessionScope.message}"/></h3></div>--%>
     <div class="row">
         <section id="register-section" class="active-section col-md-6">
             <form name="registration" id="registration" method="post" action="/s">

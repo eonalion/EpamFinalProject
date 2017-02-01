@@ -2,7 +2,6 @@ package by.suboch.command;
 
 import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
-import by.suboch.entity.Account;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.logic.AlbumLogic;

@@ -102,7 +102,7 @@ $(document).ready(function () {
                 $respTag.text(response.right.message);
                 if (response.right.state == "SUCCESS") {
                     $respTag.css(successStyle);
-                    $addTrackForm.prepend($respTag);
+                    $addGenreForm.prepend($respTag);
                     $inputs.val('');
                 } else if (response.right.state == "FAILURE") {
                     var inputSelector = 'input[name=' + response.right.target + ']';

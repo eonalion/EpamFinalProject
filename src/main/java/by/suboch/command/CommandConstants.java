@@ -25,15 +25,17 @@ public class CommandConstants {
     public static final String ATTR_GENRE_LIST = "genreList";
     public static final String ATTR_ALBUM_LIST = "albumList";
     public static final String ATTR_ARTIST_LIST = "artistList";
+    public static final String ATTR_TRACK_COMMENT_LIST = "trackCommentList";
     public static final String ATTR_ACCOUNT_LIST = "accountList";
+    public static final String ATTR_COMMENT_LIST = "commentList";
     public static final String ATTR_PAGE_AMOUNT = "pageAmount";
     public static final String ATTR_CART_ITEMS = "cartItems";
     public static final String ATTR_ACCOUNT_PURCHASES = "purchaseList";
     public static final String ATTR_ERROR = "error";
 
     //    Additional parameters.
-    public static final int POPULAR_TRACKS_PER_PAGE = 3;
-    public static final int PAGES_AMOUNT = 4;
+    public static final int POPULAR_TRACKS_PER_PAGE = 6;
+    public static final int PAGES_AMOUNT = 2;
 
     //    Mime types.
     public static final String MIME_TYPE_IMAGE_JPG = "image/jpeg";
@@ -50,6 +52,7 @@ public class CommandConstants {
     public static final String MESSAGE_SUCCESS_ADD_TRACK = "message.success.addTrack";
     public static final String MESSAGE_SUCCESS_ADD_ARTIST = "message.success.addArtist";
     public static final String MESSAGE_SUCCESS_ADD_ALBUM = "message.success.addAlbum";
+    public static final String MESSAGE_SUCCESS_ADD_COMMENT = "message.success.addComment";
 
     public static final String MESSAGE_FAILURE_MAKE_PURCHASE = "message.failure.makePurchase";
     public static final String MESSAGE_FAILURE_EMPTY_SHOPPING_CART = "message.failure.empty.cart";
@@ -65,6 +68,8 @@ public class CommandConstants {
     public static final String MESSAGE_FAILURE_ARTIST_NOT_UNIQUE = "message.failure.notUnique.artist";
     public static final String MESSAGE_FAILURE_ALBUM_NOT_UNIQUE = "message.failure.notUnique.album";
     public static final String MESSAGE_FAILURE_LOGIN = "message.failure.logIn";
+    public static final String MESSAGE_FAILURE_ADD_COMMENT = "message.failure.addComment";
+    public static final String MESSAGE_FAILURE_EMPTY_COMMENT = "message.failure.empty.comment";
     public static final String MESSAGE_FAILURE_ADD_TRACK = "message.failure.addTrack";
 
     public static final String MESSAGE_ERROR_DATABASE_CAUSE = "message.error.database.cause";

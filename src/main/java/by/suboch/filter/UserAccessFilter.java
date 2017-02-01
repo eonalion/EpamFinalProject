@@ -3,15 +3,12 @@ package by.suboch.filter;
 
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
-import by.suboch.manager.ConfigurationManager;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
-import static by.suboch.controller.ControllerConstants.PAGE_INDEX;
 
 /**
  *

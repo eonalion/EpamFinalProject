@@ -33,12 +33,6 @@ public class LogInCommand extends AbstractServletCommand {
         String emailOrLogin = request.getParameter(PARAM_AUTHORIZATION_NAME);
         String password = request.getParameter(PARAM_PASSWORD);
 
-        /*boolean formValid = !Stream.of(emailOrLogin, password).anyMatch(s -> s == null);
-        if (!formValid) {
-            LOG.log(Level.WARN, "Sign in form consists null on non-nullable parameters.");
-            return suitablePageForm(ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION), request, response);
-        }*/
-
         ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
         AccountLogic accountLogic = new AccountLogic();

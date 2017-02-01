@@ -53,7 +53,7 @@
             <c:forEach var="purchase" items="${purchaseList}">
                 <tr>
                     <td>${i}</td>
-                    <td></td>
+                    <td>${purchase.date}</td>
                     <td>${fn:length(purchase.tracksId)}</td>
                     <td>${purchase.totalPrice}$</td>
                     <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}">View purchase</a></td>

@@ -4,13 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="tld" uri="http://suboch.by/jsp/" %>
+<%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clients</title>
+    <title>Comments</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -44,13 +45,29 @@
         <div class="row">
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
         </div>
-        <h1>Clients</h1>
-        <hr>
-        <c:forEach var="account" items="${accountList}">
-            <a href="/s?command=show_element&type=account&id=${account.accountId}">${account.login}</a>
-            <c:if test="${account.admin}"> <span class="label label-default">admin</span></c:if>
+        <c:forEach var="comment" items="${commentList}">
+            <div class="row">
+                <div class="col-sm-1">
+                    <img class="img-responsive avatar-nav"
+                         src="/s?command=load_image&elementId=${comment.right.accountId}&target=account"
+                         onerror="this.src='../../images/default_album.png'" alt="">
+                </div>
+
+                <div class="col-sm-5">
+                    <div class="panel panel-default" style="background-color:transparent">
+                        <div class="panel-heading" style="background-color:transparent">
+                            <strong>${comment.right.login}</strong> <span
+                                class="text-muted">${comment.left.dateTime}</span>
+                        </div>
+                        <div class="panel-body">
+                                ${comment.left.text}
+                        </div>
+                    </div>
+                </div>
+            </div>
             <hr>
         </c:forEach>
+        <adt:emptyList items="${commentList}">No comments.</adt:emptyList>
     </div>
 </main>
 

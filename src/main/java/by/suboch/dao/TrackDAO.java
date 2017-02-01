@@ -17,23 +17,22 @@ public class TrackDAO {
     private Connection connection;
 
 
-    private static final String SQL_ADD_TRACK = "INSERT INTO `tracks` (`track_title`, `track_price`, `track_location`, `genres_id`) " +
+    private static final String SQL_ADD_TRACK = "INSERT INTO `tracks` (`track_title`, `track_price`, `track_location`, `genre_id`) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_LOAD_POPULAR_TRACKS = "SELECT * FROM `tracks` LIMIT ?,?";
     private static final String SQL_LOAD_ALL_TRACKS = "SELECT * FROM `tracks` ORDER BY `track_title`";
     private static final String SQL_LOAD_TRACK_BY_ID = "SELECT * FROM `tracks` WHERE `track_id` = ?";
     private static final String SQL_LOAD_ALBUM_TRACKS = "SELECT `track_id`, `track_title` FROM `tracks` WHERE `album_id` = ?";
-    private static final String SQL_LOAD_PURCHASE_TRACKS =  "SELECT `tracks`.`track_id`, `tracks`.`track_title`, `tracks`.`track_price` FROM tracks\n" +
+    private static final String SQL_LOAD_PURCHASE_TRACKS =  "SELECT `tracks`.`track_id`, `tracks`.`track_title`, `tracks`.`track_price`, `tracks`.`track_location` FROM tracks\n" +
             "  LEFT JOIN purchases_m2m_tracks ON tracks.track_id = purchases_m2m_tracks.track_id\n" +
             "  LEFT JOIN purchases ON purchases_m2m_tracks.purchase_id = purchases.purchase_id WHERE purchases.purchase_id = ?";
     private static final String SQL_UPDATE_ALBUM_ID = "UPDATE `tracks` SET `album_id` = ? WHERE `track_id` = ?";
 
     private static final String COLUMN_TRACK_ID = "track_id";
     private static final String COLUMN_ALBUM_ID = "album_id";
-    private static final String COLUMN_GENRE_ID = "genres_id";
+    private static final String COLUMN_GENRE_ID = "genre_id";
     private static final String COLUMN_TRACK_TITLE = "track_title";
     private static final String COLUMN_TRACK_PRICE = "track_price";
-    private static final String COLUMN_TRACK_DISCOUNT = "track_discount";
     private static final String COLUMN_TRACK_LOCATION = "track_location";
 
     public TrackDAO(Connection connection) {
@@ -67,7 +66,6 @@ public class TrackDAO {
                 track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
                 track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
                 track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
-                track.setDiscount(resultSet.getShort(COLUMN_TRACK_DISCOUNT));
                 trackList.add(track);
             }
 
@@ -90,7 +88,6 @@ public class TrackDAO {
                 track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
                 track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
                 track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
-                track.setDiscount(resultSet.getShort(COLUMN_TRACK_DISCOUNT));
                 trackList.add(track);
             }
 
@@ -113,7 +110,6 @@ public class TrackDAO {
                 track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
                 track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
                 track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
-                track.setDiscount(resultSet.getShort(COLUMN_TRACK_DISCOUNT));
                 return track;
             } else {
                 throw new DAOException("No track with such id found in database.");
@@ -164,6 +160,7 @@ public class TrackDAO {
                 track.setTrackId(resultSet.getInt(COLUMN_TRACK_ID));
                 track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
                 track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
+                track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
                 tracks.add(track);
             }
             return tracks;

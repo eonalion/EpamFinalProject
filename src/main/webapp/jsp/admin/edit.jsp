@@ -38,7 +38,7 @@
         <a href="../../jsp/admin/create.jsp">Create</a>
         <a href="../../jsp/admin/edit.jsp">Edit</a>
         <a href="../../jsp/admin/clients.jsp">Clients</a>
-        <a href="#">Contact</a>
+        <a href="../../jsp/admin/comments.jsp">Comments</a>
     </div>
     <div id="main">
         <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
@@ -47,23 +47,31 @@
         <div class="row">
             <nav class="col-md-12">
                 <ul>
-                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-test', this)"><fmt:message
+                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('edit-track', this)"><fmt:message
                             key="main.addNew.track"/></li>
-                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-artist', this)"><fmt:message
-                            key="main.addNew.artist"/></li>
-                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-album', this)"><fmt:message
+                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('edit-artist', this)">
+                        <fmt:message
+                                key="main.addNew.artist"/></li>
+                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('edit-album', this)"><fmt:message
                             key="main.addNew.album"/></li>
-                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-genre', this)"><fmt:message
+                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('edit-genre', this)"><fmt:message
                             key="main.addNew.genre"/></li>
-                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-bonus', this)"><fmt:message
-                            key="main.addNew.bonus"/></li>
                 </ul>
             </nav>
         </div>
 
         <div class="row">
-            <section id="add-test" class="active-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
+            <section id="edit-track" class="active-section col-md-12">
+                <form action="/s" method="post" enctype="multipart/form-data">
+                    <select class="select-box js-example-responsive" style="width: 50%" name="elementId">
+                        <c:forEach items="${trackList}" var="track">
+                            <option value="${track.trackId}">${track.title}</option>
+                        </c:forEach>
+                    </select>
+                    <input type="hidden" name="type" value="track">
+                    <button class="btn-custom" type="submit" name="command" value="edit_element">Edit</button>
+                </form>
+                <%--<form method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
                         <input type="text" name="title" placeholder="<fmt:message key="main.addNew.form.track"/>">
                     </div>
@@ -87,10 +95,19 @@
                             <fmt:message
                                     key="main.addNew.addTrack"/></button>
                     </div>
-                </form>
+                </form>--%>
             </section>
-            <section id="add-artist" class="inactive-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
+            <section id="edit-artist" class="inactive-section col-md-12">
+                <form action="/s" method="get" enctype="multipart/form-data">
+                    <select class="select-box js-example-responsive" style="width: 50%" name="elementId">
+                        <c:forEach items="${artistList}" var="artist">
+                            <option value="${artist.artistId}">${artist.name}</option>
+                        </c:forEach>
+                        <input type="hidden" name="type" value="artist">
+                        <button class="btn-custom" type="submit" name="command" value="edit_element">Edit</button>
+                    </select>
+                </form>
+                <%--<form method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
                         Choose file<input type="file" name="artistImage">
                     </div>
@@ -98,7 +115,6 @@
                         <input type="text" name="artistName" placeholder="<fmt:message key="main.addNew.form.artist"/>"
                                required>
                     </div>
-                    mySidenav
                     <div class="row">
                         <input type="text" name="artistCountry"
                                placeholder="<fmt:message key="main.addNew.form.country"/>"
@@ -122,39 +138,57 @@
                             <fmt:message
                                     key="main.addNew.addArtist"/></button>
                     </div>
-                </form>
+                </form>--%>
             </section>
-            <section id="add-album" class="inactive-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
-                    <div class="row">
-                        Choose file<input type="file" name="albumImage">
-                    </div>
-                    <div class="row">
-                        <input type="text" name="albumTitle" placeholder="<fmt:message key="main.addNew.form.album"/>"
-                               required>
-                    </div>
-                    <div class="row">
-                        <input type="date" name="albumReleaseDate"
-                               placeholder="<fmt:message key="main.addNew.form.releaseDate"/>">
-                    </div>
-                    <div class="row">
-                        <p>Tracks</p>
-                        <select class="select-box js-example-responsive" multiple="multiple" style="width: 50%"
-                                name="albumTracks">
-                            <c:forEach items="${trackList}" var="track">
-                                <option value="${track.trackId}">${track.title}</option>
-                            </c:forEach>
-                        </select>
-                    </div>
-                    <div class="row">
-                        <button class="btn-custom" type="submit" name="command" value="add_album" onclick="">
-                            <fmt:message
-                                    key="main.addNew.addAlbum"/></button>
-                    </div>
+            <section id="edit-album" class="inactive-section col-md-12">
+                <form action="/s" method="get" enctype="multipart/form-data">
+                    <select class="select-box js-example-responsive" style="width: 50%" name="elementId">
+                        <c:forEach items="${albumList}" var="album">
+                            <option value="${album.albumId}">${album.title}</option>
+                        </c:forEach>
+                        <input type="hidden" name="type" value="album">
+                        <button class="btn-custom" type="submit" name="command" value="edit_element">Edit</button>
+                    </select>
                 </form>
+                <%-- <form method="post" action="/s" enctype="multipart/form-data">
+                     <div class="row">
+                         Choose file<input type="file" name="albumImage">
+                     </div>
+                     <div class="row">
+                         <input type="text" name="albumTitle" placeholder="<fmt:message key="main.addNew.form.album"/>"
+                                required>
+                     </div>
+                     <div class="row">
+                         <input type="date" name="albumReleaseDate"
+                                placeholder="<fmt:message key="main.addNew.form.releaseDate"/>">
+                     </div>
+                     <div class="row">
+                         <p>Tracks</p>
+                         <select class="select-box js-example-responsive" multiple="multiple" style="width: 50%"
+                                 name="albumTracks">
+                             <c:forEach items="${trackList}" var="track">
+                                 <option value="${track.trackId}">${track.title}</option>
+                             </c:forEach>
+                         </select>
+                     </div>
+                     <div class="row">
+                         <button class="btn-custom" type="submit" name="command" value="add_album" onclick="">
+                             <fmt:message
+                                     key="main.addNew.addAlbum"/></button>
+                     </div>
+                 </form>--%>
             </section>
-            <section id="add-genre" class="inactive-section col-md-12">
-                <form method="post" action="/s">
+            <section id="edit-genre" class="inactive-section col-md-12">
+                <form action="/s" method="get" enctype="multipart/form-data">
+                    <select class="select-box js-example-responsive" style="width: 50%" name="elementId">
+                        <c:forEach items="${genreList}" var="genre">
+                            <option value="${genre.genreId}">${genre.name}</option>
+                        </c:forEach>
+                        <input type="hidden" name="type" value="genre">
+                        <button class="btn-custom" type="submit" name="command" value="edit_element">Edit</button>
+                    </select>
+                </form>
+                <%--<form method="post" action="/s">
                     <div class="row">
                         <input type="text" name="genreName" placeholder="<fmt:message key="main.addNew.form.genre"/>"
                                required>
@@ -164,25 +198,7 @@
                             <fmt:message
                                     key="main.addNew.addGenre"/></button>
                     </div>
-                </form>
-            </section>
-            <section id="add-bonus" class="inactive-section col-md-12">
-                <form method="post" action="/s">
-                    <div class="row">
-                        <input type="text" name="bonusPrice" placeholder="<fmt:message key="main.addNew.form.price"/>"
-                               pattern="^\d+(\.\d+)?$" required>
-                    </div>
-                    <div class="row">
-                        <input type="text" name="bonusDiscount"
-                               placeholder="<fmt:message key="main.addNew.form.discount"/>"
-                               required>
-                    </div>
-                    <div class="row">
-                        <button class="btn-custom" type="submit" name="command" value="add_bonus" onclick="">
-                            <fmt:message
-                                    key="main.addNew.addBonus"/></button>
-                    </div>
-                </form>
+                </form>--%>
             </section>
         </div>
     </div>

@@ -41,12 +41,16 @@
             <table class="table table-condensed">
                 <tbody>
                 <tr>
-                    <td>Total price</td>
-                    <td>${currentPurchase.totalPrice}$</td>
+                    <td>Purchase date</td>
+                    <td>${currentPurchase.date}</td>
                 </tr>
                 <tr>
                     <td>Items amount</td>
                     <td>${fn:length(currentPurchaseTracks)}</td>
+                </tr>
+                <tr>
+                    <td>Total price</td>
+                    <td>${currentPurchase.totalPrice}$</td>
                 </tr>
                 </tbody>
             </table>
@@ -71,6 +75,8 @@
                     <td>${i}</td>
                     <td><a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></td>
                     <td>${track.price}$</td>
+                    <td><a href="/s?command=load_track&trackId=${track.trackId}&location=${track.location}"
+                           download="${track.title}">Download</a></td>
                 </tr>
                 <c:set var="i" value="${i+1}" scope="page"/>
             </c:forEach>

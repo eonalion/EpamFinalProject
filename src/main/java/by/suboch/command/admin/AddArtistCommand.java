@@ -4,7 +4,6 @@ import by.suboch.ajax.AJAXState;
 import by.suboch.ajax.BiTuple;
 import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
-import by.suboch.command.IServletCommand;
 import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
@@ -12,7 +11,6 @@ import by.suboch.exception.LogicException;
 import by.suboch.logic.AlbumLogic;
 import by.suboch.logic.ArtistLogic;
 import by.suboch.logic.LogicActionResult;
-import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
 import org.apache.logging.log4j.LogManager;
@@ -22,11 +20,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 import java.io.IOException;
 import java.util.Locale;
 
-import static by.suboch.command.CommandConstants.*;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 
 /**

@@ -13,7 +13,7 @@ import java.util.List;
 /**
  *
  */
-public class ShowElementCommand extends AbstractServletCommand {
+public class EditElementCommand extends AbstractServletCommand {
     private static final String PARAM_ELEMENT_ID = "id";
     private static final String PARAM_ELEMENT_TYPE = "type";
 
@@ -33,7 +33,6 @@ public class ShowElementCommand extends AbstractServletCommand {
     private static final String TYPE_ACCOUNT = "account";
     private static final String TYPE_PURCHASE = "purchase";
 
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int elementId = Integer.parseInt(request.getParameter(PARAM_ELEMENT_ID));
@@ -45,8 +44,8 @@ public class ShowElementCommand extends AbstractServletCommand {
         ArtistLogic artistLogic = new ArtistLogic();
         AccountLogic accountLogic = new AccountLogic();
         PurchaseLogic purchaseLogic = new PurchaseLogic();
-
         try {
+
             switch (elementType) {
                 case TYPE_TRACK:
                     Track track = trackLogic.loadTrackById(elementId);
@@ -87,7 +86,7 @@ public class ShowElementCommand extends AbstractServletCommand {
                 default:
             }
         } catch (LogicException e) {
-            //TODO: log
+            //TODO: Handle exception.
             nextPage = handleDBError(e, request, response);
         }
 

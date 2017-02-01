@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class PurchaseDAO {
     private Connection connection;
-    private static final String SQL_ADD_PURCHASE = "INSERT INTO `purchases` (`account_id`) VALUES (?)";
+    private static final String SQL_ADD_PURCHASE = "INSERT INTO `purchases` (`account_id`, `date`) VALUES (?, NOW())";
     private static final String SQL_FIND_PURCHASE_BY_ID = "SELECT * FROM `purchases` WHERE `purchase_id` = ?";
     private static final String SQL_INSERT_PURCHASE_M2M_TRACKS_TABLE = "INSERT INTO `purchases_m2m_tracks` (`purchase_id`, `track_id`) VALUES (?, ?)";
     private static final String SQL_LOAD_ALL_PURCHASES = "SELECT * FROM `purchases` WHERE  `account_id` = ?";
@@ -24,6 +24,7 @@ public class PurchaseDAO {
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_PURCHASE_ID = "purchase_id";
     private static final String COLUMN_TRACK_ID = "track_id";
+    private static final String COLUMN_DATE = "date";
 
     public PurchaseDAO(Connection connection) {
         this.connection = connection;
@@ -66,6 +67,7 @@ public class PurchaseDAO {
                 purchase.setAccountId(resultSet.getInt(COLUMN_ACCOUNT_ID));
                 purchase.setTracksId(loadPurchaseTracksId(purchaseId));
                 purchase.setTotalPrice(calculateTotalPrice(purchaseId));
+                purchase.setDate(resultSet.getTimestamp(COLUMN_DATE).toLocalDateTime());
                 return purchase;
             } else {
                 throw new DAOException("No album with such title and release date found in database.");
@@ -88,6 +90,7 @@ public class PurchaseDAO {
                 purchase.setAccountId(resultSet.getInt(COLUMN_ACCOUNT_ID));
                 purchase.setTracksId(loadPurchaseTracksId(purchaseId));
                 purchase.setTotalPrice(calculateTotalPrice(purchaseId));
+                purchase.setDate(resultSet.getTimestamp(COLUMN_DATE).toLocalDateTime());
                 purchases.add(purchase);
             }
             return purchases;

@@ -44,11 +44,11 @@
         <div class="row">
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
         </div>
-        <h1>Albums</h1>
-        <c:forEach var="album" items="${albumList}">
-            <a href="/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a>
-            <hr>
-        </c:forEach>
+            <h1>Albums</h1>
+            <c:forEach var="album" items="${albumList}">
+                <a href="/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a>
+                <hr>
+            </c:forEach>
     </div>
 </main>
 

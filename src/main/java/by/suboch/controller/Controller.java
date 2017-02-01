@@ -1,7 +1,8 @@
 package by.suboch.controller;
 
 
-import by.suboch.command.*;
+import by.suboch.command.CommandManager;
+import by.suboch.command.IServletCommand;
 import by.suboch.database.ConnectionPool;
 
 import javax.servlet.ServletException;

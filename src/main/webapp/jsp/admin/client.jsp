@@ -37,10 +37,10 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="#">Create</a>
-        <a href="#">Edit</a>
-        <a href="#">Clients</a>
-        <a href="#">Contact</a>
+        <a href="../../jsp/admin/create.jsp">Create</a>
+        <a href="../../jsp/admin/edit.jsp">Edit</a>
+        <a href="../../jsp/admin/clients.jsp">Clients</a>
+        <a href="../../jsp/admin/comments.jsp">Comments</a>
     </div>
     <div id="main">
         <div class="row">

@@ -3,12 +3,10 @@ package by.suboch.command.admin;
 import by.suboch.ajax.AJAXState;
 import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
-import by.suboch.command.IServletCommand;
 import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
-import by.suboch.logic.GenreLogic;
 import by.suboch.logic.LogicActionResult;
 import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
@@ -20,15 +18,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
-
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
 import java.util.logging.Level;
 
-import static by.suboch.command.CommandConstants.ATTR_MESSAGE;
-import static by.suboch.command.CommandConstants.PAGE_ERROR;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 

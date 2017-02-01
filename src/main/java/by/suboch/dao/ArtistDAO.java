@@ -1,7 +1,5 @@
 package by.suboch.dao;
 
-import by.suboch.ajax.BiTuple;
-import by.suboch.entity.Album;
 import by.suboch.entity.Artist;
 import by.suboch.exception.DAOException;
 
