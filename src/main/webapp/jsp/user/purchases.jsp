@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
+    <title>Purchases</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -35,41 +35,35 @@
 </c:choose>
 
 <main class="container">
-    <h1>Items in your shopping cart</h1>
+    <h1>Your purchases</h1>
     <hr>
     <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Track title</th>
-                <th>Track price</th>
+                <th>Date</th>
+                <th>Items amount</th>
+                <th>Total price</th>
                 <th></th>
             </tr>
             </thead>
             <tbody>
             <c:set var="i" value="1" scope="page"/>
-            <c:forEach var="track" items="${cartItems}">
+            <c:forEach var="purchase" items="${purchaseList}">
                 <tr>
                     <td>${i}</td>
-                    <td><a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></td>
-                    <td>${track.price}</td>
-                    <td>
-                        <form class="remove-from-cart-form" method="post" action="/s">
-                            <a class="remove-from-cart-link" href="/s?command=remove_from_cart&trackId=${track.trackId}">Remove</a>
-                        </form>
-                    </td>
+                    <td></td>
+                    <td>${fn:length(purchase.tracksId)}</td>
+                    <td>${purchase.totalPrice}$</td>
+                    <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}">View purchase</a></td>
                 </tr>
                 <c:set var="i" value="${i+1}" scope="page"/>
             </c:forEach>
             </tbody>
         </table>
-        <adt:emptyList items="${cartItems}">Your shopping cart is empty.</adt:emptyList>
+        <adt:emptyList items="${purchaseList}">You have not made any purchases.</adt:emptyList>
     </div>
-
-    <form id="makePurchaseForm" method="post" action="/s">
-        <button type="submit" class="btn-custom" name="command" value="make_purchase">Buy tracks</button>
-    </form>
 </main>
 
 <%-- Footer --%>

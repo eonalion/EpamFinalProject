@@ -1,5 +1,7 @@
 package by.suboch.dao;
 
+import by.suboch.ajax.BiTuple;
+import by.suboch.entity.Album;
 import by.suboch.entity.Artist;
 import by.suboch.exception.DAOException;
 
@@ -27,12 +29,11 @@ public class ArtistDAO {
     private static final String COLUMN_DESCRIPTION = "description";
     private static final String COLUMN_IMAGE = "artist_image";
 
-
     public ArtistDAO(Connection connection) {
         this.connection = connection;
     }
 
-    public /*int*/void addNewArtist(String name, String country, String description, byte[] image) throws DAOException {
+    public int addNewArtist(String name, String country, String description, byte[] image) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ARTIST, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, country);
@@ -43,10 +44,13 @@ public class ArtistDAO {
                 preparedStatement.setBlob(4, (Blob) null);
             }
             preparedStatement.execute();
-           /* ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
             if (resultSet.next()) {
-                return resultSet.getInt(COLUMN_ARTIST_ID);
-            }*/
+                return resultSet.getInt(1);
+            } else {
+                throw new DAOException("  "); //FIXME
+            }
         } catch (SQLException e) {
             throw new DAOException("Error while inserting new artist into database.", e);
         }
@@ -99,7 +103,6 @@ public class ArtistDAO {
         }
     }
 
-
     public List<Artist> loadAllArtists() throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALL_ARTISTS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -129,7 +132,7 @@ public class ArtistDAO {
             }
             return image;
         } catch (SQLException e) {
-            throw new DAOException("Error while searching for artist image in database.");
+            throw new DAOException("Error while searching for artist image in database.", e);
         }
     }
 }

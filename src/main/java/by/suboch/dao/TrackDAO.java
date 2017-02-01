@@ -22,6 +22,10 @@ public class TrackDAO {
     private static final String SQL_LOAD_POPULAR_TRACKS = "SELECT * FROM `tracks` LIMIT ?,?";
     private static final String SQL_LOAD_ALL_TRACKS = "SELECT * FROM `tracks` ORDER BY `track_title`";
     private static final String SQL_LOAD_TRACK_BY_ID = "SELECT * FROM `tracks` WHERE `track_id` = ?";
+    private static final String SQL_LOAD_ALBUM_TRACKS = "SELECT `track_id`, `track_title` FROM `tracks` WHERE `album_id` = ?";
+    private static final String SQL_LOAD_PURCHASE_TRACKS =  "SELECT `tracks`.`track_id`, `tracks`.`track_title`, `tracks`.`track_price` FROM tracks\n" +
+            "  LEFT JOIN purchases_m2m_tracks ON tracks.track_id = purchases_m2m_tracks.track_id\n" +
+            "  LEFT JOIN purchases ON purchases_m2m_tracks.purchase_id = purchases.purchase_id WHERE purchases.purchase_id = ?";
     private static final String SQL_UPDATE_ALBUM_ID = "UPDATE `tracks` SET `album_id` = ? WHERE `track_id` = ?";
 
     private static final String COLUMN_TRACK_ID = "track_id";
@@ -64,7 +68,6 @@ public class TrackDAO {
                 track.setLocation(resultSet.getString(COLUMN_TRACK_LOCATION));
                 track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
                 track.setDiscount(resultSet.getShort(COLUMN_TRACK_DISCOUNT));
-                //track.setImage(albumDAO.findImage(resultSet.getInt(COLUMN_ALBUM_ID)));
                 trackList.add(track);
             }
 
@@ -121,15 +124,51 @@ public class TrackDAO {
 
     }
 
-    public void updateAlbumId(String[] trackIds, int albumId) throws DAOException {
+    public void updateAlbumId(String[] tracksId, int albumId) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ALBUM_ID)) {
-            for (int i = 0; i < trackIds.length; i++) {
+            for (int i = 0; i < tracksId.length; i++) {
                 preparedStatement.setInt(1, albumId);
-                preparedStatement.setInt(2, Integer.parseInt(trackIds[i]));
+                preparedStatement.setInt(2, Integer.parseInt(tracksId[i]));
                 preparedStatement.execute();
             }
         } catch (SQLException e) {
             throw new DAOException("Error while updating album id for tracks in database.");
+        }
+    }
+
+
+    public List<Track> loadAlbumTracks(int albumId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALBUM_TRACKS)) {
+            preparedStatement.setInt(1, albumId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Track> tracks = new LinkedList<>();
+            while (resultSet.next()){
+                Track track = new Track();
+                track.setTrackId(resultSet.getInt(COLUMN_TRACK_ID));
+                track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
+                tracks.add(track);
+            }
+            return tracks;
+        } catch (SQLException e) {
+            throw new DAOException("Error while loading album tracks in database.", e);
+        }
+    }
+
+    public List<Track> loadPurchaseTracks(int purchaseId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_PURCHASE_TRACKS)) {
+            preparedStatement.setInt(1, purchaseId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Track> tracks = new LinkedList<>();
+            while (resultSet.next()){
+                Track track = new Track();
+                track.setTrackId(resultSet.getInt(COLUMN_TRACK_ID));
+                track.setTitle(resultSet.getString(COLUMN_TRACK_TITLE));
+                track.setPrice(resultSet.getDouble(COLUMN_TRACK_PRICE));
+                tracks.add(track);
+            }
+            return tracks;
+        } catch (SQLException e) {
+            throw new DAOException("Error while loading purchase tracks in database.", e);
         }
     }
 }

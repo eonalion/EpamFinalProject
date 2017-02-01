@@ -55,6 +55,12 @@ public enum CommandType {
             this.role = EnumSet.of(Visitor.Role.ADMIN);
         }
     },
+    ADD_GENRE{
+        {
+            this.command = new AddGenreCommand();
+            this.role = EnumSet.of(Visitor.Role.ADMIN);
+        }
+    },
     ADD_TO_CART {
         {
             this.command = new AddToCartCommand();

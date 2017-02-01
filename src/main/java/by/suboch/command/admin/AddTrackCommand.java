@@ -1,13 +1,20 @@
 package by.suboch.command.admin;
 
+import by.suboch.ajax.AJAXState;
+import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.CommandConstants;
 import by.suboch.command.IServletCommand;
+import by.suboch.controller.ControllerConfiguration;
+import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
+import by.suboch.logic.GenreLogic;
 import by.suboch.logic.LogicActionResult;
 import by.suboch.logic.TrackLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +24,7 @@ import javax.servlet.http.Part;
 import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Locale;
 import java.util.logging.Level;
 
 import static by.suboch.command.CommandConstants.ATTR_MESSAGE;
@@ -27,21 +35,20 @@ import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 /**
  *
  */
-public class AddTrackCommand implements IServletCommand {
+public class AddTrackCommand extends AbstractServletCommand {
+    private static final Logger LOG = LogManager.getLogger();
+
     private static final String PARAM_TRACK_GENRE = "genre";
     private static final String PARAM_TRACK_PRICE = "price";
     private static final String PARAM_TRACK_FILE = "file";
 
-    private static final String MESSAGE_ERROR_ADD_ALBUM = "message.track.error";
-
     private static final String SEPARATOR = "/";
 
-    private static final int maxFileSize = 50 * 1024 * 1024;
+    private static final int maxFileSize = 50 * 1024 * 1024; //TODO: check size
     private static final int maxMemSize = 50 * 1024 * 1024;
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         double price = Double.parseDouble(request.getParameter(PARAM_TRACK_PRICE));
         int genreId = Integer.parseInt(request.getParameter(PARAM_TRACK_GENRE));
 
@@ -69,13 +76,14 @@ public class AddTrackCommand implements IServletCommand {
                 new File(path.toString()).mkdirs();
                 out = new FileOutputStream(path+SEPARATOR+fileName);
                 track = new byte[fileSize];
-                filecontent = filePart.getInputStream();//TODO check returned value.
+                filecontent = filePart.getInputStream();
                 while ((read = filecontent.read(track)) != -1) {
                     out.write(track, 0, read);
                 }
             }
         } catch (IOException | ServletException e) {
-            //TODO:Handle exception.
+            LOG.error("Errors while adding track.", e);
+            return handleDBError(e, request, response);
         } finally {
             if (out != null) {
                 out.close();
@@ -85,26 +93,26 @@ public class AddTrackCommand implements IServletCommand {
             }
         }
 
+        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
+        Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
+        String resultData;
         TrackLogic trackLogic = new TrackLogic();
-        try {
-            String location = relativePath + SEPARATOR + fileName;
-            LogicActionResult actionResult = trackLogic.addTrack(fileName, location, price, genreId);
-
-           /* if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
-                nextPage = "";//toJson(signUpResult);
-                // TODO: Set success message.
-            } else {
-                // TODO: Set warn message(or it's already set?).
-            }*/
-            nextPage = visitor.getCurrentPage();
-
-        } catch (LogicException e) {
-            //TODO: Handle exception
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_ERROR_ADD_ALBUM, visitor.getLocale()));
-            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
-
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
+            //request.setAttribute(PARAM_GENRE_NAME, genreName);
+        } else {
+            try {
+                String location = relativePath + SEPARATOR + fileName;
+                LogicActionResult addTrackResult = trackLogic.addTrack(fileName, location, price, genreId);
+                setResultMessage(addTrackResult, visitor.getLocale());
+                response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                resultData = toJson(AJAXState.HANDLE, addTrackResult);
+            } catch (LogicException e) {
+                LOG.error("Errors while adding track.", e);
+                resultData = handleDBError(e, request, response);
+            }
         }
-        return nextPage;
+        return resultData;
     }
 
 
@@ -118,5 +126,16 @@ public class AddTrackCommand implements IServletCommand {
             }
         }
         return null;
+    }
+
+    private void setResultMessage(LogicActionResult addGenreResult, Locale locale) {
+        switch (addGenreResult.getResult()) {
+            case FAILURE_ADD_TRACK:
+                addGenreResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_ADD_TRACK, locale));
+            case SUCCESS_ADD_TRACK:
+                addGenreResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_SUCCESS_ADD_TRACK, locale));
+                break;
+            default:
+        }
     }
 }

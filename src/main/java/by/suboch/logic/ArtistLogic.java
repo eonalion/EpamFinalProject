@@ -1,5 +1,6 @@
 package by.suboch.logic;
 
+import by.suboch.ajax.BiTuple;
 import by.suboch.dao.ArtistDAO;
 import by.suboch.database.ConnectionPool;
 import by.suboch.entity.Artist;
@@ -14,20 +15,22 @@ import java.util.List;
  *
  */
 public class ArtistLogic {
-    public LogicActionResult addArtist(String name, String country, String description, byte[] image) throws LogicException {
+    public BiTuple<LogicActionResult, Integer> addArtist(String name, String country, String description, byte[] image) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             ArtistDAO artistDAO = new ArtistDAO(connection);
             LogicActionResult actionResult = new LogicActionResult();
 
+            int artistId = 0;
+
             if (artistDAO.checkArtist(name, country)) {
-                artistDAO.addNewArtist(name, country, description, image);
+                artistId = artistDAO.addNewArtist(name, country, description, image);
                 actionResult.setState(LogicActionResult.State.SUCCESS);
-                actionResult.setResult(ActionResult.SUCCESS_ADD_ALBUM);
+                actionResult.setResult(ActionResult.SUCCESS_ADD_ARTIST);
             } else {
                 actionResult.setState(LogicActionResult.State.FAILURE);
-                actionResult.setResult(ActionResult.FAILURE_ALBUM_NOT_UNIQUE);
+                actionResult.setResult(ActionResult.FAILURE_ARTIST_NOT_UNIQUE);
             }
-            return actionResult;
+            return new BiTuple<>(actionResult, artistId);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while creating artist in logic.", e);
         }

@@ -47,7 +47,7 @@
         <div class="row">
             <nav class="col-md-12">
                 <ul>
-                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-test', this)"><fmt:message
+                    <li class="nav-menu-item nav-menu-item-active" onclick="showForm('add-track', this)"><fmt:message
                             key="main.addNew.track"/></li>
                     <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-artist', this)"><fmt:message
                             key="main.addNew.artist"/></li>
@@ -62,8 +62,8 @@
         </div>
 
         <div class="row">
-            <section id="add-test" class="active-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
+            <section id="add-track" class="active-section col-md-12">
+                <form id="addTrackForm" method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
                         <input type="text" name="title" placeholder="<fmt:message key="main.addNew.form.track"/>">
                     </div>
@@ -90,7 +90,7 @@
                 </form>
             </section>
             <section id="add-artist" class="inactive-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
+                <form id="addArtistForm" method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
                         Choose file<input type="file" name="artistImage">
                     </div>
@@ -98,7 +98,6 @@
                         <input type="text" name="artistName" placeholder="<fmt:message key="main.addNew.form.artist"/>"
                                required>
                     </div>
-                    mySidenav
                     <div class="row">
                         <input type="text" name="artistCountry"
                                placeholder="<fmt:message key="main.addNew.form.country"/>"
@@ -125,7 +124,7 @@
                 </form>
             </section>
             <section id="add-album" class="inactive-section col-md-12">
-                <form method="post" action="/s" enctype="multipart/form-data">
+                <form id="addAlbumForm" method="post" action="/s" enctype="multipart/form-data">
                     <div class="row">
                         Choose file<input type="file" name="albumImage">
                     </div>
@@ -154,7 +153,7 @@
                 </form>
             </section>
             <section id="add-genre" class="inactive-section col-md-12">
-                <form method="post" action="/s">
+                <form id="addGenreForm" method="post" action="/s">
                     <div class="row">
                         <input type="text" name="genreName" placeholder="<fmt:message key="main.addNew.form.genre"/>"
                                required>
@@ -167,7 +166,7 @@
                 </form>
             </section>
             <section id="add-bonus" class="inactive-section col-md-12">
-                <form method="post" action="/s">
+                <form id="addBonusForm" method="post" action="/s">
                     <div class="row">
                         <input type="text" name="bonusPrice" placeholder="<fmt:message key="main.addNew.form.price"/>"
                                pattern="^\d+(\.\d+)?$" required>
@@ -193,7 +192,9 @@
 
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
 <script src="../../js/select2/select2.min.js"></script>
+<script src="../../js/create.js"></script>
 <script type="text/javascript">
     $(".select-box").select2();
 </script>

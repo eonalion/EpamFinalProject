@@ -36,20 +36,23 @@ public class RemoveFromCart extends AbstractServletCommand {
 
         TrackLogic trackLogic = new TrackLogic();
         String resultData = null; //FIXME:
+         /*
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CART);
-        } else {
+        } else { */
             try {
                 BiTuple<AJAXState, Object> data;
                 Track track = trackLogic.loadTrackById(trackId);
                 List<Track> cartItems = (List<Track>) request.getSession().getAttribute(CommandConstants.ATTR_CART_ITEMS);
-                cartItems.remove(track);
+                cartItems.remove(track);/*
+                data = new BiTuple<>(AJAXState.LOCATION_REDIRECT, visitor.getCurrentPage());
+                response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                resultData = toJson(data);*/
                 resultData = visitor.getCurrentPage();
             } catch (LogicException e) {
                 LOG.log(Level.ERROR, "Errors during sign in guest.", e);
                 resultData = handleDBError(e, request, response);
             }
-        }
         return resultData;
     }
 }

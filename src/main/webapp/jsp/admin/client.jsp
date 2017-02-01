@@ -4,13 +4,14 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Current album</title>
+    <title>Current client</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -46,30 +47,69 @@
             <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
         </div>
         <div class="row">
-            <h1>${currentAccount.login}</h1>
-            <c:if test="${account.adminRights}"> <label>admin</label> </c:if>
+            <h1 style="display: inline">${currentAccount.login}</h1>
+            <c:if test="${currentAccount.admin}">
+                <span class="label label-default">admin</span>
+            </c:if>
         </div>
         <div class="row">
             <img src="/s?command=load_image&elementId=${currentAccount.accountId}&target=account"
                  onerror="this.src='../../images/default_avatar.jpg'" alt="">
         </div>
         <hr>
+        <h2>Personal information</h2>
         <div class="row">
-            First name:<p>${currentAccount.firstName}</p>
-            Last name:<p>${currentAccount.lastName}</p>
-            E-mail:<p>${currentAccount.email}</p>
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>First name</td>
+                        <td>${currentAccount.firstName}</td>
+                    </tr>
+                    <tr>
+                        <td>Last name</td>
+                        <td>${currentAccount.lastName}</td>
+                    </tr>
+                    <tr>
+                        <th>E-mail</th>
+                        <td>${currentAccount.email}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <hr>
-        <%-- Purchases --%>
-        <%--<c:set var="i" value="1" scope="page"/>
-        <ol>
-            <c:forEach var="test" items="albumTracks">
-                <li>
-                    <a href="/s?command=show_element&type=test&id=${test.trackId}">${test.title}</a>
-                </li>
-                <c:set var="i" value="${i+1}" scope="page"/>
-            </c:forEach>
-        </ol>--%>
+        <h2>Purchases</h2>
+        <div class="row">
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Date</th>
+                        <th>Items amount</th>
+                        <th>Total price</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:set var="i" value="1" scope="page"/>
+                    <c:forEach var="purchase" items="${currentClientPurchases}">
+                        <tr>
+                            <td>${i}</td>
+                            <td> Date</td>
+                            <td>${fn:length(purchase.tracksId)}</td>
+                            <td>${purchase.totalPrice}$</td>
+                            <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}">View
+                                purchase</a></td>
+                        </tr>
+                        <c:set var="i" value="${i+1}" scope="page"/>
+                    </c:forEach>
+                    </tbody>
+                </table>
+                <adt:emptyList items="${currentClientPurchases}">Client have not made any purchases.</adt:emptyList>
+            </div>
+        </div>
     </div>
 </main>
 

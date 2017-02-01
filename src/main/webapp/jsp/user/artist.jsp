@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
@@ -52,25 +53,53 @@
                  onerror="this.src='../../images/default_artist.png'" alt="">
         </div>
         <hr>
+        <h2>Description</h2>
         <div class="row">
-            <h2>Country</h2>
-            <p>${currentArtist.country}</p>
-        </div>
-        <hr>
-        <div class="row">
-            <h2>Description</h2>
             <p>${currentArtist.description}</p>
         </div>
         <hr>
-        <%-- <c:set var="i" value="1" scope="page"/>
-         <ol>
-             <c:forEach var="album" items="artistAlbums">
-                 <li>
-                     <a href="/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a>
-                 </li>
-                 <c:set var="i" value="${i+1}" scope="page"/>
-             </c:forEach>
-         </ol>--%>
+        <h2>Information</h2>
+        <div class="row">
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>Country</td>
+                        <td>${currentArtist.country} </td>
+                    </tr>
+                    <tr>
+                        <td>Albums amount</td>
+                        <td>${fn:length(currentArtistAlbums)}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <h2>Albums</h2>
+        <div class="row">
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Album title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:set var="i" value="1" scope="page"/>
+                    <c:forEach var="album" items="${currentArtistAlbums}">
+                        <tr>
+                            <td>${i}</td>
+                            <td><a href=/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a></td>
+                        </tr>
+                        <c:set var="i" value="${i+1}" scope="page"/>
+                    </c:forEach>
+                    </tbody>
+                </table>
+                <adt:emptyList items="${currentArtistAlbums}">Albums have not been added yet.</adt:emptyList>
+            </div>
+        </div>
     </div>
 </main>
 

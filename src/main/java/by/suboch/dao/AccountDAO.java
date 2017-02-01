@@ -160,7 +160,7 @@ public class AccountDAO {
                 } else {
                     account.setAvatar(avatar.getBytes(1, (int) avatar.length()));
                 }
-                account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
+                account.setAdmin(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
                 return account;
             } else {
                 throw new DAOException("No account with such email or login found in database.");
@@ -188,7 +188,7 @@ public class AccountDAO {
                 } else {
                     account.setAvatar(avatar.getBytes(1, (int) avatar.length()));
                 }
-                account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
+                account.setAdmin(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
                 accounts.add(account);
             }
             return accounts;
@@ -214,7 +214,7 @@ public class AccountDAO {
                 } else {
                     account.setAvatar(avatar.getBytes(1, (int) avatar.length()));
                 }
-                account.setAdminRights(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
+                account.setAdmin(resultSet.getBoolean(COLUMN_ADMIN_RIGHTS));
                 return account;
             } else {
                 throw new DAOException("No account with such id found in database.");

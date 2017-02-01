@@ -66,7 +66,7 @@
                     <img src="/s?command=load_image&elementId=${track.albumId}&target=album"
                          onerror="this.src='../../images/default_album.png'" alt="">
                     <div class="caption">
-                        <h4><a href="#">${track.title}</a></h4>
+                        <h4><a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></h4>
                             <%-- <h5><a href="#">${test.artist}</a></h5>--%>
                         <div class="container-fluid">
                             <div class="row">

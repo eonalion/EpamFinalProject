@@ -48,7 +48,7 @@
         <hr>
         <c:forEach var="account" items="${accountList}">
             <a href="/s?command=show_element&type=account&id=${account.accountId}">${account.login}</a>
-            <c:if test="${account.adminRights}"><span class="label label-default">admin</span></c:if>
+            <c:if test="${account.admin}"> <span class="label label-default">admin</span></c:if>
             <hr>
         </c:forEach>
     </div>

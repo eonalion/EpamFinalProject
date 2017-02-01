@@ -29,16 +29,15 @@ $(document).ready(function () {
         $('.response').remove();
         switch (response.left) {
             case "HANDLE":
+                $respTag.text(response.right.message);
                 if (response.right.state == "SUCCESS") {
                     $respTag.css(successStyle);
-                    $respTag.text(response.right.message);
                     $registerForm.prepend($respTag);
                     $inputs.val('');
                 } else if (response.right.state == "FAILURE") {
                     var inputSelector = 'input[name=' + response.right.target + ']';
                     var $input = $(inputSelector);
                     $respTag.css(failureStyle);
-                    $respTag.text(response.right.message);
                     $input.parent().after($respTag);
                     $registerForm.data('submitted', false);
                 }

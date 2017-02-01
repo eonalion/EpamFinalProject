@@ -8,7 +8,8 @@ import java.util.List;
 public class Purchase  implements IDatabaseEntity {
     private int purchaseId;
     private int accountId;
-    private List<Integer> trackIds;
+    private List<Integer> tracksId;
+    private double totalPrice;
 
     public int getPurchaseId() {
         return purchaseId;
@@ -26,11 +27,19 @@ public class Purchase  implements IDatabaseEntity {
         this.accountId = accountId;
     }
 
-    public List<Integer> getTrackIds() {
-        return trackIds;
+    public List<Integer> getTracksId() {
+        return tracksId;
     }
 
-    public void setTrackIds(List<Integer> trackIds) {
-        this.trackIds = trackIds;
+    public void setTracksId(List<Integer> tracksId) {
+        this.tracksId = tracksId;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
     }
 }

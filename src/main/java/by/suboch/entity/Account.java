@@ -8,7 +8,7 @@ import java.util.Objects;
  */
 public class Account implements IDatabaseEntity {
     private int accountId;
-    private boolean adminRights;
+    private boolean admin;
     private String firstName;
     private String lastName;
     private String login;
@@ -22,7 +22,7 @@ public class Account implements IDatabaseEntity {
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
         return accountId == account.accountId &&
-                adminRights == account.adminRights &&
+                admin == account.admin &&
                 Objects.equals(firstName, account.firstName) &&
                 Objects.equals(lastName, account.lastName) &&
                 Objects.equals(login, account.login) &&
@@ -33,14 +33,14 @@ public class Account implements IDatabaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(accountId, adminRights, firstName, lastName, login, password, email, avatar);
+        return Objects.hash(accountId, admin, firstName, lastName, login, password, email, avatar);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Account{");
         sb.append("accountId=").append(accountId);
-        sb.append(", adminRights=").append(adminRights);
+        sb.append(", admin=").append(admin);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", login='").append(login).append('\'');
@@ -59,12 +59,12 @@ public class Account implements IDatabaseEntity {
         this.accountId = accountId;
     }
 
-    public boolean getAdminRights() {
-        return adminRights;
+    public boolean isAdmin() {
+        return admin;
     }
 
-    public void setAdminRights(boolean adminRights) {
-        this.adminRights = adminRights;
+    public void setAdmin(boolean admin) {
+        this.admin = admin;
     }
 
     public String getFirstName() {

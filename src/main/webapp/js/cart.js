@@ -1,7 +1,11 @@
 $(document).ready(function () {
     var $addToCartBtn = $('.add-to-cart-button');
+    var $removeFromCartLink = $('.remove-from-cart-link');
     $addToCartBtn.click(function () {
         $(this).text('In cart');
+    });
+    $removeFromCartLink.click(function () {
+        $(this).parent().submit();
     });
 
     var $addToCartForm = $('.add-to-cart-form');
@@ -13,6 +17,7 @@ $(document).ready(function () {
     var failureStyle = {"color": "#83353d", "font-size": "13px"};
 
     $addToCartForm.ajaxForm(function (response) {
+        $('.response').remove();
         switch (response.left) {
             case "OK":
                 break;
@@ -25,6 +30,7 @@ $(document).ready(function () {
     });
 
     $makePurchaseForm.ajaxForm(function (response) {
+        $('.response').remove();
         switch (response.left) {
             case "HANDLE":
                 $respTag.text(response.right.message);
@@ -45,6 +51,5 @@ $(document).ready(function () {
                 break;
         }
     });
-
 
 });

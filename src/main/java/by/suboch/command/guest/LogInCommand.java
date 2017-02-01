@@ -52,7 +52,7 @@ public class LogInCommand extends AbstractServletCommand {
                 BiTuple<AJAXState, Object> data;
                 if (accountLogic.authorizeAccount(emailOrLogin, password)) {
                     Account account = accountLogic.loadAccount(emailOrLogin);
-                    if (account.getAdminRights()) {
+                    if (account.isAdmin()) {
                         visitor.setRole(Visitor.Role.ADMIN);
                     } else {
                         visitor.setRole(Visitor.Role.USER);

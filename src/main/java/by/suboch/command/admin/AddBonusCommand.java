@@ -1,10 +1,8 @@
 package by.suboch.command.admin;
 
 import by.suboch.command.IServletCommand;
-import by.suboch.dao.BonusDAO;
 import by.suboch.entity.Visitor;
 import by.suboch.exception.LogicException;
-import by.suboch.logic.AccountLogic;
 import by.suboch.logic.BonusLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
@@ -36,7 +34,7 @@ public class AddBonusCommand implements IServletCommand {
         try {
             if (logic.createBonus(bonusPrice, discount)) {
                 // TODO: Set success message.
-                return ConfigurationManager.getProperty(PAGE_ADD_NEW);
+                return ConfigurationManager.getProperty(PAGE_CREATE);
             } else {
                 // TODO: Set warn message(or it's already set?).
                 nextPage = visitor.getCurrentPage();

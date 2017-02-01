@@ -1,6 +1,7 @@
 package by.suboch.dao;
 
 import by.suboch.entity.Album;
+import by.suboch.entity.Track;
 import by.suboch.exception.DAOException;
 
 import java.io.ByteArrayInputStream;
@@ -21,6 +22,7 @@ public class AlbumDAO {
     private static final String SQL_FIND_ALBUM = "SELECT * FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
     private static final String SQL_FIND_ALBUM_BY_ID = "SELECT * FROM `albums` WHERE `album_id` = ?";
     private static final String SQL_LOAD_ALL_ALBUMS = "SELECT * FROM `albums` ORDER BY `album_title`";
+    private static final String SQL_LOAD_ARTIST_ALBUMS = "SELECT `album_id`, `album_title` FROM `albums` WHERE `artist_id` = ?";
     private static final String SQL_FIND_ALBUM_ID = "SELECT `album_id` FROM `albums` WHERE `album_title` = ? AND `release_date`=?";
     private static final String SQL_UPDATE_ARTIST_ID = "UPDATE `albums` SET `artist_id` = ? WHERE `album_id` = ?";
 
@@ -35,8 +37,8 @@ public class AlbumDAO {
         this.connection = connection;
     }
 
-    public void addNewAlbum(String title, LocalDate releaseDate, byte[] image) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ALBUM)) {
+    public int addNewAlbum(String title, LocalDate releaseDate, byte[] image) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_ALBUM, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, title);
             preparedStatement.setDate(2, Date.valueOf(releaseDate));
             if (image != null) {
@@ -45,6 +47,13 @@ public class AlbumDAO {
                 preparedStatement.setBlob(3, (Blob) null);
             }
             preparedStatement.execute();
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            } else {
+                throw new DAOException("  "); //FIXME
+            }
         } catch (SQLException e) {
             throw new DAOException("Error while inserting new album into database.", e);
         }
@@ -158,10 +167,9 @@ public class AlbumDAO {
             }
             return image;
         } catch (SQLException e) {
-            throw new DAOException("Error while searching for album image in database.");
+            throw new DAOException("Error while searching for album image in database.", e);
         }
     }
-
 
     public void updateArtistId(String[] albumIds, int artistId) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_UPDATE_ARTIST_ID)) {
@@ -171,7 +179,27 @@ public class AlbumDAO {
                 preparedStatement.execute();
             }
         } catch (SQLException e) {
-            throw new DAOException("Error while updating artist id for albums in database.");
+            throw new DAOException("Error while updating artist id for albums in database.", e);
+        }
+    }
+
+
+    public List<Album> loadArtistAlbums(int artistId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ARTIST_ALBUMS)) {
+            preparedStatement.setInt(1, artistId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            List<Album> albums = new LinkedList<>();
+            while (resultSet.next()) {
+                Album album = new Album();
+                album.setAlbumId(resultSet.getInt(COLUMN_ALBUM_ID));
+                album.setArtistId(artistId);
+                album.setTitle(resultSet.getString(COLUMN_TITLE));
+                albums.add(album);
+            }
+
+            return albums;
+        } catch (SQLException e) {
+            throw new DAOException("Error while loading artist albums from database.", e);
         }
     }
 }

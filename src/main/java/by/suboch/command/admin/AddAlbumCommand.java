@@ -1,10 +1,22 @@
 package by.suboch.command.admin;
 
+import by.suboch.ajax.AJAXState;
+import by.suboch.ajax.BiTuple;
+import by.suboch.command.AbstractServletCommand;
+import by.suboch.command.CommandConstants;
 import by.suboch.command.IServletCommand;
 import by.suboch.controller.ControllerConfiguration;
+import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
+import by.suboch.exception.LogicException;
 import by.suboch.logic.AlbumLogic;
+import by.suboch.logic.ArtistLogic;
+import by.suboch.logic.LogicActionResult;
 import by.suboch.logic.TrackLogic;
+import by.suboch.manager.ConfigurationManager;
+import by.suboch.manager.MessageManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -14,6 +26,7 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
 import static by.suboch.controller.ControllerConstants.CONTROLLER_CONFIG_KEY;
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
@@ -21,14 +34,14 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 /**
  *
  */
-public class AddAlbumCommand implements IServletCommand {
+public class AddAlbumCommand extends AbstractServletCommand {
 
+    private static final Logger LOG = LogManager.getLogger();
     private static final String PATTERN_DATE = "yyyy-MM-dd";
     private static final String PARAM_ALBUM_TITLE = "albumTitle";
     private static final String PARAM_ALBUM_RELEASE_DATE = "albumReleaseDate";
     private static final String PARAM_ALBUM_IMAGE = "albumImage";
     private static final String PARAM_ALBUM_TRACKS = "albumTracks";
-    private static final String MESSAGE_ERROR_ADD_ALBUM = "message.album.error";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -54,28 +67,42 @@ public class AddAlbumCommand implements IServletCommand {
             //TODO:Handle exception.
         }
 
+        String resultData;
         AlbumLogic albumLogic = new AlbumLogic();
         TrackLogic trackLogic = new TrackLogic();
+        if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
+            resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
+            //request.setAttribute(PARAM_GENRE_NAME, genreName);
+        } else {
+            try {
+                BiTuple<LogicActionResult, Integer> result = albumLogic.addAlbum(title, releaseDate, image);
+                int albumId = result.getRight();
+                LogicActionResult addAlbumResult = result.getLeft();
+                if (tracksInAlbumIds != null) {
+                    trackLogic.setAlbumId(tracksInAlbumIds, albumId);
+                }
+                setResultMessage(addAlbumResult, visitor.getLocale());
+                response.setContentType(CommandConstants.MIME_TYPE_JSON);
+                resultData = toJson(AJAXState.HANDLE, addAlbumResult);
+            } catch (LogicException e) {
+                LOG.error("Errors while adding artist.", e);
+                resultData = handleDBError(e, request, response);
+            }
+        }
 
-        String nextPage = "";
-       /* try {
-            LogicActionResult actionResult = albumLogic.addAlbum(title, releaseDate, image);
-            if(tracksInAlbumIds!=null) {
-                int albumId = albumLogic.loadAlbumId(title, releaseDate);
-                trackLogic.setAlbumId(tracksInAlbumIds, albumId);
-            }
-            if (actionResult.getState() == LogicActionResult.State.SUCCESS) {
-                nextPage = "";//toJson(signUpResult);
-                // TODO: Set success message.
-            } else {
-                // TODO: Set warn message(or it's already set?).
-            }
-            nextPage = visitor.getCurrentPage();
-        } catch (LogicException e) {
-            //TODO: Handle exception;
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(MESSAGE_ERROR_ADD_ALBUM, visitor.getLocale()));
-            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
-        }*/
-        return nextPage;
+        return resultData;
+    }
+
+    private void setResultMessage(LogicActionResult addGenreResult, Locale locale) {
+        switch (addGenreResult.getResult()) {
+            case FAILURE_ALBUM_NOT_UNIQUE:
+                addGenreResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_FAILURE_ALBUM_NOT_UNIQUE, locale));
+                addGenreResult.setTarget(PARAM_ALBUM_TITLE);
+                break;
+            case SUCCESS_ADD_ALBUM:
+                addGenreResult.setMessage(MessageManager.getProperty(CommandConstants.MESSAGE_SUCCESS_ADD_ALBUM, locale));
+                break;
+            default:
+        }
     }
 }

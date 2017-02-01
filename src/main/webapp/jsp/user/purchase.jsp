@@ -35,8 +35,25 @@
 </c:choose>
 
 <main class="container">
-    <h1>Items in your shopping cart</h1>
+    <h2>Purchase information</h2>
+    <div class="row">
+        <div class="table-responsive col-md-8">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <td>Total price</td>
+                    <td>${currentPurchase.totalPrice}$</td>
+                </tr>
+                <tr>
+                    <td>Items amount</td>
+                    <td>${fn:length(currentPurchaseTracks)}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
     <hr>
+    <h2>Purchased tracks</h2>
     <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
@@ -49,27 +66,17 @@
             </thead>
             <tbody>
             <c:set var="i" value="1" scope="page"/>
-            <c:forEach var="track" items="${cartItems}">
+            <c:forEach var="track" items="${currentPurchaseTracks}">
                 <tr>
                     <td>${i}</td>
                     <td><a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></td>
-                    <td>${track.price}</td>
-                    <td>
-                        <form class="remove-from-cart-form" method="post" action="/s">
-                            <a class="remove-from-cart-link" href="/s?command=remove_from_cart&trackId=${track.trackId}">Remove</a>
-                        </form>
-                    </td>
+                    <td>${track.price}$</td>
                 </tr>
                 <c:set var="i" value="${i+1}" scope="page"/>
             </c:forEach>
             </tbody>
         </table>
-        <adt:emptyList items="${cartItems}">Your shopping cart is empty.</adt:emptyList>
     </div>
-
-    <form id="makePurchaseForm" method="post" action="/s">
-        <button type="submit" class="btn-custom" name="command" value="make_purchase">Buy tracks</button>
-    </form>
 </main>
 
 <%-- Footer --%>
@@ -77,6 +84,5 @@
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/jquery.form.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
-<script src="../../js/cart.js"></script>
 </body>
 </html>

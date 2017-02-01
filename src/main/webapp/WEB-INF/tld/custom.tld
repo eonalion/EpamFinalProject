@@ -19,11 +19,11 @@
         </attribute>
     </tag>
     <tag>
-        <name>emptyLoop</name>
-        <tag-class>by.suboch.tag.EmptyLoopTag</tag-class>
+        <name>emptyList</name>
+        <tag-class>by.suboch.tag.EmptyListTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
-            <name>iterNum</name>
+            <name>items</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

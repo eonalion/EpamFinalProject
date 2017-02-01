@@ -47,48 +47,82 @@
         </div>
         <div class="row">
             <h1>${currentTrack.title}</h1>
-            Album:<a href="/s?command=show_element&id=${currentTrack.albumId}">Album title</a>
-            Artist:<a href="/s?command=show_album&id=${currentTrack.albumId}">Artist name</a>
         </div>
         <div class="row">
             <img src="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
                  onerror="this.src='../../images/default_album.png'" alt="">
         </div>
-        <hr>
-        <div class="row">
-            Price:<p class="price">${currentTrack.price}$</p>
-            <form class="add-to-items" method="post" action="/s">
-                <button type="submit" class="btn-custom add-to-items-button" name="" value="">
-                    <fmt:message key="main.label.addToCart"/></button>
-            </form>
-        </div>
-        <div class="row">
-            <button class="btn-custom btn-play"
-                    onclick='playTrack(${currentTrack.trackId}, "${currentTrack.location}")'>
-            </button>
-        </div>
-        <div class="row">
-            <audio id="player" controls
-                   data-info-album-art="/s?command=load_image&elementId="
-                   data-info-album-title="${currentTrack.price}"
-                   data-info-artist="Iain Houston and Felix Gibbons"
-                   data-info-title="${currentTrack.title}"
-                   data-info-label="Independent"
-                   data-info-year="2005"
-                   data-info-att="Music: Iain Houston and Felix Gibbons."
-                   data-info-att-link="}">
-                <source src="" type="audio/mpeg">
-            </audio>
+    </div>
+    <hr>
+    <h2>Information</h2>
+    <div class="row">
+        <div class="table-responsive col-md-8">
+            <table class="table table-condensed">
+                <tbody>
+                <tr>
+                    <td>Artist</td>
+                    <td><a href="/s?command=show_element&id=${currentTrack.albumId}">Artist name</a></td>
+                </tr>
+                <tr>
+                    <td>Album</td>
+                    <td><a href="/s?command=show_album&id=${currentTrack.albumId}">Album title</a></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </div>
+    <hr>
+    <h2>Purchase</h2>
+    <div class="row">
+        <h2>${currentTrack.price}$</h2>
+        <form class="add-to-cart-form" method="post" action="/s">
+            <button type="submit" class="btn-custom add-to-cart-button"
+                    name="command" value="add_to_cart">
+                <adt:notCartItem test="${currentTrack}" items="${cartItems}">
+                    <fmt:message key="main.label.addToCart"/>
+                </adt:notCartItem>
+                <adt:cartItem test="${currentTrack}" items="${cartItems}">
+                    In cart
+                </adt:cartItem>
+            </button>
+            <input type="hidden" name="trackId" value="${currentTrack.trackId}">
+        </form>
+    </div>
 
+    <div class="row">
+        <button class="btn-custom btn-play"
+                onclick='playTrack(${currentTrack.trackId}, "${currentTrack.location}")'>
+        </button>
+    </div>
+    <div class="row">
+        <audio id="player" controls
+               data-info-album-art="/s?command=load_image&elementId="
+               data-info-album-title="${currentTrack.price}"
+               data-info-artist="Iain Houston and Felix Gibbons"
+               data-info-title="${currentTrack.title}"
+               data-info-label="Independent"
+               data-info-year="2005"
+               data-info-att="Music: Iain Houston and Felix Gibbons."
+               data-info-att-link="}">
+            <source src="" type="audio/mpeg">
+        </audio>
+    </div>
+    <hr>
+    <h2>Leave comments</h2>
+    <form id="commentForm" action="/s" method="post">
+        <label for="comment">Comment:</label>
+        <textarea class="form-control" rows="3" id="comment"></textarea>
+        <button class="btn-custom " type="submit" name="command" value="leave_comment">Comment</button>
+    </form>
 </main>
 
 <c:import url="../../WEB-INF/jspf/footer.jsp"/>
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
 <script src="../../js/bootstrap3_player.js"></script>
 <script src="../../js/play_track.js"></script>
+<script src="../../js/cart.js"></script>
 
 <script>
     function openNav() {

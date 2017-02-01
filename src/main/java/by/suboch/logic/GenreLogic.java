@@ -22,4 +22,22 @@ public class GenreLogic {
             throw new LogicException("Error while loading all genres in logic.", e);
         }
     }
+
+    public LogicActionResult addGenre(String genreName) throws LogicException {
+        try(Connection connection = ConnectionPool.getInstance().getConnection()) {
+            GenreDAO genreDAO = new GenreDAO(connection);
+            LogicActionResult logicActionResult = new LogicActionResult();
+            if(!genreDAO.checkGenreUniqueness(genreName)) {
+                logicActionResult.setState(LogicActionResult.State.FAILURE);
+                logicActionResult.setResult(ActionResult.FAILURE_GENRE_NOT_UNIQUE);
+            } else {
+                logicActionResult.setState(LogicActionResult.State.SUCCESS);
+                logicActionResult.setResult(ActionResult.SUCCESS_ADD_GENRE);
+                genreDAO.addNewGenre(genreName);
+            }
+             return logicActionResult;
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while loading all genres in logic.", e);
+        }
+    }
 }

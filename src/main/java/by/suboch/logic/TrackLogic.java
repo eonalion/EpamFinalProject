@@ -20,7 +20,7 @@ public class TrackLogic {
             LogicActionResult actionResult = new LogicActionResult();
             trackDAO.addNewTrack(title, location, price, genreId);
             actionResult.setState(LogicActionResult.State.SUCCESS);
-            actionResult.setResult(ActionResult.SUCCESS_ADD_ALBUM);
+            actionResult.setResult(ActionResult.SUCCESS_ADD_TRACK);
             return actionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while creating track in logic.", e);
@@ -59,6 +59,24 @@ public class TrackLogic {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             TrackDAO trackDAO = new TrackDAO(connection);
             trackDAO.updateAlbumId(trackIds, albumId);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException(e);
+        }
+    }
+
+    public List<Track> loadAlbumTracks(int albumId) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            TrackDAO trackDAO = new TrackDAO(connection);
+            return trackDAO.loadAlbumTracks(albumId);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException(e);
+        }
+    }
+
+    public List<Track> loadPurchaseTracks(int purchaseId) throws LogicException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection()) {
+            TrackDAO trackDAO = new TrackDAO(connection);
+            return trackDAO.loadPurchaseTracks(purchaseId);
         } catch (SQLException | DAOException e) {
             throw new LogicException(e);
         }

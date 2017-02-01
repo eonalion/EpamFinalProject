@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 
@@ -46,23 +47,56 @@
         </div>
         <div class="row">
             <h1>${currentAlbum.title}</h1>
-            <%--Show genres--%>
-            Artist:<a href="/s?command=show_element&type=artist&id=${currentAlbum.artistId}">Artist</a>
         </div>
         <div class="row">
             <img src="/s?command=load_image&elementId=${currentAlbum.albumId}&target=album"
                  onerror="this.src='../../images/default_album.png'" alt="">
         </div>
         <hr>
-        <%--<c:set var="i" value="1" scope="page"/>
-        <ol>
-            <c:forEach var="test" items="albumTracks">
-                <li>
-                    <a href="/s?command=show_element&type=test&id=${test.trackId}">${test.title}</a>
-                </li>
-                <c:set var="i" value="${i+1}" scope="page"/>
-            </c:forEach>
-        </ol>--%>
+        <h2>Information</h2>
+        <div class="row">
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <tbody>
+                    <tr>
+                        <td>Artist</td>
+                        <td>
+                            <a href="/s?command=show_element&type=artist&id=${currentAlbum.artistId}">Artist</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tracks amount</td>
+                        <td>${fn:length(currentAlbumTracks)}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <hr>
+        <h2>Tracks</h2>
+        <div class="row">
+            <div class="table-responsive col-md-8">
+                <table class="table table-condensed">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Track title</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:set var="i" value="1" scope="page"/>
+                    <c:forEach var="track" items="${currentAlbumTracks}">
+                        <tr>
+                            <td>${i}</td>
+                            <td><a href=/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></td>
+                        </tr>
+                        <c:set var="i" value="${i+1}" scope="page"/>
+                    </c:forEach>
+                    </tbody>
+                </table>
+                <adt:emptyList items="${currentAlbumTracks}">Tracks have not been added yet.</adt:emptyList>
+            </div>
+        </div>
     </div>
 </main>
 

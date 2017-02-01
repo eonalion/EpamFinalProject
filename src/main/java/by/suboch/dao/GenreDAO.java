@@ -16,6 +16,8 @@ import java.util.List;
 public class GenreDAO {
     private Connection connection;
     private static final String SQL_LOAD_ALL_GENRES = "SELECT * FROM `genres`";
+    private static final String SQL_ADD_GENRE = "INSERT INTO `genres` (`genre_name`) VALUES (?)";
+    private static final String SQL_CHECK_GENRE_UNIQUENESS = "SELECT `genre_id` FROM `genres` WHERE `genre_name` = ?";
     private static final String COLUMN_GENRE_ID = "genre_id";
     private static final String COLUMN_GENRE_NAME = "genre_name";
 
@@ -37,6 +39,25 @@ public class GenreDAO {
             return genreList;
         } catch (SQLException e) {
             throw new DAOException("Error while selecting all genres from database.", e);
+        }
+    }
+
+    public boolean checkGenreUniqueness(String genreName) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_CHECK_GENRE_UNIQUENESS)) {
+            preparedStatement.setString(1, genreName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return !resultSet.next();
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking genre uniqueness id in database.", e);
+        }
+    }
+
+    public void addNewGenre(String genreName) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_ADD_GENRE)) {
+            preparedStatement.setString(1, genreName);
+            preparedStatement.execute();
+        } catch (SQLException e) {
+            throw new DAOException("Error while checking genre uniqueness id in database.", e);
         }
     }
 }
