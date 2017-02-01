@@ -15,4 +15,5 @@ public class CommandManager {
         currentCommand = currentType.getCurrentCommand();
         return currentCommand;
     }
+
 }

@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  *
  */
-public class Account implements IDatabaseEntity {
+public class Account {
     private int accountId;
     private boolean admin;
     private String firstName;

@@ -11,7 +11,6 @@ import by.suboch.logic.GenreLogic;
 import by.suboch.logic.LogicActionResult;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +37,6 @@ public class AddGenreCommand extends AbstractServletCommand {
         GenreLogic genreLogic = new GenreLogic();
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
-            request.setAttribute(PARAM_GENRE_NAME, genreName);
         } else {
             try {
                 LogicActionResult registrationResult = genreLogic.addGenre(genreName);
@@ -46,7 +44,7 @@ public class AddGenreCommand extends AbstractServletCommand {
                 response.setContentType(CommandConstants.MIME_TYPE_JSON);
                 resultData = toJson(AJAXState.HANDLE, registrationResult);
             } catch (LogicException e) {
-                LOG.log(Level.ERROR, "Errors during sign up guest.", e);
+                LOG.error("Errors while creating new genre.", e);
                 resultData = handleDBError(e, request, response);
             }
         }

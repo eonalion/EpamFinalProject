@@ -1,17 +1,47 @@
 package by.suboch.entity;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  *
  */
-public class Album {
+public class Album implements IDatabaseEntity {
     private int albumId;
     private int artistId;
     private String title;
-    private int tracksAmount;
     private Date releaseDate;
     private byte[] image;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Album album = (Album) o;
+        return albumId == album.albumId &&
+                artistId == album.artistId &&
+                Objects.equals(title, album.title) &&
+                Objects.equals(releaseDate, album.releaseDate) &&
+                Arrays.equals(image, album.image);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(albumId, artistId, title, releaseDate, image);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Album{");
+        sb.append("albumId=").append(albumId);
+        sb.append(", artistId=").append(artistId);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", releaseDate=").append(releaseDate);
+        sb.append(", image=").append(Arrays.toString(image));
+        sb.append('}');
+        return sb.toString();
+    }
 
     public int getAlbumId() {
         return albumId;
@@ -35,14 +65,6 @@ public class Album {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public int getTracksAmount() {
-        return tracksAmount;
-    }
-
-    public void setTracksAmount(int tracksAmount) {
-        this.tracksAmount = tracksAmount;
     }
 
     public Date getReleaseDate() {

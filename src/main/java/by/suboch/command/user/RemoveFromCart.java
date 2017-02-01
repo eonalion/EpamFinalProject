@@ -29,11 +29,10 @@ public class RemoveFromCart extends AbstractServletCommand {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int trackId = Integer.parseInt(request.getParameter(PARAM_TRACK_ID));
-        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
 
         TrackLogic trackLogic = new TrackLogic();
-        String resultData = null; //FIXME:
+        String resultData;
 
         try {
             BiTuple<AJAXState, Object> data;
@@ -42,7 +41,7 @@ public class RemoveFromCart extends AbstractServletCommand {
             cartItems.remove(track);
             resultData = visitor.getCurrentPage();
         } catch (LogicException e) {
-            LOG.log(Level.ERROR, "Errors during sign in guest.", e);
+            LOG.log(Level.ERROR, "Errors while removing track from cart.", e);
             resultData = handleDBError(e, request, response);
         }
         return resultData;

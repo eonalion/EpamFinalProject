@@ -51,7 +51,7 @@ public class AlbumDAO {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new DAOException("  "); //FIXME
+                throw new DAOException("Error while inserting new album into database.");
             }
         } catch (SQLException e) {
             throw new DAOException("Error while inserting new album into database.", e);

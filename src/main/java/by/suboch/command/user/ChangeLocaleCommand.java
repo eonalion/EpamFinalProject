@@ -1,5 +1,6 @@
 package by.suboch.command.user;
 
+import by.suboch.command.AbstractServletCommand;
 import by.suboch.command.IServletCommand;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.entity.Visitor;
@@ -13,8 +14,7 @@ import java.util.Locale;
 /**
  *
  */
-public class ChangeLocaleCommand implements IServletCommand {
-
+public class ChangeLocaleCommand extends AbstractServletCommand {
     private static final Logger LOG = LogManager.getLogger();
 
     private static final String PARAM_LOCALE = "locale";

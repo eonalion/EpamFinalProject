@@ -14,6 +14,7 @@ public class CommandConstants {
     public static final String PAGE_ARTIST = "path.page.artist";
     public static final String PAGE_CLIENT = "path.page.client";
     public static final String PAGE_CART = "path.page.cart";
+    public static final String PAGE_SETTINGS = "path.page.settings";
     public static final String PAGE_PURCHASE = "path.page.purchase";
     public static final String RESOURCE_AUDIO = "path.resource.audiotracks";
 
@@ -44,24 +45,22 @@ public class CommandConstants {
 
     //    Messages.
     public static final String MESSAGE_SUCCESS_REGISTER = "message.success.register";
-    public static final String MESSAGE_SUCCESS_ADD_TO_CART = "message.success.addToCart";
-    public static final String MESSAGE_SUCCESS_REMOVE_FROM_CART = "message.success.removeFromCart";
-    public static final String MESSAGE_SUCCESS_SAVE_CHANGES = "message.success.saveChanges";
     public static final String MESSAGE_SUCCESS_MAKE_PURCHASE = "message.success.makePurchase";
     public static final String MESSAGE_SUCCESS_ADD_GENRE = "message.success.addGenre";
     public static final String MESSAGE_SUCCESS_ADD_TRACK = "message.success.addTrack";
     public static final String MESSAGE_SUCCESS_ADD_ARTIST = "message.success.addArtist";
     public static final String MESSAGE_SUCCESS_ADD_ALBUM = "message.success.addAlbum";
-    public static final String MESSAGE_SUCCESS_ADD_COMMENT = "message.success.addComment";
+    public static final String MESSAGE_SUCCESS_SAVE_CHANGES = "message.success.saveChanges";
 
-    public static final String MESSAGE_FAILURE_MAKE_PURCHASE = "message.failure.makePurchase";
     public static final String MESSAGE_FAILURE_EMPTY_SHOPPING_CART = "message.failure.empty.cart";
     public static final String MESSAGE_FAILURE_INVALID_LOGIN = "message.failure.invalid.login";
     public static final String MESSAGE_FAILURE_INVALID_EMAIL = "message.failure.invalid.email";
     public static final String MESSAGE_FAILURE_INVALID_PASSWORD = "message.failure.invalid.password";
-    public static final String MESSAGE_FAILURE_INVALID_NEW_PASSWORD = "message.invalid.new.password";
-    public static final String MESSAGE_FAILURE_INVALID_IMAGE = "message.failure.invalid.image";
+    public static final String MESSAGE_FAILURE_INVALID_NEW_PASSWORD = "message.failure.invalid.new.password";
+    public static final String MESSAGE_FAILURE_NOT_OLD_PASSWORD = "message.not.old.password";
+
     public static final String MESSAGE_FAILURE_PASSWORDS_NOT_EQUALS = "message.failure.passwordsNotEquals";
+    public static final String MESSAGE_FAILURE_NOT_NEW_UNIQUE_PASSWORD = "message.failure.notUnique.newPassword";
     public static final String MESSAGE_FAILURE_LOGIN_NOT_UNIQUE = "message.failure.notUnique.login";
     public static final String MESSAGE_FAILURE_EMAIL_NOT_UNIQUE = "message.failure.notUnique.email";
     public static final String MESSAGE_FAILURE_GENRE_NOT_UNIQUE = "message.failure.notUnique.genre";
@@ -69,6 +68,8 @@ public class CommandConstants {
     public static final String MESSAGE_FAILURE_ALBUM_NOT_UNIQUE = "message.failure.notUnique.album";
     public static final String MESSAGE_FAILURE_LOGIN = "message.failure.logIn";
     public static final String MESSAGE_FAILURE_ADD_COMMENT = "message.failure.addComment";
+    public static final String MESSAGE_FAILURE_NOT_NEW_EMAIL = "message.failure.emailNotNew";
+    public static final String MESSAGE_FAILURE_NOT_NEW_LOGIN = "message.failure.loginNotNew";
     public static final String MESSAGE_FAILURE_EMPTY_COMMENT = "message.failure.empty.comment";
     public static final String MESSAGE_FAILURE_ADD_TRACK = "message.failure.addTrack";
 

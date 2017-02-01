@@ -60,7 +60,7 @@ public class CommentDAO {
             }
             return commentList;
         } catch (SQLException e) {
-            throw new DAOException("Error while selecting all comments from database.", e);
+            throw new DAOException("Error while selecting all comments for track from database.", e);
         }
     }
 

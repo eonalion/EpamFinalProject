@@ -87,59 +87,76 @@ public class AccountLogic {
         }
     }
 
-    public boolean changeName(int accountId, String firstName, String lastName) throws LogicException {
+    public void changeName(int accountId, String firstName, String lastName) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             accountDAO.updateName(accountId, firstName, lastName);
-            return true;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while changing account first name and last name");
         }
     }
 
-    public boolean changeLogin(int accountId, String login) throws LogicException {
+    public LogicActionResult changeLogin(int accountId, String login) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (AccountValidator.validateLogin(login) &&
-                    accountDAO.checkLoginUniqueness(accountId, login)) {
-                accountDAO.updateLogin(accountId, login);
-                return true;
+            LogicActionResult logicActionResult = new LogicActionResult();
+            logicActionResult.setState(LogicActionResult.State.FAILURE);
+            if (!AccountValidator.validateLogin(login)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_USERNAME);
+            } else if (!accountDAO.checkLoginUniqueness(accountId, login)) {
+                logicActionResult.setResult(ActionResult.FAILURE_USERNAME_NOT_UNIQUE);
             } else {
-                return false;
+                logicActionResult.setState(LogicActionResult.State.SUCCESS);
+                logicActionResult.setResult(ActionResult.SUCCESS_CHANGE_USERNAME);
+                accountDAO.updateLogin(accountId, login);
             }
+            return logicActionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while changing account login.", e);
         }
     }
 
-    public boolean changeEmail(int accountId, String email) throws LogicException {
+    public LogicActionResult changeEmail(int accountId, String email) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (AccountValidator.validateEmail(email) &&
-                    accountDAO.checkEmailUniqueness(accountId, email)) {
-                accountDAO.updateEmail(accountId, email);
-                return true;
+            LogicActionResult logicActionResult = new LogicActionResult();
+            logicActionResult.setState(LogicActionResult.State.FAILURE);
+            if (!AccountValidator.validateEmail(email)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_EMAIL);
+            } else if (!accountDAO.checkEmailUniqueness(accountId, email)) {
+                logicActionResult.setResult(ActionResult.FAILURE_EMAIL_NOT_UNIQUE);
             } else {
-                return false;
+                logicActionResult.setState(LogicActionResult.State.SUCCESS);
+                logicActionResult.setResult(ActionResult.SUCCESS_CHANGE_EMAIL);
+                accountDAO.updateEmail(accountId, email);
             }
+            return logicActionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while changing account email.", e);
         }
     }
 
-    public boolean changePassword(int accountId, String oldPassword, String newPassword, String newPasswordConfirm) throws LogicException {
+    public LogicActionResult changePassword(int accountId, String oldPassword, String newPassword, String newPasswordConfirm) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
-            if (AccountValidator.validatePassword(oldPassword) &&
-                    accountDAO.checkPassword(accountId, oldPassword) &&
-                    AccountValidator.validatePassword(newPassword) &&
-                    !AccountValidator.checkPasswordsMatch(oldPassword, newPassword) &&
-                    AccountValidator.checkPasswordsMatch(newPassword, newPasswordConfirm)) {
-                accountDAO.updatePassword(accountId, newPassword);
-                return true;
+            LogicActionResult logicActionResult = new LogicActionResult();
+            logicActionResult.setState(LogicActionResult.State.FAILURE);
+            if (!AccountValidator.validatePassword(oldPassword)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_PASSWORD);
+            } else if (!accountDAO.checkPassword(accountId, oldPassword)) {
+                logicActionResult.setResult(ActionResult.FAILURE_NOT_OLD_PASSWORD);
+            } else if (!AccountValidator.validatePassword(newPassword)) {
+                logicActionResult.setResult(ActionResult.FAILURE_INVALID_NEW_PASSWORD);
+            } else if (AccountValidator.checkPasswordsMatch(oldPassword, newPassword)) {
+                logicActionResult.setResult(ActionResult.FAILURE_NOT_NEW_UNIQUE_PASSWORD);
+            } else if (!AccountValidator.checkPasswordsMatch(newPassword, newPasswordConfirm)) {
+                logicActionResult.setResult(ActionResult.FAILURE_PASSWORDS_NOT_EQUALS);
             } else {
-                return false;
+                logicActionResult.setState(LogicActionResult.State.SUCCESS);
+                logicActionResult.setResult(ActionResult.SUCCESS_CHANGE_PASSWORD);
+                accountDAO.updatePassword(accountId, newPassword);
             }
+            return logicActionResult;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while changing account password.", e);
         }
@@ -154,11 +171,10 @@ public class AccountLogic {
         }
     }
 
-    public boolean changeAvatar(int accountId, byte[] avatar) throws LogicException {
+    public void changeAvatar(int accountId, byte[] avatar) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             AccountDAO accountDAO = new AccountDAO(connection);
             accountDAO.updateAvatar(accountId, avatar);
-            return true;
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while changing account avatar.", e);
         }

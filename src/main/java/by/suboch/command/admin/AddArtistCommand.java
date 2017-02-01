@@ -51,21 +51,21 @@ public class AddArtistCommand extends AbstractServletCommand {
             fileSize = (int) imagePart.getSize();
             if (fileSize != 0) {
                 image = new byte[fileSize];
-                imagePart.getInputStream().read(image, 0, fileSize);//TODO check returned value.
+                imagePart.getInputStream().read(image, 0, fileSize);
             }
         } catch (IOException | ServletException e) {
-            LOG.error("Errors while adding track.", e);
+            LOG.error("Errors while adding artist image.", e);
             return handleDBError(e, request, response);
         }
 
         ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
-        String resultData;
         ArtistLogic artistLogic = new ArtistLogic();
         AlbumLogic albumLogic = new AlbumLogic();
+        String resultData;
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
-            //request.setAttribute(PARAM_GENRE_NAME, genreName);
+            // TODO: Set request params to restore field values.
         } else {
             try {
                 BiTuple<LogicActionResult, Integer> result = artistLogic.addArtist(name, country, description, image);

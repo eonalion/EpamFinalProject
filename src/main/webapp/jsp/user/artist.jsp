@@ -49,8 +49,14 @@
             <h1>${currentArtist.name}</h1>
         </div>
         <div class="row">
-            <img src="/s?command=load_image&elementId=${currentArtist.artistId}&target=artist"
-                 onerror="this.src='../../images/default_artist.png'" alt="">
+            <c:choose>
+                <c:when test="${currentArtist.image != null}">
+                    <img class="img-responsive col-md-4" src="/s?command=load_image&elementId=${currentArtist.artistId}&target=artist">
+                </c:when>
+                <c:otherwise>
+                    <img  class="img-responsive col-md-4" src="../../images/default_artist.png">
+                </c:otherwise>
+            </c:choose>
         </div>
         <hr>
         <h2>Description</h2>
@@ -91,7 +97,7 @@
                     <c:forEach var="album" items="${currentArtistAlbums}">
                         <tr>
                             <td>${i}</td>
-                            <td><a href=/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a></td>
+                            <td><a href="/s?command=show_element&type=album&id=${album.albumId}">${album.title}</a></td>
                         </tr>
                         <c:set var="i" value="${i+1}" scope="page"/>
                     </c:forEach>

@@ -6,6 +6,8 @@ import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.logic.AlbumLogic;
 import by.suboch.logic.ArtistLogic;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +17,8 @@ import java.util.Base64;
 /**
  *
  */
-public class LoadImageCommand implements IServletCommand {
+public class LoadImageCommand extends AbstractServletCommand {
+    private static  final Logger LOG = LogManager.getLogger();
     private static final String PARAM_ELEMENT_ID = "elementId";
     private static final String PARAM_TARGET = "target";
     private static final String ALBUM_IMAGE = "album";
@@ -30,6 +33,7 @@ public class LoadImageCommand implements IServletCommand {
         String imageTarget = request.getParameter(PARAM_TARGET);
         byte[] image = null;
 
+        String resultData;
         try {
             switch (imageTarget.toLowerCase()) {
                 case ALBUM_IMAGE:
@@ -47,9 +51,11 @@ public class LoadImageCommand implements IServletCommand {
             }
             response.setContentType(CommandConstants.MIME_TYPE_IMAGE_JPG);
             controllerConfiguration.setState(ControllerConfiguration.State.RESPONSE);
+            resultData = Base64.getEncoder().encodeToString(image);
         } catch (LogicException e) {
-            //TODO: handle exception.
+            LOG.error("Errors during load image bytes.", e);
+            resultData = handleDBError(e, request, response);
         }
-        return Base64.getEncoder().encodeToString(image);
+        return resultData;
     }
 }

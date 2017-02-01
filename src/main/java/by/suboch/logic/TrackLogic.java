@@ -31,7 +31,7 @@ public class TrackLogic {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             TrackDAO trackDAO = new TrackDAO(connection);
 
-            return trackDAO.loadPopularTracks(page, recordsPerPage);
+            return trackDAO.loadPortionOfTracks(page, recordsPerPage);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while loading popular tracks in logic.", e);
         }

@@ -49,7 +49,6 @@ public class Controller extends HttpServlet {
         ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(CONTROLLER_CONFIG_KEY);
         CommandManager commandManager = new CommandManager();
         IServletCommand command = commandManager.defineCommand(controllerConfiguration.getCommand());
-
         String commandExecuteRes = command.execute(request, response);
 
         switch (controllerConfiguration.getState()) {

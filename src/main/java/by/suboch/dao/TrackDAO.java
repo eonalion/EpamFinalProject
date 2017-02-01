@@ -16,7 +16,6 @@ import java.util.List;
 public class TrackDAO {
     private Connection connection;
 
-
     private static final String SQL_ADD_TRACK = "INSERT INTO `tracks` (`track_title`, `track_price`, `track_location`, `genre_id`) " +
             "VALUES (?, ?, ?, ?)";
     private static final String SQL_LOAD_POPULAR_TRACKS = "SELECT * FROM `tracks` LIMIT ?,?";
@@ -51,7 +50,7 @@ public class TrackDAO {
         }
     }
 
-    public List<Track> loadPopularTracks(int startRecord, int recordsPerPage) throws DAOException {
+    public List<Track> loadPortionOfTracks(int startRecord, int recordsPerPage) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_POPULAR_TRACKS)) {
             preparedStatement.setInt(1, startRecord);
             preparedStatement.setInt(2, recordsPerPage);
@@ -71,7 +70,7 @@ public class TrackDAO {
 
             return trackList;
         } catch (SQLException e) {
-            throw new DAOException("Error while selecting popular tracks from database.", e);
+            throw new DAOException("Error while selecting tracks from database.", e);
         }
     }
 
@@ -93,7 +92,7 @@ public class TrackDAO {
 
             return trackList;
         } catch (SQLException e) {
-            throw new DAOException("Error while selecting popular tracks from database.", e);
+            throw new DAOException("Error while selecting all tracks from database.", e);
         }
     }
 
@@ -115,7 +114,7 @@ public class TrackDAO {
                 throw new DAOException("No track with such id found in database.");
             }
         } catch (SQLException e) {
-            throw new DAOException("Error while selecting track from database.", e);
+            throw new DAOException("Error while searching for track by id in database.", e);
         }
 
     }
@@ -131,7 +130,6 @@ public class TrackDAO {
             throw new DAOException("Error while updating album id for tracks in database.");
         }
     }
-
 
     public List<Track> loadAlbumTracks(int albumId) throws DAOException {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALBUM_TRACKS)) {

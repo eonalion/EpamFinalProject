@@ -22,10 +22,8 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Locale;
-import java.util.logging.Level;
 
 import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
-import static com.sun.xml.internal.ws.spi.db.BindingContextFactory.LOGGER;
 
 /**
  *
@@ -49,7 +47,6 @@ public class AddTrackCommand extends AbstractServletCommand {
 
         String fileName = "";
         String relativePath = "";
-        String nextPage;
 
         OutputStream out = null;
         InputStream filecontent = null;
@@ -64,12 +61,13 @@ public class AddTrackCommand extends AbstractServletCommand {
                 relativePath = SEPARATOR + fileName.toLowerCase().charAt(0);
             }
 
+            //Get tracks root path.
             Path path = Paths.get(ConfigurationManager.getProperty(CommandConstants.RESOURCE_AUDIO), relativePath);
 
             int read;
             if (fileSize != 0) {
                 new File(path.toString()).mkdirs();
-                out = new FileOutputStream(path+SEPARATOR+fileName);
+                out = new FileOutputStream(path + SEPARATOR + fileName);
                 track = new byte[fileSize];
                 filecontent = filePart.getInputStream();
                 while ((read = filecontent.read(track)) != -1) {
@@ -77,7 +75,7 @@ public class AddTrackCommand extends AbstractServletCommand {
                 }
             }
         } catch (IOException | ServletException e) {
-            LOG.error("Errors while adding track.", e);
+            LOG.error("Errors while loading track on server.", e);
             return handleDBError(e, request, response);
         } finally {
             if (out != null) {
@@ -94,7 +92,6 @@ public class AddTrackCommand extends AbstractServletCommand {
         TrackLogic trackLogic = new TrackLogic();
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
-            //request.setAttribute(PARAM_GENRE_NAME, genreName);
         } else {
             try {
                 String location = relativePath + SEPARATOR + fileName;
@@ -110,10 +107,9 @@ public class AddTrackCommand extends AbstractServletCommand {
         return resultData;
     }
 
-
-    private String getFileName(final Part part) {
-        final String partHeader = part.getHeader("content-disposition");
-        LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
+    private String getFileName(Part part) {
+        String partHeader = part.getHeader("content-disposition");
+        LOG.info("Part Header = {0}", partHeader);
         for (String content : part.getHeader("content-disposition").split(";")) {
             if (content.trim().startsWith("filename")) {
                 return content.substring(

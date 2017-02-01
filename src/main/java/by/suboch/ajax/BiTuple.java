@@ -6,7 +6,6 @@ import java.io.Serializable;
  *
  */
 public class BiTuple<L, R> implements Serializable {
-
     private L left;
     private R right;
 
@@ -31,4 +30,6 @@ public class BiTuple<L, R> implements Serializable {
         this.right = right;
     }
 
+    public static void main(String[] args) {
+    }
 }

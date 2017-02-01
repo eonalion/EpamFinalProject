@@ -59,7 +59,7 @@ public class LogInCommand extends AbstractServletCommand {
                 response.setContentType(CommandConstants.MIME_TYPE_JSON);
                 resultData = toJson(data);
             } catch (LogicException e) {
-                LOG.log(Level.ERROR, "Errors during sign in guest.", e);
+                LOG.log(Level.ERROR, "Errors during log on operation.", e);
                 resultData = handleDBError(e, request, response);
             }
         }

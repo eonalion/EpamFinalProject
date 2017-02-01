@@ -1,6 +1,9 @@
 package by.suboch.command;
 
-import by.suboch.command.admin.*;
+import by.suboch.command.admin.AddAlbumCommand;
+import by.suboch.command.admin.AddArtistCommand;
+import by.suboch.command.admin.AddGenreCommand;
+import by.suboch.command.admin.AddTrackCommand;
 import by.suboch.command.guest.LogInCommand;
 import by.suboch.command.guest.RegisterCommand;
 import by.suboch.command.user.*;
@@ -29,12 +32,6 @@ public enum CommandType {
         {
             this.command = new ChangeLocaleCommand();
             this.role = EnumSet.of(Visitor.Role.ADMIN, Visitor.Role.USER, Visitor.Role.GUEST);
-        }
-    },
-    ADD_BONUS {
-        {
-            this.command = new AddBonusCommand();
-            this.role = EnumSet.of(Visitor.Role.ADMIN);
         }
     },
     ADD_ARTIST {

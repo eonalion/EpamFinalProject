@@ -50,6 +50,7 @@ public class AddAlbumCommand extends AbstractServletCommand {
         LocalDate releaseDate = LocalDate.parse(request.getParameter(PARAM_ALBUM_RELEASE_DATE), formatter);
         String[] tracksInAlbumIds = request.getParameterValues(PARAM_ALBUM_TRACKS);
 
+        String resultData;
         int fileSize;
         byte[] image = null;
         try {
@@ -57,18 +58,17 @@ public class AddAlbumCommand extends AbstractServletCommand {
             fileSize = (int) imagePart.getSize();
             if (fileSize != 0) {
                 image = new byte[fileSize];
-                imagePart.getInputStream().read(image, 0, fileSize);//TODO check returned value.
+                imagePart.getInputStream().read(image, 0, fileSize);
             }
         } catch (IOException | ServletException e) {
-            //TODO:Handle exception.
+            LOG.warn("Error while uploading album image.", e);
+            resultData = handleDBError(e, request, response);
         }
 
-        String resultData;
         AlbumLogic albumLogic = new AlbumLogic();
         TrackLogic trackLogic = new TrackLogic();
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_CREATE);
-            //request.setAttribute(PARAM_GENRE_NAME, genreName);
         } else {
             try {
                 BiTuple<LogicActionResult, Integer> result = albumLogic.addAlbum(title, releaseDate, image);
@@ -81,7 +81,7 @@ public class AddAlbumCommand extends AbstractServletCommand {
                 response.setContentType(CommandConstants.MIME_TYPE_JSON);
                 resultData = toJson(AJAXState.HANDLE, addAlbumResult);
             } catch (LogicException e) {
-                LOG.error("Errors while adding artist.", e);
+                LOG.error("Error while adding album.", e);
                 resultData = handleDBError(e, request, response);
             }
         }

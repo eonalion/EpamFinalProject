@@ -3,6 +3,8 @@ package by.suboch.command;
 import by.suboch.controller.ControllerConfiguration;
 import by.suboch.controller.ControllerConstants;
 import by.suboch.manager.ConfigurationManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,7 +19,8 @@ import java.util.Base64;
 /**
  *
  */
-public class LoadTrackCommand implements IServletCommand {
+public class LoadTrackCommand extends AbstractServletCommand {
+    private static  final Logger LOG = LogManager.getLogger();
     private static final String PARAM_TRACK_ID = "trackId";
     private static final String PARAM_TRACK_LOCATION = "location";
 
@@ -27,6 +30,7 @@ public class LoadTrackCommand implements IServletCommand {
         String trackId = request.getParameter(PARAM_TRACK_ID);
         String location = request.getParameter(PARAM_TRACK_LOCATION);
 
+        String resultData;
         int fileSize;
         byte[] trackBytes = null;
         try {
@@ -42,10 +46,12 @@ public class LoadTrackCommand implements IServletCommand {
 
             response.setContentType(CommandConstants.MIME_TYPE_AUDIO_MP3);
             controllerConfiguration.setState(ControllerConfiguration.State.RESPONSE);
+            resultData = Base64.getEncoder().encodeToString(trackBytes);
         } catch (IOException e) {
-            //TODO: Handle exception;
+            LOG.error("Errors loading track bytes.", e);
+            resultData = handleDBError(e, request, response);
         }
 
-        return Base64.getEncoder().encodeToString(trackBytes);
+        return resultData;
     }
 }

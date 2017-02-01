@@ -1,9 +1,13 @@
-package by.suboch.command;
+package by.suboch.command.admin;
 
+import by.suboch.command.AbstractServletCommand;
+import by.suboch.command.CommandConstants;
 import by.suboch.entity.*;
 import by.suboch.exception.LogicException;
 import by.suboch.logic.*;
 import by.suboch.manager.ConfigurationManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -14,6 +18,8 @@ import java.util.List;
  *
  */
 public class EditElementCommand extends AbstractServletCommand {
+    private static final Logger LOG = LogManager.getLogger();
+
     private static final String PARAM_ELEMENT_ID = "id";
     private static final String PARAM_ELEMENT_TYPE = "type";
 
@@ -35,6 +41,7 @@ public class EditElementCommand extends AbstractServletCommand {
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
         int elementId = Integer.parseInt(request.getParameter(PARAM_ELEMENT_ID));
         String elementType = request.getParameter(PARAM_ELEMENT_TYPE);
 
@@ -45,7 +52,6 @@ public class EditElementCommand extends AbstractServletCommand {
         AccountLogic accountLogic = new AccountLogic();
         PurchaseLogic purchaseLogic = new PurchaseLogic();
         try {
-
             switch (elementType) {
                 case TYPE_TRACK:
                     Track track = trackLogic.loadTrackById(elementId);
@@ -86,7 +92,7 @@ public class EditElementCommand extends AbstractServletCommand {
                 default:
             }
         } catch (LogicException e) {
-            //TODO: Handle exception.
+            LOG.error("error while edit " + elementType + ".", e);
             nextPage = handleDBError(e, request, response);
         }
 

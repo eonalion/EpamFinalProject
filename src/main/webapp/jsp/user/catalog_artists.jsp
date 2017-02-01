@@ -56,15 +56,7 @@
 <jsp:include page="../../WEB-INF/jspf/footer.jsp"/>
 
 <script src="../../js/jquery-3.1.1.min.js"></script>
-<script src="../../js/jquery.form.min.js"></script>
-<script src="../../js/jquery.validate.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
-<script src="../../js/classie.js"></script>
-<script src="../../js/script.js"></script>
-<script src="../../js/pagination.js"></script>
-<%--
-<script src="../../js/bootstrap3_player.js"></script>--%>
-<script src="../../js/play_track.js"></script>
 
 <script>
     function openNav() {

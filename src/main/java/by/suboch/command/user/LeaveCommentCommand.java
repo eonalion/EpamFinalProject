@@ -71,7 +71,7 @@ public class LeaveCommentCommand extends AbstractServletCommand {
                 }
                 response.setContentType(CommandConstants.MIME_TYPE_JSON);
             } catch (LogicException e) {
-                LOG.log(Level.ERROR, "Errors during sign up guest.", e);
+                LOG.log(Level.ERROR, "Errors during posting comment.", e);
                 resultData = handleDBError(e, request, response);
             }
         }

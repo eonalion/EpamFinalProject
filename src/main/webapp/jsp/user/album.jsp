@@ -49,8 +49,14 @@
             <h1>${currentAlbum.title}</h1>
         </div>
         <div class="row">
-            <img src="/s?command=load_image&elementId=${currentAlbum.albumId}&target=album"
-                 onerror="this.src='../../images/default_album.png'" alt="">
+            <c:choose>
+                <c:when test="${currentAlbum.image != null}">
+                    <img class="img-responsive col-md-4" src="/s?command=load_image&elementId=${currentAlbum.albumId}&target=album">
+                </c:when>
+                <c:otherwise>
+                    <img  class="img-responsive col-md-4" src="../../images/default_album.png">
+                </c:otherwise>
+            </c:choose>
         </div>
         <hr>
         <h2>Information</h2>
@@ -67,6 +73,10 @@
                     <tr>
                         <td>Tracks amount</td>
                         <td>${fn:length(currentAlbumTracks)}</td>
+                    </tr>
+                    <tr>
+                        <td>Release date</td>
+                        <td>${currentAlbum.releaseDate}</td>
                     </tr>
                     </tbody>
                 </table>

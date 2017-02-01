@@ -28,12 +28,12 @@ class DatabaseInitializer {
             LOGIN = resourceBundle.getString("db.login");
             POOL_SIZE = Integer.valueOf(resourceBundle.getString("db.poolsize"));
             if (POOL_SIZE < 1) {
-                LOG.log(Level.FATAL, "Pool size can't be non positive.");
+                LOG.fatal("Pool size is null.");
                 throw new RuntimeException("Pool size can't be non positive.");
             }
             PASSWORD = resourceBundle.getString("db.password");
         } catch (NumberFormatException | MissingResourceException e) {
-            LOG.log(Level.FATAL, "Cannot initialize the database connection.", e);
+            LOG.fatal("Cannot initialize the database connection.", e);
             throw new RuntimeException("Cannot initialize the database connection.", e);
         }
     }

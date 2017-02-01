@@ -49,7 +49,8 @@
             <h1>${currentTrack.title}</h1>
         </div>
         <div class="row">
-            <img src="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
+            <img class="img-responsive col-md-4"
+                 src="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
                  onerror="this.src='../../images/default_album.png'" alt="">
         </div>
     </div>
@@ -88,7 +89,9 @@
             <input type="hidden" name="trackId" value="${currentTrack.trackId}">
         </form>
     </div>
+    <hr>
 
+    <h2>Play track</h2>
     <div class="row">
         <button class="btn-custom btn-play"
                 onclick='playTrack(${currentTrack.trackId}, "${currentTrack.location}")'>
@@ -96,13 +99,12 @@
     </div>
     <div class="row">
         <audio id="player" controls
-               data-info-album-art="/s?command=load_image&elementId="
-               data-info-album-title="${currentTrack.price}"
+               data-info-album-art="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
+               data-info-album-title="Album"
                data-info-artist="Iain Houston and Felix Gibbons"
                data-info-title="${currentTrack.title}"
                data-info-label="Independent"
                data-info-year="2005"
-               data-info-att="Music: Iain Houston and Felix Gibbons."
                data-info-att-link="}">
             <source src="" type="audio/mpeg">
         </audio>
@@ -141,7 +143,7 @@
                 </div>
             </div>
         </c:forEach>
-        <adt:emptyList items="${trackCommentList}">No comments.</adt:emptyList>
+        <adt:emptyList items="${trackCommentList}">Track has no comments.</adt:emptyList>
     </div>
 
 </main>

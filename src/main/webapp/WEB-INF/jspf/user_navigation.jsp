@@ -17,7 +17,7 @@
                     key="nav.home"/></a>
             </li>
             <li><a class="nav-menu-item nav-menu-item-inactive"
-                   href="/jsp/user/catalog_tracks.jsp.jsp"><fmt:message key="nav.catalog"/></a></li>
+                   href="/jsp/user/catalog_tracks.jsp"><fmt:message key="nav.catalog"/></a></li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li><a class="nav-menu-item nav-menu-item-inactive" href="/jsp/user/cart.jsp"></span>
@@ -38,11 +38,5 @@
                 </ul>
             </li>
         </ul>
-        <form class="navbar-form navbar-left">
-            <div class="form-group">
-                <input type="text" class="form-control form-search-control"
-                       placeholder="<fmt:message key="nav.search"/>">
-            </div>
-        </form>
     </div>
 </nav>

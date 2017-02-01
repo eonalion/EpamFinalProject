@@ -41,11 +41,5 @@
                 </ul>
             </li>
         </ul>
-        <form class="navbar-form navbar-left">
-            <div class="form-group">
-                <input type="text" class="form-control form-search-control"
-                       placeholder="<fmt:message key="nav.search"/>">
-            </div>
-        </form>
     </div>
 </nav>

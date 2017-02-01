@@ -48,10 +48,6 @@ public class RegisterCommand extends AbstractServletCommand {
         String resultData;
         if (controllerConfiguration.getState() != ControllerConfiguration.State.AJAX) {
             resultData = ConfigurationManager.getProperty(CommandConstants.PAGE_REGISTRATION);
-            request.setAttribute(PARAM_FIRST_NAME, firstName);
-            request.setAttribute(PARAM_LAST_NAME, lastName);
-            request.setAttribute(PARAM_LOGIN, login);
-            request.setAttribute(PARAM_EMAIL, email);
         } else {
             try {
                 LogicActionResult registrationResult = logic.registerAccount(firstName, lastName, login, email, password, passwordConfirm);
@@ -60,7 +56,7 @@ public class RegisterCommand extends AbstractServletCommand {
                 AJAXState state = AJAXState.HANDLE;
                 resultData = toJson(state, registrationResult);
             } catch (LogicException e) {
-                LOG.log(Level.ERROR, "Errors during sign up guest.", e);
+                LOG.log(Level.ERROR, "Errors during register operation.", e);
                 resultData = handleDBError(e, request, response);
             }
         }

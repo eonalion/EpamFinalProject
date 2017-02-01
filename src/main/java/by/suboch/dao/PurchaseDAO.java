@@ -38,7 +38,7 @@ public class PurchaseDAO {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new DAOException("  "); //FIXME
+                throw new DAOException("Error while adding purchase to database.");
             }
         } catch (SQLException e) {
             throw new DAOException("Error while adding purchase to database.", e);
@@ -70,11 +70,11 @@ public class PurchaseDAO {
                 purchase.setDate(resultSet.getTimestamp(COLUMN_DATE).toLocalDateTime());
                 return purchase;
             } else {
-                throw new DAOException("No album with such title and release date found in database.");
+                throw new DAOException("No purchase with such id found in database.");
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Error while searching for album by title and release date in database.", e);
+            throw new DAOException("Error while searching for purchase by id in database.", e);
         }
     }
 
@@ -95,7 +95,7 @@ public class PurchaseDAO {
             }
             return purchases;
         } catch (SQLException e) {
-            throw new DAOException("Error while selecting all purchases from database.", e);
+            throw new DAOException("Error while selecting all account purchases from database.", e);
         }
     }
 

@@ -2,6 +2,7 @@ package by.suboch.dao;
 
 import by.suboch.entity.Account;
 import by.suboch.exception.DAOException;
+import by.suboch.logic.LogicActionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -37,9 +38,6 @@ public class AccountDAO {
     private static final String SQL_UPDATE_NAME = "UPDATE `accounts` SET `first_name` = ?, `last_name` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_EMAIL = "UPDATE `accounts` SET `email` = ? WHERE `account_id` = ?";
     private static final String SQL_UPDATE_PASSWORD = "UPDATE `accounts` SET `password` = SHA2(?,256) WHERE `account_id` = ?";
-
-
-    private static final int INDEX_START = 0;
 
     private static final String COLUMN_ACCOUNT_ID = "account_id";
     private static final String COLUMN_FIRST_NAME = "first_name";
@@ -289,7 +287,7 @@ public class AccountDAO {
             }
             return avatar;
         } catch (SQLException e) {
-            throw new DAOException("Error while searching for account avatar in database.");
+            throw new DAOException("Error while searching for account avatar in database.", e);
         }
     }
 }

@@ -67,7 +67,6 @@
                          onerror="this.src='../../images/default_album.png'" alt="">
                     <div class="caption">
                         <h4><a href="/s?command=show_element&type=track&id=${track.trackId}">${track.title}</a></h4>
-                            <%-- <h5><a href="#">${test.artist}</a></h5>--%>
                         <div class="container-fluid">
                             <div class="row">
                                 <div class="col-md-4 col-sm-4">
@@ -107,18 +106,6 @@
                 <li><a href="/s?command=switch_page&toFirstPage=false&toLastPage=true">»</a></li>
             </ul>
         </div>
-
-        <audio id="player" controls
-               data-info-album-art="/s?command=load_image&elementId="
-               data-info-album-title="${currentTrack.price}"
-               data-info-artist="Iain Houston and Felix Gibbons"
-               data-info-title="${currentTrack.title}"
-               data-info-label="Independent"
-               data-info-year="2005"
-               data-info-att="Music: Iain Houston and Felix Gibbons."
-               data-info-att-link="}">
-            <source src="" type="audio/mpeg">
-        </audio>
     </div>
 </main>
 
@@ -128,7 +115,6 @@
 
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/jquery.form.min.js"></script>
-<script src="../../js/jquery.validate.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
 <script src="../../js/classie.js"></script>
 <script src="../../js/script.js"></script>

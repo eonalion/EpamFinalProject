@@ -48,7 +48,7 @@ public class GenreDAO {
             ResultSet resultSet = preparedStatement.executeQuery();
             return !resultSet.next();
         } catch (SQLException e) {
-            throw new DAOException("Error while checking genre uniqueness id in database.", e);
+            throw new DAOException("Error while checking genre name uniqueness in database.", e);
         }
     }
 
@@ -57,7 +57,7 @@ public class GenreDAO {
             preparedStatement.setString(1, genreName);
             preparedStatement.execute();
         } catch (SQLException e) {
-            throw new DAOException("Error while checking genre uniqueness id in database.", e);
+            throw new DAOException("Error while inserting new genre in database.", e);
         }
     }
 }

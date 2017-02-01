@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 public abstract class AbstractServletCommand implements IServletCommand {
-
     private static Gson gson;
 
     public static String toJson(BiTuple<AJAXState, ?> data) {
@@ -43,8 +42,8 @@ public abstract class AbstractServletCommand implements IServletCommand {
         return resultData;
     }
 
-    public static String handleDBError(Exception e,  HttpServletRequest request, HttpServletResponse response) {
-        Visitor visitor = (Visitor)request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
+    public static String handleDBError(Exception e, HttpServletRequest request, HttpServletResponse response) {
+        Visitor visitor = (Visitor) request.getSession().getAttribute(ControllerConstants.VISITOR_KEY);
         ErrorHolder errorHolder = new ErrorHolder();
         errorHolder.setCauseMessage(MessageManager.getProperty(CommandConstants.MESSAGE_ERROR_DATABASE_CAUSE, visitor.getLocale()));
         errorHolder.setToDoMessage(MessageManager.getProperty(CommandConstants.MESSAGE_ERROR_DATABASE_TO_DO, visitor.getLocale()));
@@ -63,33 +62,4 @@ public abstract class AbstractServletCommand implements IServletCommand {
         return handleError(errorHolder, request);
     }*/
 
-    public String suitablePageForm(String uri, HttpServletRequest request, HttpServletResponse response) {
-        ControllerConfiguration controllerConfiguration = (ControllerConfiguration) request.getSession().getAttribute(ControllerConstants.CONTROLLER_CONFIG_KEY);
-        if (controllerConfiguration.getState() == ControllerConfiguration.State.AJAX) {
-            response.setContentType(CommandConstants.MIME_TYPE_JSON);
-            return toJson(AJAXState.LOCATION_GO, request.getContextPath() + uri);
-        } else {
-            return uri;
-        }
-    }
-
- /*   public byte[] loadData(Part part, int maxSize) {
-        byte[] empty = new byte[]{};
-        byte[] data = empty;
-        int fileSize = (int)part.getSize();
-        if (fileSize != 0 && fileSize <= maxSize) {
-            data = new byte[fileSize];
-            try {
-                int bytesAmount = part.getInputStream().read(data, 0, fileSize);
-                if (bytesAmount != fileSize) {
-                    data = empty;
-                }
-            } catch (IOException e) {
-                data = empty;
-            }
-
-        }
-        return data;
-    }
-*/
 }

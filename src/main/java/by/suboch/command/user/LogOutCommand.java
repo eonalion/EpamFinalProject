@@ -23,6 +23,7 @@ public class LogOutCommand implements IServletCommand {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         visitor.setRole(Visitor.Role.GUEST);
+
         //TODO: Remove all attributes from session.
 
         return ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE);

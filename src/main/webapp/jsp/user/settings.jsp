@@ -4,7 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="adt" uri="http://suboch.by/jsp/" %>
-<fmt:setLocale value="${lvisitor.ocale}" scope="session"/>
+<fmt:setLocale value="${visitor.locale}" scope="session"/>
 <fmt:setBundle basename="properties.content"/>
 <html>
 <head>
@@ -53,55 +53,48 @@
             <div class="row">
                 <c:choose>
                     <c:when test="${account.avatar != null}">
-                        <%--<img class="avatar-nav" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>--%>
                         <img class="avatar" src="/s?command=load_image&elementId=${account.accountId}&target=account"/>
                     </c:when>
                     <c:otherwise>
                         <img class="avatar" src="../../images/default_avatar.jpg">
                     </c:otherwise>
                 </c:choose>
-            <%--    <c:choose>
-                    <c:when test="${account.avatar != null}">
-                        <img class="avatar" src="data:avatar/jpg;base64,${adt:base64Encoder(account.avatar)}"/>
-                    </c:when>
-                    <c:otherwise>
-                        <img class="avatar" src="../../images/default_avatar.jpg">
-                    </c:otherwise>
-                </c:choose>--%>
             </div>
             <form method="post" action="/s" enctype="multipart/form-data">
                 <div class="row">
-                    <fmt:message key="settings.file"/> <input type="file" name="avatar"<%--style="display: none;"--%>>
+                    <fmt:message key="settings.file"/> <input type="file" name="avatar">
                 </div>
                 <div class="row">
-                    <button class="btn-custom" type="submit" name="command" value="change_avatar" onclick=""><fmt:message
-                            key="settings.uploadImage"/></button>
+                    <button class="btn-custom" type="submit" name="command" value="change_avatar" onclick="">
+                        <fmt:message
+                                key="settings.uploadImage"/></button>
                 </div>
             </form>
             <hr>
             <h2><fmt:message key="settings.text.name"/></h2>
-            <form method="post" action="/s">
+            <form id="changeNameForm" method="post" action="/s">
                 <div class="row">
-                    <fmt:message key="registration.form.firstName"/><input type="text" name="firstName"
-                                                                           value="${account.firstName}">
+                    <fmt:message key="registration.form.firstName"/>
+                    <input type="text" name="firstName" value="${account.firstName}">
                 </div>
                 <div class="row">
-                    <fmt:message key="registration.form.lastName"/><input type="text" name="lastName"
-                                                                          value="${account.lastName}">
+                    <fmt:message key="registration.form.lastName"/>
+                    <input id="lastNameId" type="text" name="lastName" value="${account.lastName}">
                 </div>
                 <div class="row">
-                    <button class="btn-custom" type="submit" name="command" value="change_personal_info" onclick=""><fmt:message
-                            key="settings.changeName"/></button>
+                    <button class="btn-custom" type="submit" name="command" value="change_personal_info" onclick="">
+                        <fmt:message key="settings.changeName"/>
+                    </button>
                 </div>
             </form>
             <hr>
             <h2><fmt:message key="settings.text.username"/></h2>
-            <form method="post" action="/s">
+            <form id="changeLoginForm" method="post" action="/s">
                 <div class="row">
-                    <fmt:message key="registration.form.username"/><input type="text" name="login"
-                                                                          value="${account.login}"
-                                                                          maxlength="40"
-                                                                          pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$">
+                    <fmt:message key="registration.form.username"/>
+                    <input type="text" name="login" value="${account.login}"
+                           maxlength="40"
+                           pattern="^\\p{L}(\\p{L}|\\p{N}|[_])*$">
                 </div>
                 <div class="row">
                     <button class="btn-custom" type="submit" name="command" value="change_login" onclick=""><fmt:message
@@ -112,10 +105,11 @@
 
         <section id="account-settings" class="inactive-section form col-md-12">
             <h2><fmt:message key="settings.text.email"/></h2>
-            <form method="post" action="/s">
+            <form id="changeEmailForm" method="post" action="/s">
                 <div class="row">
-                    <fmt:message key="registration.form.email"/><input type="text" name="email" value="${account.email}"
-                                                                       pattern="^.+@.+[.].+$">
+                    <fmt:message key="registration.form.email"/>
+                    <input type="text" name="email" value="${account.email}"
+                           pattern="^.+@.+[.].+$">
                 </div>
                 <div class="row">
                     <button class="btn-custom" type="submit" name="command" value="change_email" onclick=""><fmt:message
@@ -124,20 +118,28 @@
             </form>
             <hr>
             <h2><fmt:message key="settings.text.password"/></h2>
-            <form method="post" action="/s">
+            <form id="changePasswordForm" method="post" action="/s">
                 <div class="row">
-                    <fmt:message key="settings.form.oldPassword"/><input type="password" name="oldPassword" pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
+                    <fmt:message key="settings.form.oldPassword"/>
+                    <input type="password" name="oldPassword"
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$"
+                           required>
                 </div>
                 <div class="row">
-                    <fmt:message key="settings.form.newPassword"/><input type="password" name="newPassword" pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
+                    <fmt:message key="settings.form.newPassword"/>
+                    <input type="password" name="newPassword"
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$"
+                           required>
                 </div>
                 <div class="row">
-                    <fmt:message key="settings.form.newPasswordConfirm"/><input type="password" name="newPasswordConfirm"
-                                                                                pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$" required>
+                    <fmt:message key="settings.form.newPasswordConfirm"/>
+                    <input type="password" name="newPasswordConfirm"
+                           pattern="^.*(?=.{6,})(?=.*(\\p{Ll})+)(?=.*(\\p{N})+).*$"
+                           required>
                 </div>
                 <div class="row">
-                    <button class="btn-custom" type="submit" name="command" value="change_password" onclick=""><fmt:message
-                            key="settings.changePassword"/></button>
+                    <button class="btn-custom" type="submit" name="command" value="change_password" onclick="">
+                        <fmt:message key="settings.changePassword"/></button>
                 </div>
             </form>
             <hr>
@@ -151,5 +153,7 @@
 <jsp:include page="../../WEB-INF/jspf/footer.jsp"/>
 <script src="../../js/jquery-3.1.1.min.js"></script>
 <script src="../../js/bootstrap-3.3.1.min.js"></script>
+<script src="../../js/jquery.form.min.js"></script>
+<script src="../../js/settings.js"></script>
 </body>
 </html>

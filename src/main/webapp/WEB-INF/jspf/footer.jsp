@@ -36,8 +36,8 @@
             <div class="col-md-3  col-sm-3 col-sx-3 footer-wrap">
                 <header><fmt:message key="footer.links"/></header>
                 <ul>
-                    <li><a href=""><fmt:message key="footer.links.facebook"/></a></li>
-                    <li><a href=""><fmt:message key="footer.links.twitter"/></a></li>
+                    <li><a href="https://www.facebook.com/" target="_blank"><fmt:message key="footer.links.facebook"/></a></li>
+                    <li><a href="https://twitter.com/" target="_blank"><fmt:message key="footer.links.twitter"/></a></li>
                 </ul>
             </div>
         </div>

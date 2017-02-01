@@ -1,5 +1,8 @@
 package by.suboch.command.user;
 
+import by.suboch.ajax.AJAXState;
+import by.suboch.command.AbstractServletCommand;
+import by.suboch.command.CommandConstants;
 import by.suboch.command.IServletCommand;
 import by.suboch.entity.Account;
 import by.suboch.entity.Visitor;
@@ -7,6 +10,9 @@ import by.suboch.exception.LogicException;
 import by.suboch.logic.AccountLogic;
 import by.suboch.manager.ConfigurationManager;
 import by.suboch.manager.MessageManager;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,10 +23,10 @@ import static by.suboch.controller.ControllerConstants.VISITOR_KEY;
 /**
  *
  */
-public class ChangePersonalInfoCommand implements IServletCommand {
+public class ChangePersonalInfoCommand extends AbstractServletCommand {
+    private static final Logger LOG = LogManager.getLogger();
     private static final String FIRST_NAME_PARAM = "firstName";
     private static final String LAST_NAME_PARAM = "lastName";
-    private static final String CHANGE_NAME_ERROR_MESSAGE = "message.failure.changePersonalInfo";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -31,18 +37,16 @@ public class ChangePersonalInfoCommand implements IServletCommand {
         AccountLogic accountLogic = new AccountLogic();
         Account account = (Account) request.getSession().getAttribute(ATTR_ACCOUNT);
 
-        String nextPage;
+        String resultData;
         try {
-            if (accountLogic.changeName(account.getAccountId(), firstName, lastName)) {
-                account.setFirstName(firstName);
-                account.setLastName(lastName);
-                request.getSession().setAttribute(ATTR_ACCOUNT, account);
-            }
-            nextPage = visitor.getCurrentPage();
+            accountLogic.changeName(account.getAccountId(), firstName, lastName);
+            account.setFirstName(firstName);
+            account.setLastName(lastName);
+            resultData = toJson(AJAXState.OK, MessageManager.getProperty(CommandConstants.MESSAGE_SUCCESS_SAVE_CHANGES, visitor.getLocale()));
         } catch (LogicException e) {
-            request.getSession().setAttribute(ATTR_MESSAGE, MessageManager.getProperty(CHANGE_NAME_ERROR_MESSAGE, visitor.getLocale()));
-            nextPage = ConfigurationManager.getProperty(PAGE_ERROR);
+            LOG.log(Level.ERROR, "Errors during changing avatar..", e);
+            resultData = handleDBError(e, request, response);
         }
-        return nextPage;
+        return resultData;
     }
 }

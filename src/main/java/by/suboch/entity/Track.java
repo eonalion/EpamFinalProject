@@ -36,6 +36,21 @@ public class Track implements IDatabaseEntity {
         return Objects.hash(trackId, albumId, genreId, title, price, discount, location, image);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Track{");
+        sb.append("trackId=").append(trackId);
+        sb.append(", albumId=").append(albumId);
+        sb.append(", genreId=").append(genreId);
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", price=").append(price);
+        sb.append(", discount=").append(discount);
+        sb.append(", location='").append(location).append('\'');
+        sb.append(", image=").append(Arrays.toString(image));
+        sb.append('}');
+        return sb.toString();
+    }
+
     public Track(){}
 
     public int getTrackId() {

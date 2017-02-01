@@ -47,7 +47,7 @@ public class ArtistDAO {
             if (resultSet.next()) {
                 return resultSet.getInt(1);
             } else {
-                throw new DAOException("  "); //FIXME
+                throw new DAOException("Error while inserting new artist into database.");
             }
         } catch (SQLException e) {
             throw new DAOException("Error while inserting new artist into database.", e);
@@ -75,7 +75,6 @@ public class ArtistDAO {
             } else {
                 throw new DAOException("No artist with such name and country found in database.");
             }
-
         } catch (SQLException e) {
             throw new DAOException("Error while searching for artist by name and country in database.", e);
         }
