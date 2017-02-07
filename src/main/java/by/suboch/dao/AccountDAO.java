@@ -2,7 +2,6 @@ package by.suboch.dao;
 
 import by.suboch.entity.Account;
 import by.suboch.exception.DAOException;
-import by.suboch.logic.LogicActionResult;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,12 +22,11 @@ public class AccountDAO {
     private static final String SQL_CHECK_LOGIN = "SELECT `login` FROM `accounts` WHERE `login` = ?";
     private static final String SQL_CHECK_EMAIL = "SELECT `login` FROM `accounts` WHERE `email` = ?";
     private static final String SQL_CHECK_ADMIN_RIGHTS = "SELECT `login` FROM `accounts` WHERE (`login` = ? OR `email` = ?) AND `is_admin` = TRUE";
-
     private static final String SQL_CHECK_EMAIL_BY_ACCOUNT_ID = "SELECT `login` FROM `accounts` WHERE `account_id`=? AND `email` = ?";
     private static final String SQL_CHECK_LOGIN_BY_ACCOUNT_ID = "SELECT `login` FROM `accounts` WHERE `account_id`=? AND `login` = ?";
     private static final String SQL_CHECK_PASSWORD_BY_ACCOUNT_ID = "SELECT `login` FROM `accounts` WHERE `account_id` = ? AND `password` = SHA2(?, 256)";
 
-    private static final String SQL_FIND_ACCOUNT_BY_AUTHORIZATION_NAME = "SELECT * FROM `accounts` WHERE (`login` = ? OR `email` = ?)";
+    private static final String SQL_LOAD_ACCOUNT_BY_AUTHORIZATION_NAME = "SELECT * FROM `accounts` WHERE (`login` = ? OR `email` = ?)";
     private static final String SQL_LOAD_IMAGE = "SELECT `avatar` FROM `accounts` WHERE `account_id` = ?";
     private static final String SQL_LOAD_ALL_ACCOUNTS = "SELECT * FROM `accounts`";
     private static final String SQL_LOAD_ACCOUNT_BY_ID = "SELECT * FROM `accounts` WHERE `account_id` = ?";
@@ -141,7 +139,7 @@ public class AccountDAO {
     }
 
     public Account findByAuthorizationName(String authorizationName) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(SQL_FIND_ACCOUNT_BY_AUTHORIZATION_NAME)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQL_LOAD_ACCOUNT_BY_AUTHORIZATION_NAME)) {
             statement.setString(1, authorizationName);
             statement.setString(2, authorizationName);
             ResultSet resultSet = statement.executeQuery();

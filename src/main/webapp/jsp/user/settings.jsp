@@ -144,7 +144,7 @@
             </form>
             <hr>
             <h2><fmt:message key="settings.text.delete"/></h2>
-            <a class="delete-option" href="/s?command=delete_account">Delete account</a>
+            <a class="delete-option" href="/s?command=delete_account"><fmt:message key="settings.delete"/></a>
         </section>
     </div>
 </main>

@@ -1,7 +1,6 @@
 package by.suboch.validator;
 
 import org.junit.Assert;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
@@ -15,7 +14,6 @@ import java.util.function.Predicate;
  */
 @RunWith(Parameterized.class)
 public class AccountValidatorTest {
-
     private enum TestTarget {
         LOGIN(AccountValidator::validateLogin),
         EMAIL(AccountValidator::validateEmail),
@@ -29,12 +27,12 @@ public class AccountValidatorTest {
 
     private String testString;
     private TestTarget target;
-    private boolean assertValue;
+    private boolean assertResult;
 
-    public AccountValidatorTest(String testString, TestTarget target, boolean assertValue) {
+    public AccountValidatorTest(String testString, TestTarget target, boolean assertResult) {
         this.testString = testString;
         this.target = target;
-        this.assertValue = assertValue;
+        this.assertResult = assertResult;
     }
 
     @Parameterized.Parameters(name = "{index}: {1}({0}) : {2}")
@@ -59,6 +57,6 @@ public class AccountValidatorTest {
 
     @Test
     public void validateInput() throws Exception {
-        Assert.assertEquals(target.test.test(testString), assertValue);
+        Assert.assertEquals(target.test.test(testString), assertResult);
     }
 }

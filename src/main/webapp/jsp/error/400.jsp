@@ -3,11 +3,16 @@
 <html>
 <head>
     <title>400</title>
+    <link rel="stylesheet" type="text/css" href="../../css/default.css">
 </head>
 <body>
+
 <c:if test="${visitor.role == 'GUEST'}">
     <c:redirect url="/jsp/guest/register.jsp"/>
 </c:if>
+
 <h1>400</h1>
+<a href="../../jsp/user/main.jsp">Main page</a>
+
 </body>
 </html>

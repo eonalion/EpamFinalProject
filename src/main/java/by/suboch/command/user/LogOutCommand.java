@@ -1,5 +1,6 @@
 package by.suboch.command.user;
 
+import by.suboch.command.CommandConstants;
 import by.suboch.command.IServletCommand;
 import by.suboch.entity.Visitor;
 import by.suboch.manager.ConfigurationManager;
@@ -24,7 +25,15 @@ public class LogOutCommand implements IServletCommand {
         Visitor visitor = (Visitor) request.getSession().getAttribute(VISITOR_KEY);
         visitor.setRole(Visitor.Role.GUEST);
 
-        //TODO: Remove all attributes from session.
+        request.getSession().removeAttribute(CommandConstants.ATTR_ACCOUNT);
+        request.getSession().removeAttribute(CommandConstants.ATTR_GENRE_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_TRACK_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_ARTIST_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_ACCOUNT_PURCHASES);
+        request.getSession().removeAttribute(CommandConstants.ATTR_COMMENT_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_ACCOUNT_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_ALBUM_LIST);
+        request.getSession().removeAttribute(CommandConstants.ATTR_TRACK_COMMENT_LIST);
 
         return ConfigurationManager.getProperty(REGISTRATION_LOGIN_PAGE);
     }

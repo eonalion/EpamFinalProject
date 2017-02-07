@@ -23,6 +23,15 @@ public class GenreLogic {
         }
     }
 
+    public Genre loadGenreById(int genreId) throws LogicException {
+        try(Connection connection = ConnectionPool.getInstance().getConnection()) {
+            GenreDAO genreDAO = new GenreDAO(connection);
+            return genreDAO.loadGenreById(genreId);
+        } catch (SQLException | DAOException e) {
+            throw new LogicException("Error while loading all genres in logic.", e);
+        }
+    }
+
     public LogicActionResult addGenre(String genreName) throws LogicException {
         try(Connection connection = ConnectionPool.getInstance().getConnection()) {
             GenreDAO genreDAO = new GenreDAO(connection);

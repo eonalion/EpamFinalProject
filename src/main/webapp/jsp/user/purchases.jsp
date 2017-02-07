@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Purchases</title>
+    <title><fmt:message key="purchase.title"/></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -35,16 +35,16 @@
 </c:choose>
 
 <main class="container">
-    <h1>Your purchases</h1>
+    <h1><fmt:message key="purchase.header.yourPurchase"/></h1>
     <hr>
     <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Date</th>
-                <th>Items amount</th>
-                <th>Total price</th>
+                <th><fmt:message key="purchase.info.date"/></th>
+                <th><fmt:message key="purchase.info.size"/></th>
+                <th><fmt:message key="purchase.price"/></th>
                 <th></th>
             </tr>
             </thead>
@@ -56,13 +56,13 @@
                     <td>${purchase.date}</td>
                     <td>${fn:length(purchase.tracksId)}</td>
                     <td>${purchase.totalPrice}$</td>
-                    <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}">View purchase</a></td>
+                    <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}"><fmt:message key="purchase.view"/></a></td>
                 </tr>
                 <c:set var="i" value="${i+1}" scope="page"/>
             </c:forEach>
             </tbody>
         </table>
-        <adt:emptyList items="${purchaseList}">You have not made any purchases.</adt:emptyList>
+        <adt:emptyList items="${purchaseList}"><fmt:message key="purchase.noPurchases"/></adt:emptyList>
     </div>
 </main>
 

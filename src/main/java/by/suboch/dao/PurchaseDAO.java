@@ -13,9 +13,9 @@ import java.util.List;
  */
 public class PurchaseDAO {
     private Connection connection;
+    private static final String SQL_FILL_PURCHASE_M2M_TRACKS_TABLE = "INSERT INTO `purchases_m2m_tracks` (`purchase_id`, `track_id`) VALUES (?, ?)";
     private static final String SQL_ADD_PURCHASE = "INSERT INTO `purchases` (`account_id`, `date`) VALUES (?, NOW())";
-    private static final String SQL_FIND_PURCHASE_BY_ID = "SELECT * FROM `purchases` WHERE `purchase_id` = ?";
-    private static final String SQL_INSERT_PURCHASE_M2M_TRACKS_TABLE = "INSERT INTO `purchases_m2m_tracks` (`purchase_id`, `track_id`) VALUES (?, ?)";
+    private static final String SQL_LOAD_PURCHASE_BY_ID = "SELECT * FROM `purchases` WHERE `purchase_id` = ?";
     private static final String SQL_LOAD_ALL_PURCHASES = "SELECT * FROM `purchases` WHERE  `account_id` = ?";
     private static final String SQL_LOAD_TRACKS_ID = "SELECT `track_id` FROM `purchases_m2m_tracks` WHERE `purchase_id` = ?";
     private static final String SQL_CALCULATE_TOTAL_PRICE = "SELECT SUM(track_price) FROM tracks\n" +
@@ -46,7 +46,7 @@ public class PurchaseDAO {
     }
 
     public void fillPurchaseM2mTracks(int purchaseId, List<Integer> tracksId) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_INSERT_PURCHASE_M2M_TRACKS_TABLE)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FILL_PURCHASE_M2M_TRACKS_TABLE)) {
             for (int i = 0; i < tracksId.size(); i++) {
                 preparedStatement.setInt(1, purchaseId);
                 preparedStatement.setInt(2, tracksId.get(i));
@@ -58,7 +58,7 @@ public class PurchaseDAO {
     }
 
     public Purchase findPurchaseById(int purchaseId) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_PURCHASE_BY_ID)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_PURCHASE_BY_ID)) {
             preparedStatement.setInt(1, purchaseId);
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {

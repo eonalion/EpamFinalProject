@@ -7,8 +7,8 @@ import org.junit.runners.Suite;
 /**
  *
  */
-@Suite.SuiteClasses({AccountValidatorTest.class})
 @RunWith(Suite.class)
-public class TestingStarter {
+@Suite.SuiteClasses({AccountValidatorTest.class})
+public class ValidationTestSuite {
 
 }

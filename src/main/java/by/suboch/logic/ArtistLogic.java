@@ -36,19 +36,19 @@ public class ArtistLogic {
         }
     }
 
-    public int loadArtistId(String name, String country) throws LogicException {
+    public Artist loadArtistByArtistId(int artistId) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             ArtistDAO artistDAO = new ArtistDAO(connection);
-            return artistDAO.findArtistId(name, country);
+            return artistDAO.findArtistByArtistId(artistId);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while loading album id in logic.", e);
         }
     }
 
-    public Artist loadArtistById(int artistId) throws LogicException {
+    public Artist loadArtistByAlbumId(int albumId) throws LogicException {
         try (Connection connection = ConnectionPool.getInstance().getConnection()) {
             ArtistDAO artistDAO = new ArtistDAO(connection);
-            return artistDAO.findArtistById(artistId);
+            return artistDAO.findArtistByAlbumId(albumId);
         } catch (SQLException | DAOException e) {
             throw new LogicException("Error while loading album id in logic.", e);
         }

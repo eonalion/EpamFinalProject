@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Current client</title>
+    <title><fmt:message key="client.title"/></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -37,19 +37,19 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../jsp/admin/create.jsp">Create</a>
-        <a href="../../jsp/admin/edit.jsp">Edit</a>
-        <a href="../../jsp/admin/clients.jsp">Clients</a>
-        <a href="../../jsp/admin/comments.jsp">Comments</a>
+        <a href="../../jsp/admin/create.jsp"><fmt:message key="menu.admin.create"/></a>
+<%--        <a href="../../jsp/admin/edit.jsp">Edit</a>--%>
+        <a href="../../jsp/admin/clients.jsp"><fmt:message key="menu.admin.clients"/></a>
+        <a href="../../jsp/admin/comments.jsp"><fmt:message key="menu.admin.comments"/></a>
     </div>
     <div id="main">
         <div class="row">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;<fmt:message key="menu.openMenu"/></span>
         </div>
         <div class="row">
             <h1 style="display: inline">${currentAccount.login}</h1>
             <c:if test="${currentAccount.admin}">
-                <span class="label label-default">admin</span>
+                <span class="label label-default"><fmt:message key="client.admin"/></span>
             </c:if>
         </div>
         <div class="row">
@@ -57,21 +57,21 @@
                  onerror="this.src='../../images/default_avatar.jpg'" alt="">
         </div>
         <hr>
-        <h2>Personal information</h2>
+        <h2><fmt:message key="client.personalInfo"/></h2>
         <div class="row">
             <div class="table-responsive col-md-8">
                 <table class="table table-condensed">
                     <tbody>
                     <tr>
-                        <td>First name</td>
+                        <td><fmt:message key="client.info.firstName"/></td>
                         <td>${currentAccount.firstName}</td>
                     </tr>
                     <tr>
-                        <td>Last name</td>
+                        <td><fmt:message key="client.info.lastName"/></td>
                         <td>${currentAccount.lastName}</td>
                     </tr>
                     <tr>
-                        <th>E-mail</th>
+                        <th><fmt:message key="client.info.email"/></th>
                         <td>${currentAccount.email}</td>
                     </tr>
                     </tbody>
@@ -79,16 +79,16 @@
             </div>
         </div>
         <hr>
-        <h2>Purchases</h2>
+        <h2><fmt:message key="client.purchases"/></h2>
         <div class="row">
             <div class="table-responsive col-md-8">
                 <table class="table table-condensed">
                     <thead>
                     <tr>
                         <th>#</th>
-                        <th>Date</th>
-                        <th>Items amount</th>
-                        <th>Total price</th>
+                        <th><fmt:message key="purchase.info.date"/></th>
+                        <th><fmt:message key="purchase.info.size"/></th>
+                        <th><fmt:message key="purchase.price"/></th>
                         <th></th>
                     </tr>
                     </thead>
@@ -100,14 +100,13 @@
                             <td> Date</td>
                             <td>${fn:length(purchase.tracksId)}</td>
                             <td>${purchase.totalPrice}$</td>
-                            <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}">View
-                                purchase</a></td>
+                            <td><a href="/s?command=show_element&type=purchase&id=${purchase.purchaseId}"><fmt:message key="purchase.view"/></a></td>
                         </tr>
                         <c:set var="i" value="${i+1}" scope="page"/>
                     </c:forEach>
                     </tbody>
                 </table>
-                <adt:emptyList items="${currentClientPurchases}">Client have not made any purchases.</adt:emptyList>
+                <adt:emptyList items="${currentClientPurchases}"><fmt:message key="clients.noPurchases"/></adt:emptyList>
             </div>
         </div>
     </div>

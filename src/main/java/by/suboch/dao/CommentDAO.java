@@ -20,8 +20,8 @@ public class CommentDAO {
 
     private static final String SQL_LOAD_ALL_TRACK_COMMENTS = "SELECT * FROM `comments` WHERE `track_id` = ?";
     private static final String SQL_LOAD_ALL_COMMENTS = "SELECT * FROM `comments`";
-    private static final String SQL_ADD_COMMENT = "INSERT INTO `comments` (`track_id`, `account_id`, `text`, `post_date`) VALUES(?,?,?, NOW())";
     private static final String SQL_LOAD_COMMENT = "SELECT * FROM `comments` WHERE `comment_id` = ?";
+    private static final String SQL_ADD_COMMENT = "INSERT INTO `comments` (`track_id`, `account_id`, `text`, `post_date`) VALUES(?,?,?, NOW())";
 
 
     public CommentDAO(Connection connection) {

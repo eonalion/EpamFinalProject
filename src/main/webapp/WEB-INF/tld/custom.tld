@@ -58,6 +58,26 @@
         <rtexprvalue>true</rtexprvalue>
     </attribute>
     </tag>
+    <tag>
+        <name>null</name>
+        <tag-class>by.suboch.tag.NullElement</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>test</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <name>notNull</name>
+        <tag-class>by.suboch.tag.NotNullElement</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>test</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
     <function>
         <name>base64Encoder</name>
         <function-class>by.suboch.util.Base64Encoder</function-class>

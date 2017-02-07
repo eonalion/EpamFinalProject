@@ -7,7 +7,7 @@
 <fmt:setBundle basename="properties.content"/>
 <html>
 <head>
-    <title>Catalog</title>
+    <title><fmt:message key="catalog.title"/></title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -36,13 +36,13 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../jsp/user/catalog_artists.jsp">Artists</a>
-        <a href="../../jsp/user/catalog_albums.jsp">Albums</a>
-        <a href="../../jsp/user/catalog_tracks.jsp">Tracks</a>
+        <a href="../../jsp/user/catalog_artists.jsp"><fmt:message key="menu.artists"/></a>
+        <a href="../../jsp/user/catalog_albums.jsp"><fmt:message key="menu.albums"/></a>
+        <a href="../../jsp/user/catalog_tracks.jsp"><fmt:message key="menu.tracks"/></a>
     </div>
     <div id="main">
         <div class="row">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;<fmt:message key="menu.openMenu"/></span>
         </div>
             <h1>Albums</h1>
             <c:forEach var="album" items="${albumList}">

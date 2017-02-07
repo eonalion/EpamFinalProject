@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
+    <title><fmt:message key="purchase.title"/></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -35,21 +35,21 @@
 </c:choose>
 
 <main class="container">
-    <h2>Purchase information</h2>
+    <h2><fmt:message key="purchase.info"/></h2>
     <div class="row">
         <div class="table-responsive col-md-8">
             <table class="table table-condensed">
                 <tbody>
                 <tr>
-                    <td>Purchase date</td>
+                    <td><fmt:message key="purchase.info.date"/></td>
                     <td>${currentPurchase.date}</td>
                 </tr>
                 <tr>
-                    <td>Items amount</td>
+                    <td><fmt:message key="purchase.info.size"/></td>
                     <td>${fn:length(currentPurchaseTracks)}</td>
                 </tr>
                 <tr>
-                    <td>Total price</td>
+                    <td><fmt:message key="purchase.price"/></td>
                     <td>${currentPurchase.totalPrice}$</td>
                 </tr>
                 </tbody>
@@ -57,14 +57,14 @@
         </div>
     </div>
     <hr>
-    <h2>Purchased tracks</h2>
+    <h2><fmt:message key="purchase.header.purchasedTracks"/></h2>
     <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Track title</th>
-                <th>Track price</th>
+                <th><fmt:message key="purchase.info.trackTitle"/></th>
+                <th><fmt:message key="purchase.info.trackPrice"/></th>
                 <th></th>
             </tr>
             </thead>

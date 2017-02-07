@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Current test</title>
+    <title><fmt:message key="track.title"/></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -37,43 +37,75 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../jsp/user/catalog_artists.jsp">Artists</a>
-        <a href="../../jsp/user/catalog_albums.jsp">Albums</a>
-        <a href="../../jsp/user/catalog_tracks.jsp">Tracks</a>
+        <a href="../../jsp/user/catalog_artists.jsp"><fmt:message key="menu.artists"/></a>
+        <a href="../../jsp/user/catalog_albums.jsp"><fmt:message key="menu.albums"/></a>
+        <a href="../../jsp/user/catalog_tracks.jsp"><fmt:message key="menu.tracks"/></a>
     </div>
     <div id="main">
         <div class="row">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776;<fmt:message
+                    key="menu.openMenu"/></span>
         </div>
         <div class="row">
             <h1>${currentTrack.title}</h1>
         </div>
         <div class="row">
-            <img class="img-responsive col-md-4"
-                 src="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
-                 onerror="this.src='../../images/default_album.png'" alt="">
+            <c:choose>
+                <c:when test="${currentAlbum!=null && currentAlbum.image != null}">
+                    <img class="img-responsive col-md-4"
+                         src="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"/>
+                </c:when>
+                <c:otherwise>
+                    <img class="img-responsive col-md-4" src="../../images/default_album.png">
+                </c:otherwise>
+            </c:choose>
         </div>
     </div>
     <hr>
-    <h2>Information</h2>
+    <h2><fmt:message key="track.header.info"/></h2>
     <div class="row">
         <div class="table-responsive col-md-8">
             <table class="table table-condensed">
                 <tbody>
                 <tr>
-                    <td>Artist</td>
-                    <td><a href="/s?command=show_element&id=${currentTrack.albumId}">Artist name</a></td>
+                    <td><fmt:message key="menu.artists"/></td>
+                    <td>
+                        <adt:null test="${currentArtist}">
+                            No artist
+                        </adt:null>
+                        <adt:notNull test="${currentArtist}">
+                            <a href="/s?command=show_element&id=${currentArtist.artistId}&type=artist">${currentArtist.name}</a>
+                        </adt:notNull>
+                    </td>
                 </tr>
                 <tr>
-                    <td>Album</td>
-                    <td><a href="/s?command=show_album&id=${currentTrack.albumId}">Album title</a></td>
+                    <td><fmt:message key="menu.albums"/></td>
+                    <td>
+                        <adt:null test="${currentAlbum}">
+                            No album
+                        </adt:null>
+                        <adt:notNull test="${currentAlbum}">
+                            <a href="/s?command=show_element&id=${currentAlbum.albumId}&type=album">${currentAlbum.title}</a>
+                        </adt:notNull>
+                    </td>
+                </tr>
+                <tr>
+                    <td><fmt:message key="track.genre"/></td>
+                    <td>
+                        <adt:null test="${currentGenre}">
+                            No genre
+                        </adt:null>
+                        <adt:notNull test="${currentGenre}">
+                            ${currentGenre.name}
+                        </adt:notNull>
+                    </td>
                 </tr>
                 </tbody>
             </table>
         </div>
     </div>
     <hr>
-    <h2>Purchase</h2>
+    <h2><fmt:message key="track.header.purchase"/></h2>
     <div class="row">
         <h2>${currentTrack.price}$</h2>
         <form class="add-to-cart-form" method="post" action="/s">
@@ -91,7 +123,7 @@
     </div>
     <hr>
 
-    <h2>Play track</h2>
+    <h2><fmt:message key="track.header.playTrack"/></h2>
     <div class="row">
         <button class="btn-custom btn-play"
                 onclick='playTrack(${currentTrack.trackId}, "${currentTrack.location}")'>
@@ -100,17 +132,17 @@
     <div class="row">
         <audio id="player" controls
                data-info-album-art="/s?command=load_image&elementId=${currentTrack.albumId}&target=album"
-               data-info-album-title="Album"
-               data-info-artist="Iain Houston and Felix Gibbons"
+               data-info-album-title=""
+               data-info-artist=""
                data-info-title="${currentTrack.title}"
-               data-info-label="Independent"
-               data-info-year="2005"
+               data-info-label=""
+               data-info-year=""
                data-info-att-link="}">
             <source src="" type="audio/mpeg">
         </audio>
     </div>
     <hr>
-    <h2>Leave comments</h2>
+    <h2><fmt:message key="track.header.leaveComments"/></h2>
     <div class="row">
         <form id="commentForm" action="/s" method="post">
             <label for="comment">Comment:</label>
@@ -143,7 +175,7 @@
                 </div>
             </div>
         </c:forEach>
-        <adt:emptyList items="${trackCommentList}">Track has no comments.</adt:emptyList>
+        <adt:emptyList items="${trackCommentList}"><fmt:message key="track.noComment"/></adt:emptyList>
     </div>
 
 </main>

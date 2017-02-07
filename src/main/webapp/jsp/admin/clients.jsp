@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Clients</title>
+    <title><fmt:message key="clients.title"/></title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,20 +35,19 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../jsp/admin/create.jsp">Create</a>
-        <a href="../../jsp/admin/edit.jsp">Edit</a>
-        <a href="../../jsp/admin/clients.jsp">Clients</a>
-        <a href="../../jsp/admin/comments.jsp">Comments</a>
+        <a href="../../jsp/admin/create.jsp"><fmt:message key="menu.admin.create"/></a>
+        <a href="../../jsp/admin/clients.jsp"><fmt:message key="menu.admin.clients"/></a>
+        <a href="../../jsp/admin/comments.jsp"><fmt:message key="menu.admin.comments"/></a>
     </div>
     <div id="main">
         <div class="row">
-            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; <fmt:message key="menu.openMenu"/></span>
         </div>
         <h1>Clients</h1>
         <hr>
         <c:forEach var="account" items="${accountList}">
             <a href="/s?command=show_element&type=account&id=${account.accountId}">${account.login}</a>
-            <c:if test="${account.admin}"> <span class="label label-default">admin</span></c:if>
+            <c:if test="${account.admin}"> <span class="label label-default"><fmt:message key="client.admin"/></span></c:if>
             <hr>
         </c:forEach>
     </div>

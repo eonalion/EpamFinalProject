@@ -15,11 +15,11 @@ public class ArtistDAO {
     private Connection connection;
     private static final String SQL_ADD_ARTIST = "INSERT INTO `artists` (`artist_name`, `country`, `description`, `artist_image`) " +
             "VALUES (?, ?, ?, ?)";
-    private static final String SQL_CHECK_ARTIST = "SELECT * FROM `artists` WHERE `artist_name` = ? AND `country` = ?";
-    private static final String SQL_FIND_ARTIST_ID = "SELECT `artist_id` FROM `artists` WHERE `artist_name` = ? AND `country` = ?";
-    private static final String SQL_FIND_ARTIST_BY_ID = "SELECT * FROM `artists` WHERE `artist_id` = ?";
-    private static final String SQL_LOAD_IMAGE = "SELECT `artist_image` FROM `artists` WHERE `artist_id` = ?";
+    private static final String SQL_CHECK_ARTIST = "SELECT `artist_id` FROM `artists` WHERE `artist_name` = ? AND `country` = ?";
+    private static final String SQL_LOAD_ARTIST_BY_ALBUM_ID = "SELECT * FROM `artists` JOIN `albums` ON `artists`.`artist_id` = `albums`.`artist_id` WHERE `album_id` = ?";
+    private static final String SQL_LOAD_ARTIST_BY_ARTIST_ID = "SELECT * FROM `artists` WHERE `artist_id` = ?";
     private static final String SQL_LOAD_ALL_ARTISTS = "SELECT * FROM `artists` ORDER BY `artist_name`";
+    private static final String SQL_LOAD_IMAGE = "SELECT `artist_image` FROM `artists` WHERE `artist_id` = ?";
 
     private static final String COLUMN_ARTIST_ID = "artist_id";
     private static final String COLUMN_ARTIST_NAME = "artist_name";
@@ -65,36 +65,36 @@ public class ArtistDAO {
         }
     }
 
-    public int findArtistId(String name, String country) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ARTIST_ID)) {
-            preparedStatement.setString(1, name);
-            preparedStatement.setString(2, country);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                return resultSet.getInt(COLUMN_ARTIST_ID);
-            } else {
-                throw new DAOException("No artist with such name and country found in database.");
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Error while searching for artist by name and country in database.", e);
-        }
-    }
-
-    public Artist findArtistById(int artistId) throws DAOException {
-        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_FIND_ARTIST_BY_ID)) {
+    public Artist findArtistByArtistId(int artistId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ARTIST_BY_ARTIST_ID)) {
             preparedStatement.setInt(1, artistId);
             ResultSet resultSet = preparedStatement.executeQuery();
+            Artist artist = null;
             if (resultSet.next()) {
-                Artist artist = new Artist();
+                artist = new Artist();
                 artist.setArtistId(resultSet.getInt(COLUMN_ARTIST_ID));
                 artist.setName(resultSet.getString(COLUMN_ARTIST_NAME));
                 artist.setCountry(resultSet.getString(COLUMN_COUNTRY));
                 artist.setDescription(resultSet.getString(COLUMN_DESCRIPTION));
-                return artist;
-            } else {
-                throw new DAOException("No artist with such name and country found in database.");
             }
-
+            return artist;
+        } catch (SQLException e) {
+            throw new DAOException("Error while searching for artist by name and country in database.", e);
+        }
+    }
+    public Artist findArtistByAlbumId(int albumId) throws DAOException {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ARTIST_BY_ALBUM_ID)) {
+            preparedStatement.setInt(1, albumId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            Artist artist = null;
+            if (resultSet.next()) {
+                artist = new Artist();
+                artist.setArtistId(resultSet.getInt(COLUMN_ARTIST_ID));
+                artist.setName(resultSet.getString(COLUMN_ARTIST_NAME));
+                artist.setCountry(resultSet.getString(COLUMN_COUNTRY));
+                artist.setDescription(resultSet.getString(COLUMN_DESCRIPTION));
+            }
+            return artist;
         } catch (SQLException e) {
             throw new DAOException("Error while searching for artist by name and country in database.", e);
         }
@@ -104,7 +104,6 @@ public class ArtistDAO {
         try (PreparedStatement preparedStatement = connection.prepareStatement(SQL_LOAD_ALL_ARTISTS)) {
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Artist> artistList = new LinkedList<>();
-
             while (resultSet.next()) {
                 Artist artist = new Artist();
                 artist.setArtistId(resultSet.getInt(COLUMN_ARTIST_ID));

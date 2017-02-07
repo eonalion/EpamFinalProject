@@ -2,6 +2,7 @@ package by.suboch.logic;
 
 import by.suboch.dao.TrackDAO;
 import by.suboch.database.ConnectionPool;
+import by.suboch.entity.Artist;
 import by.suboch.entity.Track;
 import by.suboch.exception.DAOException;
 import by.suboch.exception.LogicException;

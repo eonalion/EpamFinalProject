@@ -9,7 +9,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Create</title>
+    <title><fmt:message key="create.title"/></title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -35,13 +35,12 @@
 <main class="container">
     <div id="side-nav" class="sidenav">
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="../../jsp/admin/create.jsp">Create</a>
-        <a href="../../jsp/admin/edit.jsp">Edit</a>
-        <a href="../../jsp/admin/clients.jsp">Clients</a>
-        <a href="../../jsp/admin/comments.jsp">Comments</a>
+        <a href="../../jsp/admin/create.jsp"><fmt:message key="menu.admin.create"/></a>
+        <a href="../../jsp/admin/clients.jsp"><fmt:message key="menu.admin.clients"/></a>
+        <a href="../../jsp/admin/comments.jsp"><fmt:message key="menu.admin.comments"/></a>
     </div>
     <div id="main">
-        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; Open menu</span>
+        <span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; <fmt:message key="menu.openMenu"/></span>
         <h1>Create</h1>
         <hr>
         <div class="row">
@@ -55,8 +54,6 @@
                             key="main.addNew.album"/></li>
                     <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-genre', this)"><fmt:message
                             key="main.addNew.genre"/></li>
-                    <li class="nav-menu-item nav-menu-item-inactive" onclick="showForm('add-bonus', this)"><fmt:message
-                            key="main.addNew.bonus"/></li>
                 </ul>
             </nav>
         </div>
@@ -162,24 +159,6 @@
                         <button class="btn-custom" type="submit" name="command" value="add_genre" onclick="">
                             <fmt:message
                                     key="main.addNew.addGenre"/></button>
-                    </div>
-                </form>
-            </section>
-            <section id="add-bonus" class="inactive-section col-md-12">
-                <form id="addBonusForm" method="post" action="/s">
-                    <div class="row">
-                        <input type="text" name="bonusPrice" placeholder="<fmt:message key="main.addNew.form.price"/>"
-                               pattern="^\d+(\.\d+)?$" required>
-                    </div>
-                    <div class="row">
-                        <input type="text" name="bonusDiscount"
-                               placeholder="<fmt:message key="main.addNew.form.discount"/>"
-                               required>
-                    </div>
-                    <div class="row">
-                        <button class="btn-custom" type="submit" name="command" value="add_bonus" onclick="">
-                            <fmt:message
-                                    key="main.addNew.addBonus"/></button>
                     </div>
                 </form>
             </section>

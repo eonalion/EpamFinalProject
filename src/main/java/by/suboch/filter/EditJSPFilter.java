@@ -24,7 +24,7 @@ public class EditJSPFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        try {
+       /* try {
             TrackLogic trackLogic = new TrackLogic();
             AlbumLogic albumLogic = new AlbumLogic();
             GenreLogic genreLogic = new GenreLogic();
@@ -36,7 +36,7 @@ public class EditJSPFilter implements Filter {
         } catch (LogicException e) {
             AbstractServletCommand.handleDBError(e, request, response);
             return;
-        }
+        }*/
 
         filterChain.doFilter(servletRequest, servletResponse);
     }

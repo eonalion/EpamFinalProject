@@ -40,24 +40,30 @@
         <section id="register-section" class="active-section col-md-6">
             <form name="registration" id="registration" method="post" action="/s">
                 <div class="row">
-                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>">
+                    <input type="text" name="firstName" placeholder="<fmt:message key="registration.form.firstName"/>"
+                           required>
                 </div>
                 <div class="row">
-                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>">
+                    <input type="text" name="lastName" placeholder="<fmt:message key="registration.form.lastName"/>"
+                           required>
                 </div>
                 <div class="row">
-                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>">
+                    <input type="text" name="login" placeholder="<fmt:message key="registration.form.username"/>"
+                           pattern="^[a-zA-Z][a-zA-Z0-9_]{4,}$" required>
                 </div>
                 <div class="row">
-                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>">
+                    <input type="text" name="email" placeholder="<fmt:message key="registration.form.email"/>"
+                           pattern="^.+@.+[.].+$" required>
                 </div>
                 <div class="row">
                     <input type="password" name="password"
-                           placeholder="<fmt:message key="registration.form.password"/>">
+                           placeholder="<fmt:message key="registration.form.password"/>"
+                           pattern="^.*(?=.{6,})(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+).*$" required>
                 </div>
                 <div class="row">
                     <input type="password" name="passwordConfirm"
-                           placeholder="<fmt:message key="registration.form.confirmPassword"/>">
+                           placeholder="<fmt:message key="registration.form.confirmPassword"/>"
+                           pattern="^.*(?=.{6,})(?=.*[a-z]+)(?=.*[A-Z]+)(?=.*[0-9]+).*$" required>
                 </div>
                 <div class="row">
                     <div class="input-wrap">

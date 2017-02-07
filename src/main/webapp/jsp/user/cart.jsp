@@ -11,7 +11,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Cart</title>
+    <title><fmt:message key="Cart"/></title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
@@ -35,15 +35,15 @@
 </c:choose>
 
 <main class="container">
-    <h1>Items in your shopping cart</h1>
+    <h1><fmt:message key="cart.header.itemsInCart"/></h1>
     <hr>
     <div id="itemsTable" class="table-responsive">
         <table class="table">
             <thead>
             <tr>
                 <th>#</th>
-                <th>Track title</th>
-                <th>Track price</th>
+                <th><fmt:message key="purchase.info.trackTitle"/></th>
+                <th><fmt:message key="purchase.info.trackPrice"/></th>
                 <th></th>
             </tr>
             </thead>
@@ -64,11 +64,11 @@
             </c:forEach>
             </tbody>
         </table>
-        <adt:emptyList items="${cartItems}">Your shopping cart is empty.</adt:emptyList>
+        <adt:emptyList items="${cartItems}"><fmt:message key="cart.empty"/></adt:emptyList>
     </div>
 
     <form id="makePurchaseForm" method="post" action="/s">
-        <button type="submit" class="btn-custom" name="command" value="make_purchase">Buy tracks</button>
+        <button type="submit" class="btn-custom" name="command" value="make_purchase"><fmt:message key="cart.buy"/></button>
     </form>
 </main>
 

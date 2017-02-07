@@ -16,10 +16,6 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
-        <filter-name>XSSFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
         <filter-name>VisitorFilter</filter-name>
         <url-pattern>/*</url-pattern>
     </filter-mapping>
@@ -40,16 +36,16 @@
         <url-pattern>/jsp/guest/*</url-pattern>
     </filter-mapping>
     <filter-mapping>
+        <filter-name>CatalogTracksJSPFilter</filter-name>
+        <url-pattern>/jsp/user/catalog_tracks.jsp</url-pattern>
+    </filter-mapping>
+    <filter-mapping>
         <filter-name>CatalogAlbumsJSPFilter</filter-name>
         <url-pattern>/jsp/user/catalog_albums.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>CatalogArtistsJSPFilter</filter-name>
         <url-pattern>/jsp/user/catalog_artists.jsp</url-pattern>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>CatalogTracksJSPFilter</filter-name>
-        <url-pattern>/jsp/user/catalog_tracks.jsp</url-pattern>
     </filter-mapping>
     <filter-mapping>
         <filter-name>ClientsJSPFilter</filter-name>
